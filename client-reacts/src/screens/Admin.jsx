@@ -23,7 +23,7 @@ const Admin = ({ history }) => {
   const loadProfile = () => {
     const token = getCookie('token');
     axios
-      .get(`${process.env.REACT_APP_API_URL}/user/${isAuth()._id}`, {
+      .get(`${process.env.PORT}/user/${isAuth()._id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -52,7 +52,7 @@ const Admin = ({ history }) => {
     setFormData({ ...formData, textChange: 'Submitting' });
     axios
       .put(
-        `${process.env.REACT_APP_API_URL}/admin/update`,
+        `${process.env.PORT}/admin/update`,
         {
           name,
           email,

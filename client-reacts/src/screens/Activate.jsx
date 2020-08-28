@@ -30,7 +30,7 @@ const Activate = ({ match }) => {
     e.preventDefault();
 
     axios
-      .post(`${process.env.REACT_APP_API_URL}/activation`, {
+      .post(`${process.env.PORT}/activation`, {
         token
       })
       .then(res => {
