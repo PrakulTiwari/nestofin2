@@ -1,0 +1,312 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700');
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.gnav {
+    display: flex;
+    width: 100%;
+    min-height: 20vh;
+    color: white;
+    background-image: radial-gradient( circle farthest-corner at 12.3% 19.3%, rgba(85, 88, 218, 1) 0%, rgba(95, 209, 249, 1) 100.2%);
+    align-items: center;
+    justify-content: space-around;
+    font-family: 'Poppins';
+    z-index: 10;
+    margin-bottom: 5vh;
+}
+
+.gnav ul li {
+    list-style: none;
+    display: inline-flex;
+    padding: 0;
+    margin: 0;
+}
+
+.gnav ul li a {
+    margin: .5rem 1rem;
+    text-decoration: none;
+    color: white;
+}
+
+.gnav h1 {
+    color: white;
+}
+
+.gnav .hamburger {
+    display: none;
+}
+
+.gnav .wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.getstarted-page {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-direction: column;
+    background-color: rgb(230, 230, 230);
+    font-family: 'Poppins';
+}
+
+.main-win {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    margin: 0vh 0;
+    flex-direction: column;
+}
+
+.sub-win {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    margin: 0vh 0;
+    min-height: 100vh;
+    min-width: 70vw;
+}
+
+.text-part {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 50%;
+}
+
+.text-part h1 {
+    color: royalblue;
+    padding: 5vh 5vw;
+    text-align: center;
+}
+
+.text-part p {
+    padding: 1vh 1vw;
+    text-align: center;
+}
+
+.text-part .nest-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 2rem;
+    background-image: radial-gradient( circle farthest-corner at 12.3% 19.3%, rgba(85, 88, 218, 1) 0%, rgba(95, 209, 249, 1) 100.2%);
+    text-decoration: none;
+    color: white;
+    border-radius: 30px;
+}
+
+.img {
+    background-color: black;
+}
+
+.text-part .planning-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: royalblue;
+    padding: 1rem;
+}
+
+.window5 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background: #000000af;
+    margin-top: 10vh;
+}
+
+.window5 .last-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    border-bottom: 2px solid white;
+    margin-bottom: 5vh;
+}
+
+.window5 ul li {
+    display: inline-flex;
+    list-style: none;
+}
+
+.window5 a {
+    text-decoration: none;
+    color: white;
+    padding: 1rem 2rem;
+    margin: 1rem;
+    transition: 0.4s all ease;
+}
+
+.window5 .terms-conditions {
+    width: 70%;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+@media screen and (max-width: 780px) {
+    .text-part {
+        width: 100%;
+    }
+    .gnav {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        width: 100%;
+    }
+    .gnav .hamburger {
+        display: block;
+    }
+    .gnav .hamburger .bun {
+        width: 20px;
+        height: 2px;
+        margin: 5px;
+        background-color: white;
+    }
+    .gnav h1 {
+        color: white;
+    }
+    .gnav ul {
+        display: none;
+        position: absolute;
+        top: 0;
+        align-items: center;
+        justify-content: space-around;
+        flex-direction: column;
+        height: 100vh;
+        width: 100vw;
+        background-color: royalblue;
+        left: 100vw;
+        transition: all 1s ease;
+        z-index: 1;
+    }
+    .gnav .cross {
+        display: block;
+        color: white;
+        font-size: 30px;
+        font-weight: 600;
+        position: absolute;
+        font-family: consolas;
+        top: 2vh;
+        left: 80vw;
+        transition: all 0.2s ease;
+        cursor: pointer;
+    }
+    .gnav ul li {
+        list-style: none;
+    }
+    .gnav ul li a {
+        text-decoration: none;
+        color: white;
+        border-bottom: 1px solid white;
+    }
+    .sub-win {
+        flex-direction: column;
+        order: 1;
+    }
+    .img img {
+        width: 100%;
+    }
+    .text-part .nest-btn {
+        border-radius: 5px;
+        padding: 5px 10px;
+        text-align: center;
+    }
+    .gnav #name {
+        border-left: 0;
+        padding-right: 5px;
+        text-align: end;
+    }
+    .gnav #name a {
+        font-weight: bolder;
+        position: relative;
+        text-shadow: 0px 3px 0px royalblue;
+    }
+    .gnav #name a:hover {
+        top: 1.5px;
+        text-shadow: 0px 1.5px 0px royalblue;
+    }
+    .gnav #name a:active {
+        top: 3px;
+        text-shadow: 0px 0px 0px royalblue;
+    }
+}
+
+@media screen and (min-width: 781px) {
+    .gnav ul .others a {
+        border-bottom: 0.1px solid none;
+        letter-spacing: .5px;
+        transition: all 0.4s ease;
+    }
+    .gnav ul .others a:hover {
+        border-bottom: 2px solid white;
+        transition: all 0.4s ease;
+    }
+    .window5 a:hover {
+        background: lightgreen;
+        color: #000000af;
+        transition: 0.4s all ease;
+    }
+    .gnav ul .cross {
+        display: none;
+        color: white;
+        cursor: pointer;
+    }
+    .gnav ul {
+        display: block;
+        position: initial;
+        transform: translateX(0vw);
+    }
+    .gnav #name {
+        border-left: 2px solid rgba(85, 88, 218, 0.2);
+        display: inline-block;
+        padding-left: 10px;
+        font-size: 1.5em;
+    }
+    .gnav #name a {
+        font-weight: bolder;
+        position: relative;
+        text-shadow: 0px 3px 0px royalblue;
+    }
+    .gnav #name a:hover {
+        top: 1px;
+        text-shadow: 0px 2px 0px royalblue;
+    }
+    .gnav #name a:active {
+        top: 3px;
+        text-shadow: 0px 0px 0px royalblue;
+    }
+}
+
+.planbuybutton {
+    background-color: white;
+    max-width: 100%;
+    text-align: center;
+}
+
+.planbuybutton button {
+    margin: 3px auto;
+    background-color: gold;
+    border-radius: 10px;
+    padding: 5px;
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.planbuybutton button:hover {
+    border-bottom: 2px solid black;
+}
+
+.planbuybutton button:active {
+    border: 0px;
+}
+
+.planbuybutton button:focus {
+    outline: 0px;
+}

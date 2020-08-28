@@ -1,0 +1,162 @@
+.content {
+    background-color: white;
+    width: 80vw;
+    padding: 50px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.yolklabel {
+    text-align: center;
+}
+
+.yolklabel span {
+    font-size: 1.5rem;
+    font-weight: 400;
+}
+
+.yolk {
+    box-sizing: border-box;
+    width: 150px;
+    height: 200px;
+    position: relative;
+    border-radius: 50%;
+    overflow: hidden;
+    min-width: fit-content;
+}
+
+.yolk h1 {
+    padding: 10px;
+    text-align: center;
+    z-index: 2;
+    position: relative;
+    color: #fff;
+    line-height: 200px;
+    font-size: 7em !important;
+    color: royalblue;
+}
+
+.yolk img {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    z-index: 1;
+    opacity: 0.5;
+}
+
+.customer_details {
+    background: transparent;
+    background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.3)50%, rgba(65, 105, 225, 0.767) 30%);
+    box-sizing: border-box;
+    border-radius: 10px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+    width: 350px;
+    min-width: fit-content;
+    min-height: 200px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    margin-top: 40px;
+}
+
+.customer_details .detail {
+    display: flex;
+    margin: 5px;
+    justify-content: space-between;
+}
+
+.customer_details .detail .label {
+    font-weight: 500;
+}
+
+.customer_details .detail .value {
+    font-weight: 900;
+    letter-spacing: 2px;
+    margin-left: 3px;
+}
+
+.customer_details .detail #name {
+    text-transform: uppercase;
+}
+
+.totalmoney {
+    max-width: max-content;
+    border-radius: 10px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+    padding: 5px 10px;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: royalblue;
+    color: white;
+    text-align: center;
+}
+
+.totalmoney #money {
+    font-weight: 500;
+}
+
+.totalmoney::after {
+    display: block;
+    content: 'INVESTED';
+    letter-spacing: 3px;
+    font-weight: 900;
+}
+
+.graphcontent {
+    width: 80vw;
+    background-color: white;
+    margin-top: 10px;
+}
+
+.graphcontent .title {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 900;
+    margin: 20px;
+}
+
+.graphcontent .profitlossdetail .graph {
+    border: 1px solid #ccc;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+    height: 400px;
+    width: 500px;
+    margin: 10px auto;
+}
+
+.graphcontent .profitlossdetail .durationleft {
+    max-width: max-content;
+    padding: 10px 20px;
+    font-size: 2rem;
+    border-radius: 10px;
+    background-color: royalblue;
+    color: white;
+    font-weight: 900;
+    margin: 10px auto;
+}
+
+@media screen and (max-width: 1024px) {
+    .content {
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .customer_details .detail {
+        flex-direction: column;
+    }
+    .customer_details .detail .value {
+        text-align: end;
+    }
+    .customer_details {
+        width: 75vw;
+    }
+    .graphcontent .profitlossdetail .graph {
+        width: 80vw;
+    }
+}
