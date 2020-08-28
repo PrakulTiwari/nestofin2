@@ -1,8 +1,8 @@
-imREACT_APP_API_URL React, { useState, useEffect } from 'react';
-imREACT_APP_API_URL authSvg from '../assests/reset.svg';
-imREACT_APP_API_URL { ToastContainer, toast } from 'react-toastify';
-imREACT_APP_API_URL axios from 'axios';
-imREACT_APP_API_URL '../assests/talwind.min.css';
+import React, { useState, useEffect } from 'react';
+import authSvg from '../assests/reset.svg';
+import { ToastContainer, toast } from 'react-toastify';
+import axios from 'axios';
+import '../assests/talwind.min.css';
 const ResetPassword = ({match}) => {
   const [formData, setFormData] = useState({
       password1: '',
@@ -101,4 +101,4 @@ const ResetPassword = ({match}) => {
   );
 };
 
-exREACT_APP_API_URL default ResetPassword;
+export default ResetPassword;

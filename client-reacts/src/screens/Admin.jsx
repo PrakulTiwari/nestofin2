@@ -1,10 +1,10 @@
-imREACT_APP_API_URL React, { useState, useEffect } from 'react';
-imREACT_APP_API_URL authSvg from '../assests/update.svg';
-imREACT_APP_API_URL { ToastContainer, toast } from 'react-toastify';
-imREACT_APP_API_URL axios from 'axios';
-imREACT_APP_API_URL { updateUser, isAuth, getCookie, signout } from '../helpers/auth';
-imREACT_APP_API_URL { Link, Redirect } from 'react-router-dom';
-imREACT_APP_API_URL '../assests/talwind.min.css';
+import React, { useState, useEffect } from 'react';
+import authSvg from '../assests/update.svg';
+import { ToastContainer, toast } from 'react-toastify';
+import axios from 'axios';
+import { updateUser, isAuth, getCookie, signout } from '../helpers/auth';
+import { Link, Redirect } from 'react-router-dom';
+import '../assests/talwind.min.css';
 
 const Admin = ({ history }) => {
   const [formData, setFormData] = useState({
@@ -158,4 +158,4 @@ const Admin = ({ history }) => {
   );
 };
 
-exREACT_APP_API_URL default Admin;
+export default Admin;

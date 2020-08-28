@@ -1,10 +1,10 @@
-imREACT_APP_API_URL React, { useState } from 'react';
-imREACT_APP_API_URL authSvg from '../assests/auth.svg';
-imREACT_APP_API_URL { ToastContainer, toast } from 'react-toastify';
-imREACT_APP_API_URL axios from 'axios';
-imREACT_APP_API_URL { authenticate, isAuth } from '../helpers/auth';
-imREACT_APP_API_URL { Link, Redirect } from 'react-router-dom';
-imREACT_APP_API_URL '../assests/talwind.min.css';
+import React, { useState } from 'react';
+import authSvg from '../assests/auth.svg';
+import { ToastContainer, toast } from 'react-toastify';
+import axios from 'axios';
+import { authenticate, isAuth } from '../helpers/auth';
+import { Link, Redirect } from 'react-router-dom';
+import '../assests/talwind.min.css';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -145,4 +145,4 @@ const Register = () => {
   );
 };
 
-exREACT_APP_API_URL default Register;
+export default Register;
