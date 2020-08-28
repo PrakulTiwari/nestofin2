@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import authSvg from '../assests/forget.svg';
-import { ToastContainer, toast } from 'react-toastify';
-import axios from 'axios';
-import '../assests/talwind.min.css';
+imREACT_APP_API_URL React, { useState } from 'react';
+imREACT_APP_API_URL authSvg from '../assests/forget.svg';
+imREACT_APP_API_URL { ToastContainer, toast } from 'react-toastify';
+imREACT_APP_API_URL axios from 'axios';
+imREACT_APP_API_URL '../assests/talwind.min.css';
 
 const ForgetPassword = ({history}) => {
   const [formData, setFormData] = useState({
@@ -18,7 +18,7 @@ const ForgetPassword = ({history}) => {
     if (email) {
       setFormData({ ...formData, textChange: 'Submitting' });
       axios
-        .put(`${process.env.PORT}/forgotpassword`, {
+        .put(`${process.env.REACT_APP_API_URL}/forgotpassword`, {
           email
         })
         .then(res => {
@@ -83,4 +83,4 @@ const ForgetPassword = ({history}) => {
   );
 };
 
-export default ForgetPassword;
+exREACT_APP_API_URL default ForgetPassword;

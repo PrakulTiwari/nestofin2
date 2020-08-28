@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { isAuth, getCookie, signout } from '../helpers/auth';
-import Footer from '../assests/Footer';
-import '../assests/styles.css';
-import '../assests/getstarted.css';
-import '../assests/investing.css';
-import { ToastContainer, toast } from 'react-toastify';
-import img from '../assests/images/yolk.png';
-import Graph from '../helpers/Graph';
-import Othernavbar from '../assests/Othernavbar';
+imREACT_APP_API_URL React, { useState, useEffect } from 'react';
+imREACT_APP_API_URL axios from 'axios';
+imREACT_APP_API_URL { isAuth, getCookie, signout } from '../helpers/auth';
+imREACT_APP_API_URL Footer from '../assests/Footer';
+imREACT_APP_API_URL '../assests/styles.css';
+imREACT_APP_API_URL '../assests/getstarted.css';
+imREACT_APP_API_URL '../assests/investing.css';
+imREACT_APP_API_URL { ToastContainer, toast } from 'react-toastify';
+imREACT_APP_API_URL img from '../assests/images/yolk.png';
+imREACT_APP_API_URL Graph from '../helpers/Graph';
+imREACT_APP_API_URL Othernavbar from '../assests/Othernavbar';
 
 
 
@@ -30,7 +30,7 @@ function Investing({ history }) {
   const loadProfile = () => {
     const token = getCookie('token');
     axios
-      .get(`${process.env.PORT}/user/${isAuth()._id}`, {
+      .get(`${process.env.REACT_APP_API_URL}/user/${isAuth()._id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -101,4 +101,4 @@ function Investing({ history }) {
   );
 }
 
-export default Investing;
+exREACT_APP_API_URL default Investing;

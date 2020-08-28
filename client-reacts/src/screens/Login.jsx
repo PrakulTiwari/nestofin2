@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import authSvg from '../assests/login.svg';
-import { ToastContainer, toast } from 'react-toastify';
-import axios from 'axios';
-import { authenticate, isAuth } from '../helpers/auth';
-import { Link, Redirect } from 'react-router-dom';
-import { GoogleLogin } from 'react-google-login';
-import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
-import '../assests/talwind.min.css';
+imREACT_APP_API_URL React, { useState } from 'react';
+imREACT_APP_API_URL authSvg from '../assests/login.svg';
+imREACT_APP_API_URL { ToastContainer, toast } from 'react-toastify';
+imREACT_APP_API_URL axios from 'axios';
+imREACT_APP_API_URL { authenticate, isAuth } from '../helpers/auth';
+imREACT_APP_API_URL { Link, Redirect } from 'react-router-dom';
+imREACT_APP_API_URL { GoogleLogin } from 'react-google-login';
+imREACT_APP_API_URL FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
+imREACT_APP_API_URL '../assests/talwind.min.css';
 
 const Login = ({ history }) => {
   const [formData, setFormData] = useState({
@@ -21,7 +21,7 @@ const Login = ({ history }) => {
 
   const sendGoogleToken = tokenId => {
     axios
-      .post(`${process.env.PORT}/googlelogin`, {
+      .post(`${process.env.REACT_APP_API_URL}/googlelogin`, {
         idToken: tokenId
       })
       .then(res => {
@@ -42,7 +42,7 @@ const Login = ({ history }) => {
 
   const sendFacebookToken = (userID, accessToken) => {
     axios
-      .post(`${process.env.PORT}/facebooklogin`, {
+      .post(`${process.env.REACT_APP_API_URL}/facebooklogin`, {
         userID,
         accessToken
       })
@@ -65,12 +65,12 @@ const Login = ({ history }) => {
   };
 
   const handleSubmit = e => {
-    console.log(process.env.PORT);
+    console.log(process.env.REACT_APP_API_URL);
     e.preventDefault();
     if (email && password1) {
       setFormData({ ...formData, textChange: 'Submitting' });
       axios
-        .post(`${process.env.PORT}/login`, {
+        .post(`${process.env.REACT_APP_API_URL}/login`, {
           email,
           password: password1
         })
@@ -210,4 +210,4 @@ const Login = ({ history }) => {
   );
 };
 
-export default Login;
+exREACT_APP_API_URL default Login;

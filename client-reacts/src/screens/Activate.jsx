@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import authSvg from '../assests/welcome.svg';
-import { ToastContainer, toast } from 'react-toastify';
-import axios from 'axios';
-import jwt from 'jsonwebtoken';
-import { authenticate, isAuth } from '../helpers/auth';
-import { Link, Redirect } from 'react-router-dom';
-import '../assests/talwind.min.css';
+imREACT_APP_API_URL React, { useState, useEffect } from 'react';
+imREACT_APP_API_URL authSvg from '../assests/welcome.svg';
+imREACT_APP_API_URL { ToastContainer, toast } from 'react-toastify';
+imREACT_APP_API_URL axios from 'axios';
+imREACT_APP_API_URL jwt from 'jsonwebtoken';
+imREACT_APP_API_URL { authenticate, isAuth } from '../helpers/auth';
+imREACT_APP_API_URL { Link, Redirect } from 'react-router-dom';
+imREACT_APP_API_URL '../assests/talwind.min.css';
 
 const Activate = ({ match }) => { 
   const [formData, setFormData] = useState({
@@ -30,7 +30,7 @@ const Activate = ({ match }) => {
     e.preventDefault();
 
     axios
-      .post(`${process.env.PORT}/activation`, {
+      .post(`${process.env.REACT_APP_API_URL}/activation`, {
         token
       })
       .then(res => {
@@ -102,4 +102,4 @@ const Activate = ({ match }) => {
   );
 };
 
-export default Activate;
+exREACT_APP_API_URL default Activate;

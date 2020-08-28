@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import authSvg from '../assests/reset.svg';
-import { ToastContainer, toast } from 'react-toastify';
-import axios from 'axios';
-import '../assests/talwind.min.css';
+imREACT_APP_API_URL React, { useState, useEffect } from 'react';
+imREACT_APP_API_URL authSvg from '../assests/reset.svg';
+imREACT_APP_API_URL { ToastContainer, toast } from 'react-toastify';
+imREACT_APP_API_URL axios from 'axios';
+imREACT_APP_API_URL '../assests/talwind.min.css';
 const ResetPassword = ({match}) => {
   const [formData, setFormData] = useState({
       password1: '',
@@ -28,7 +28,7 @@ const ResetPassword = ({match}) => {
     if ((password1 === password2) && password1 && password2) {
       setFormData({ ...formData, textChange: 'Submitting' });
       axios
-        .put(`${process.env.PORT}/resetpassword`, {
+        .put(`${process.env.REACT_APP_API_URL}/resetpassword`, {
             newPassword: password1,
             resetPasswordLink: token
         })
@@ -101,4 +101,4 @@ const ResetPassword = ({match}) => {
   );
 };
 
-export default ResetPassword;
+exREACT_APP_API_URL default ResetPassword;
