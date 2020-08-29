@@ -28,7 +28,7 @@ if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'))
 }
 else {
-    app.use(express.static(path.join('client-reacts', 'build')))
+    app.use(express.static('client-reacts/build'))
 }
 
 // Use Routes
