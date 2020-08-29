@@ -4,11 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node server.js",
-    "install-client": "cd client-reacts && npm install",
     "build": "cd client-reacts && npm run build",
-    "client": "cd client-reacts && npm start",
-    "heroku-postbuild":"npm run install-client && npm run build"
+    "install-client": "cd client-reacts && npm install",
+    "heroku-postbuild":"npm run install-client && npm run build",
+    "start": "node server.js",
+    "client": "cd client-reacts && npm start"
   },
   "keywords": [],
   "author": "",
