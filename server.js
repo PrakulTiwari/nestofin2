@@ -31,6 +31,8 @@ if (process.env.NODE_ENV === 'development') {
 }
 else {
     app.use(express.static('client-reacts/build'))
+    app.use(express.cookieParser('your secret here!'))
+    app.use(express.session())
 }
 //sdvsectfg
 // Use Routes
