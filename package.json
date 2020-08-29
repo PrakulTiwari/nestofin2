@@ -4,12 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "NODE_ENV=production nodemon server.js",
+    "dev": "npm i nodemon -g",
+    "start": "nodemon server.js",
     "install-client": "cd client-reacts && npm install",
     "build": "cd client-reacts && npm run build",
     "client": "cd client-reacts && npm start",
-    "heroku-postbuild":"npm run install-client && npm run build",
-    "dev": "nodemon server.js"
+    "heroku-postbuild":"npm run install-client && npm run build"
   },
   "keywords": [],
   "author": "",
