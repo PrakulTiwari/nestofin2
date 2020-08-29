@@ -5,9 +5,6 @@
   "main": "index.js",
   "scripts": {
     "start": "NODE_ENV=production node server.js",
-    "install-client": "cd client-reacts && npm install",
-    "build": "cd client-reacts && npm run build",
-    "client": "cd client-reacts && npm start",
     "dev": "nodemon server"
   },
   "keywords": [],
