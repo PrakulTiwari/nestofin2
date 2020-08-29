@@ -33,6 +33,7 @@ else if (process.env.NODE_ENV === 'production') {
     app.use(express.static('client-reacts/build'))
     app.use(express.cookieParser('your secret here!'))
     app.use(express.session())
+    app.use(require('express-session'))
 }
 //sdvsectfg
 // Use Routes
