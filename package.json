@@ -3,12 +3,18 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "engine":{
+    "node":"12.18.2",
+    "npm":"6.14.5"
+  } ,
   "scripts": {
     "build": "cd client-reacts && npm run build",
     "install-client": "cd client-reacts && npm install",
     "heroku-postbuild":"npm run install-client && npm run build",
     "start": "node server.js",
+    "backend":"nodemon server.js",
     "client": "cd client-reacts && npm start"
+    
   },
   "keywords": [],
   "author": "",

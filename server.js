@@ -6,6 +6,8 @@ const cors = require('cors')
 // Config dotev
 //hyvyvgvghvgtfv
 //erszfce
+//"dev":"cocurrently \"npm run backend\" \"npm run start"
+//yhyjhh
 require('dotenv').config({
     path: './config/config.env'
 })
