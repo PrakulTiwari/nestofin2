@@ -33,6 +33,10 @@ if (process.env.NODE_ENV === 'development') {
 }
 else if (process.env.NODE_ENV === 'production') {
     app.use(express.static('client-reacts/build'))
+    app.use(cors({
+        origin: process.env.CLIENT_URL
+    }))
+    app.use(morgan('dev'))
     // app.use(express.cookieParser('your secret here!'))
 //    app.use(express.session())
 //     app.use(require('express-session')) 
