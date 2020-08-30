@@ -52,7 +52,7 @@ const Register = () => {
               textChange: 'Sign Up'
             });
             console.log(err.response);
-            toast.error("An account with that email already exists");
+            toast.error("Something went wrong!");
           });
       } else {
         toast.error("Passwords don't match");
