@@ -16,6 +16,7 @@ require('dotenv').config({
 const app = express()
 
 // Connect to database
+//gtugtt
 connectDB();
 
 // body parser
