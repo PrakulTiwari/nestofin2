@@ -38,6 +38,10 @@ else if (process.env.NODE_ENV === 'production') {
         origin: process.env.CLIENT_URL
     }))
     app.use(morgan('dev'))
+    app.get("*",(req,res)=>{
+        res.sendFile(path.resolve(__dirname,"../client-reacts","build","index.html"));
+    });
+    
     // app.use(express.cookieParser('your secret here!'))
 //    app.use(express.session())
 //     app.use(require('express-session')) 
@@ -55,6 +59,7 @@ app.use((req, res) => {
         msg: "Page not founded"
     })
 })
+
 
 const PORT = process.env.PORT || 5000
 

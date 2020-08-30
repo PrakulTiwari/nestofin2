@@ -51,8 +51,8 @@ const Register = () => {
               password2: '',
               textChange: 'Sign Up'
             });
-            // console.log(err.response)
-            // toast.error("Something went wrong!");
+            console.log(err.response);
+            toast.error("Something went wrong!");
           });
       } else {
         toast.error("Passwords don't match");
