@@ -39,6 +39,7 @@ else if (process.env.NODE_ENV === 'production') {
     // }))
     app.use(morgan('tiny'))
     //hercbf
+    //htrrdrgtfvgrb
     // app.get("*",(req,res)=>{
     //     res.sendFile(path.resolve(__dirname,"../client-reacts","build","index.html"));
     // })
