@@ -52,6 +52,7 @@ const Register = () => {
               textChange: 'Sign Up'
             });
             console.log(err.response);
+            console.log(err);
             toast.error("Something went wrong!");
           });
       } else {
