@@ -43,8 +43,8 @@ else if (process.env.NODE_ENV === 'production') {
 }
 //sdvsectfg
 // Use Routes
-app.use('/api', authRouter)
-app.use('/api', userRouter)
+app.use(authRouter)
+app.use(userRouter)
 
 
 //ijchadbscvbefsjvhcbrf
