@@ -51,7 +51,7 @@ const Register = () => {
               password2: '',
               textChange: 'Sign Up'
             });
-            console.log(err.response);
+            console.log(err.response)
             toast.error("Something went wrong!");
           });
       } else {
