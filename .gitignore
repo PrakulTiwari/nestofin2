@@ -1,5 +1,5 @@
 /node_modules
-# /config/config.env
-# /client-react/.env
-# # Local Netlify folder
-# .netlify
+/config/config.env
+/client-react/.env
+# Local Netlify folder
+.netlify
