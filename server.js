@@ -42,7 +42,7 @@ else if (process.env.NODE_ENV === 'production') {
     //hercbf
     //htrrdrgtfvgrb
     app.get("*",(req,res)=>{
-        res.sendFile(path.resolve(__dirname,"client-reacts","build","index.html"));
+        res.sendFile(path.join(__dirname,'client-reacts','build','index.html'));
     })
     
     // app.use(express.cookieParser('your secret here!'))
