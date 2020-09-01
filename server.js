@@ -32,7 +32,7 @@ if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'))
 }
 else if (process.env.NODE_ENV === 'production') {
-    app.use (express.static(path.join(__dirname, 'build')));
+    app.use (express.static(path.join('client-reacts', 'build')));
     // app.use(cors({
     //     origin: process.env.CLIENT_URL
     // }))
@@ -41,7 +41,7 @@ else if (process.env.NODE_ENV === 'production') {
     //hercbf
     //htrrdrgtfvgrb
     app.get("/",(req,res)=>{
-        res.sendFile(path.join(__dirname,'client-reacts','build','index.html'));
+        res.sendFile(path.join('client-reacts','client-reacts','build','index.html'));
     })
     
     // app.use(express.cookieParser('your secret here!'))
