@@ -24,8 +24,8 @@ const Register = () => {
     if (name && email && password1) {
       if (password1 === password2) {
         setFormData({ ...formData, textChange: 'Submitting' });
-        axios
-          .post(`${process.env.MORNING}/register`, {
+        
+          axios.post(`${process.env.REACT_APP_API_URL}/register`, {
             name,
             email,
             password: password1
