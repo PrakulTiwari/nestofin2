@@ -29,7 +29,7 @@ function Investing({ history }) {
   const loadProfile = () => {
     const token = getCookie('token');
     axios
-      .get(`${process.env.REACT_APP_API_URL}/user/${isAuth()._id}`, {
+      .get(`${process.env.MORNING}/user/${isAuth()._id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
