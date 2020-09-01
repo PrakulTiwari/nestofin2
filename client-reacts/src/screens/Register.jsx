@@ -53,6 +53,7 @@ const Register = () => {
             });
             console.log(err.response);
             console.log(err);
+            console.log(err.response.data);
             toast.error("Something went wrong!");
           });
       } else {
