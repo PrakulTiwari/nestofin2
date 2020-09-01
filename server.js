@@ -32,14 +32,15 @@ if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'))
 }
 else if (process.env.NODE_ENV === 'production') {
-    app.use(express.static('client-reacts/build'))
+    app.use (express.static(path.join(__dirname, 'build')));
     // app.use(cors({
     //     origin: process.env.CLIENT_URL
     // }))
     app.use(morgan('tiny'))
+   
     //hercbf
     //htrrdrgtfvgrb
-    app.get("*",(req,res)=>{
+    app.get("/",(req,res)=>{
         res.sendFile(path.join(__dirname,'client-reacts','build','index.html'));
     })
     
