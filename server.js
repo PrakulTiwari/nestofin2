@@ -49,7 +49,7 @@ else if (process.env.NODE_ENV === 'production') {
 //    app.use(express.session())
 //     app.use(require('express-session')) 
 }
-//sdvsectfg
+
 // Use Routes
 app.use('/api', authRouter)
 app.use('/api', userRouter)
