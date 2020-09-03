@@ -155,7 +155,7 @@ exports.signinController = (req, res) => {
                     _id,
                     name,
                     email,
-                    role,
+                    role
                     // yolk_count // C
                 }
             });
