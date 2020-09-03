@@ -23,6 +23,11 @@ app.use(bodyParser.json())
 // Load routes
 const authRouter = require('./routes/auth.route')
 const userRouter = require('./routes/user.route')
+//mongodb://heroku_b0jmp3bz:in4mev1iq46vqo2bo45e5pkicl@ds033046.mlab.com:33046/heroku_b0jmp3bz
+
+//sg pass :jt991s539944
+
+//app182679152@heroku.com
 
 // Dev Logginf Middleware
 if (process.env.NODE_ENV === 'development') {
@@ -32,18 +37,18 @@ if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'))
 }
 else if (process.env.NODE_ENV === 'production') {
-    app.use (express.static(path.join('client-reacts', 'build')));
+    app.use (express.static(path.join('client-reacts', 'build')))
     app.use(cors({
         origin: process.env.CLIENT_URL 
-    }));
+    }))
     
-    app.use(morgan('tiny'));
+    app.use(morgan('tiny'))
    
     app.get("/",(req,res)=>{
-        res.sendFile(path.join('client-reacts','client-reacts','build','index.html'));
+        res.sendFile(path.join('client-reacts','client-reacts','build','index.html'))
     })
     app.get("/*",(req,res)=>{
-        res.sendFile(path.join('client-reacts','client-reacts','build','index.html'));
+        res.sendFile(path.join('client-reacts','client-reacts','build','index.html'))
     })
     
     // app.use(express.cookieParser('your secret here!'))
