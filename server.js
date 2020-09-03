@@ -33,7 +33,9 @@ if (process.env.NODE_ENV === 'development') {
 }
 else if (process.env.NODE_ENV === 'production') {
     app.use (express.static(path.join('client-reacts', 'build')));
-    app.use(cors());
+    app.use(cors({
+        origin:' https://morning-garden-92979/api'
+    }));
     
     app.use(morgan('tiny'));
    
