@@ -5,6 +5,7 @@ import axios from 'axios';
 import { authenticate, isAuth } from '../helpers/auth';
 import { Link, Redirect } from 'react-router-dom';
 import '../assests/talwind.min.css';
+import axiosRetry from 'axios-retry';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -24,7 +25,7 @@ const Register = () => {
     if (name && email && password1) {
       if (password1 === password2) {
         setFormData({ ...formData, textChange: 'Submitting' });
-        
+          axiosRetry(axios,{retries:3});
           axios.post(`${process.env.REACT_APP_API_URL}/register`, {
             name,
             email,
