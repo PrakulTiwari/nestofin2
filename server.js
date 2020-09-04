@@ -5,6 +5,7 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const path = require('path')
 // Config dotev
+
 //"dev":"cocurrently \"npm run backend\" \"npm run start"
 require('dotenv').config({
     path: './config/config.env'
