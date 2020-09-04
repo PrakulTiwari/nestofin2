@@ -18,12 +18,12 @@ const userScheama = new mongoose.Schema({
         type: String,
         required: true
     },
-    // yolk_count: {
-    //     type: Number,
-    //     minimum: 0,
-    //     default: 0,
-    //     multipleOf: 1
-    // },
+    yolk_count: {
+        type: Number,
+        minimum: 0,
+        default: 0,
+        multipleOf: 1
+    },
     salt: String,
     role: {
         type: String,
