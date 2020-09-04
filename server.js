@@ -37,16 +37,16 @@ if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'))
 }
 else if (process.env.NODE_ENV === 'production') {
-    // app.use (express.static(path.join('client-reacts', 'build')))
+    app.use (express.static(path.join('client-reacts', 'build')))
     app.use(cors({
         origin: process.env.CLIENT_URL 
     }))
     
     app.use(morgan('tiny'))
    
-    // app.get("/",(req,res)=>{
-    //     res.sendFile(path.join('client-reacts','client-reacts','build','index.html'))
-    // })
+    app.get("/",(req,res)=>{
+        res.sendFile(path.join('client-reacts','client-reacts','build','index.html'))
+    })
     // app.get("/*",(req,res)=>{
     //     res.sendFile(path.join('client-reacts','client-reacts','build','index.html'))
     // })
