@@ -13,7 +13,8 @@
     "heroku-postbuild": "npm run install-client && npm run build",
     "start": "node server.js",
     "backend": "nodemon server.js",
-    "client": "cd client-reacts && npm start"
+    "client": "cd client-reacts && npm start",
+    "dev": "concurrently \"npm run backend\" \"npm run start\" \"cd client-reacts\" \"npm start\""
   },
   "keywords": [],
   "author": "",
@@ -21,6 +22,7 @@
   "dependencies": {
     "@sendgrid/mail": "^6.5.5",
     "body-parser": "^1.19.0",
+    "concurrently": "^5.3.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
