@@ -34,7 +34,7 @@ ReactDOM.render(
       <Route path='/register' exact render={props => <Register {...props} />} />
       <Route path='/users/password/forget' exact render={props => <ForgetPassword {...props} />} />
       <Route path='/users/password/reset/:token' exact render={props => <ResetPassword {...props} />} />
-      <Route path='/users/activate/:token' exact render={props => <Activate {...props} />} />
+      <Route path='/users/activate/:token/' exact render={props => <Activate {...props} />} />
       <PrivateRoute path="/dashboard" exact component={Dashboard} />
       <PrivateRoute path="/private" exact component={Private} />
       <AdminRoute path="/admin" exact component={Admin} />
