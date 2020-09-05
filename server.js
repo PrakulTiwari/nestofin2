@@ -45,11 +45,11 @@ else if (process.env.NODE_ENV === 'production') {
     app.use(morgan('tiny'))
    
     app.get("/",(req,res)=>{
-        res.sendFile(path.join('client-reacts','client-reacts','build','index.html'))
+        res.sendFile(path.join('client-reacts','build','index.html'))
     })
-    // app.get("/*",(req,res)=>{
-    //     res.sendFile(path.join('client-reacts','client-reacts','build','index.html'))
-    // })
+    app.get("/*",(req,res)=>{
+        res.sendFile(path.join('client-reacts','build','index.html'))
+    })
     
     // app.use(express.cookieParser('your secret here!'))
 //    app.use(express.session())
