@@ -12,7 +12,8 @@ const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.MAIL_KEY);
 
 exports.registerController = (req, res) => {
-    const { name, email, password } = req.body;
+    console.log('Register is connected');
+    const { name, email, password, phonenumber } = req.body;
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
@@ -29,12 +30,14 @@ exports.registerController = (req, res) => {
                     errors: 'Email is taken'
                 });
             }
-        });
+
+        })
 
         const token = jwt.sign({
                 name,
                 email,
-                password
+                password,
+                phonenumber
             },
             process.env.JWT_ACCOUNT_ACTIVATION, {
                 expiresIn: '5m'
@@ -48,22 +51,29 @@ exports.registerController = (req, res) => {
             subject: 'Account activation link',
             html: `   
                 <h1>You are just one click away!</h1>
-                <p>${process.env.CLIENT_URL}/users/activate/${token}</p>
+                <a href=http://${process.env.CLIENT_URL}/api/user/activate/${token}>Click Here!</a>
                 <hr />
                 <p>This email may containe sensitive information</p>
                 <p>${process.env.CLIENT_URL}</p>
             `
-        };
+        }; //we have to change href urls localhost with our server url
 
+        
+        // console.log(`${token}`);
+        // return res.json({
+        //     message: `Email has been sent to ${email}`
+        // });
+        // console.log(`Email Data: ${Object.keys(emailData).length}`);
         sgMail
             .send(emailData)
             .then(sent => {
+                console.log('Email Send');
                 return res.json({
                     message: `Email has been sent to ${email}`
                 });
             })
             .catch(err => {
-                console.log(err);
+                console.log(`Email Not send : ${err}`);
                 return res.status(400).json({
                     success: false,
                     errors: errorHandler(err)
@@ -74,7 +84,7 @@ exports.registerController = (req, res) => {
 
 exports.activationController = (req, res) => {
     const { token } = req.body;
-
+    console.log('relax I go it');
     if (token) {
         jwt.verify(token, process.env.JWT_ACCOUNT_ACTIVATION, (err, decoded) => {
             if (err) {
@@ -83,13 +93,14 @@ exports.activationController = (req, res) => {
                     errors: 'Expired link. Signup again'
                 });
             } else {
-                const { name, email, password } = jwt.decode(token);
+                const { name, email, password, phonenumber } = jwt.decode(token);
 
                 console.log(email);
                 const user = new User({
                     name,
                     email,
-                    password
+                    password,
+                    phonenumber
                 });
 
                 user.save((err, user) => {
@@ -101,7 +112,7 @@ exports.activationController = (req, res) => {
                     } else {
                         return res.json({
                             success: true,
-                            // message: user,
+                            message: user,
                             message: 'Signup success'
                         });
                     }
@@ -147,7 +158,7 @@ exports.signinController = (req, res) => {
                     expiresIn: '7d'
                 }
             );
-            const { _id, name, email, role, yolk_count } = user; //C 
+            const { _id, name, email, role, yolk_count, phonenumber } = user; //C 
 
             return res.json({
                 token,
@@ -155,8 +166,9 @@ exports.signinController = (req, res) => {
                     _id,
                     name,
                     email,
-                    role
-                    // yolk_count // C
+                    role,
+                    yolk_count, // C
+                    phonenumber
                 }
             });
         });
@@ -333,14 +345,14 @@ exports.googleController = (req, res) => {
                         const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
                             expiresIn: '7d'
                         });
-                        const { _id, email, name, role, yolk_count } = user; //C
+                        const { _id, email, name, role, yolk_count, phonenumber } = user; //C
                         return res.json({
                             token,
-                            user: { _id, email, name, role, yolk_count } //C
+                            user: { _id, email, name, role, yolk_count, phonenumber } //C
                         });
                     } else {
                         let password = email + process.env.JWT_SECRET;
-                        user = new User({ name, email, password, yolk_count });
+                        user = new User({ name, email, password, yolk_count, phonenumber }); //C
                         user.save((err, data) => {
                             if (err) {
                                 console.log('ERROR GOOGLE LOGIN ON USER SAVE', err);
@@ -351,10 +363,10 @@ exports.googleController = (req, res) => {
                             const token = jwt.sign({ _id: data._id },
                                 process.env.JWT_SECRET, { expiresIn: '7d' }
                             );
-                            const { _id, email, name, role, yolk_count } = data; //C
+                            const { _id, email, name, role, yolk_count, phonenumber } = data; //C
                             return res.json({
                                 token,
-                                user: { _id, email, name, role, yolk_count } //C
+                                user: { _id, email, name, role, yolk_count, phonenumber } //C
                             });
                         });
                     }
@@ -386,10 +398,10 @@ exports.facebookController = (req, res) => {
                     const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
                         expiresIn: '7d'
                     });
-                    const { _id, email, name, role, yolk_count } = user; //C
+                    const { _id, email, name, role, yolk_count, phonenumber } = user; //C
                     return res.json({
                         token,
-                        user: { _id, email, name, role, yolk_count } //C
+                        user: { _id, email, name, role, yolk_count, phonenumber } //C
                     });
                 } else {
                     let password = email + process.env.JWT_SECRET;
@@ -404,10 +416,10 @@ exports.facebookController = (req, res) => {
                         const token = jwt.sign({ _id: data._id },
                             process.env.JWT_SECRET, { expiresIn: '7d' }
                         );
-                        const { _id, email, name, role, yolk_count } = data; //C
+                        const { _id, email, name, role, yolk_count, phonenumber } = data; //C
                         return res.json({
                             token,
-                            user: { _id, email, name, role, yolk_count } //C
+                            user: { _id, email, name, role, yolk_count, phonenumber } //C
                         });
                     });
                 }

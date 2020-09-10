@@ -127,6 +127,15 @@
     margin: 10px auto;
 }
 
+.graphcontent .profitlossdetail .refund {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+    width: 500px;
+    padding: 5px;
+    margin: 3px auto 10px auto;
+    border-radius: 10px;
+    text-align: center;
+}
+
 .graphcontent .profitlossdetail .durationleft {
     max-width: max-content;
     padding: 10px 20px;
@@ -157,6 +166,10 @@
         width: 75vw;
     }
     .graphcontent .profitlossdetail .graph {
+        width: 80vw;
+    }
+    .graphcontent .profitlossdetail .refund {
+        margin-top: 20px;
         width: 80vw;
     }
 }

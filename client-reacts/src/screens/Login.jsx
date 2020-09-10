@@ -104,7 +104,7 @@ const Login = ({ history }) => {
   };
   return (
     <div className='min-h-screen bg-gray-100 text-gray-900 flex justify-center'>
-      {isAuth() ? <Redirect to='/investing' /> : null}
+      {isAuth() ? <Redirect to='/dashboard' /> : null}
       <ToastContainer />
       <div className='max-w-screen-xl m-0 sm:m-20 bg-white shadow sm:rounded-lg flex justify-center flex-1'>
         <div className='lg:w-1/2 xl:w-5/12 p-6 sm:p-12'>

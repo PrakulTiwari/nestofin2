@@ -10,6 +10,7 @@ export default function Footer() {
                         <li className="others"><a href="/borrowing">Borrowing</a></li>
                         <li className="others"><a href="/planning">Planning</a></li>
                         <li className="others"><a href="/learnmore">Learn More</a></li>
+                        <li className="others"><a href="/">Go To Home</a></li>
                         <li><a href="#top">Back to Top</a></li>
                     </ul>
                 </div>

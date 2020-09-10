@@ -28,7 +28,7 @@ ReactDOM.render(
       <Route path='/planning' exact render={props => <Planning {...props} />} />
       <Route path='/investing' exact render={props => <Investing {...props} />} />
       <Route path='/borrowing' exact render={props => <Borrowing {...props} />} />
-      {/* <Route path='/dashboard' exact render={props => <Dashboard {...props} />} /> */} 
+      {/* <Route path='/dashboard' exact render={props => <Dashboard {...props} />} />  */}
       {/*To check dashboard without login uncomment above line--------------------------------------------*/}    
       <Route path='/login' exact render={props => <Login {...props} />} />
       <Route path='/register' exact render={props => <Register {...props} />} />

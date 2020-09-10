@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Redirect, useHistory } from 'react-router-dom';
 import { signout } from '../helpers/auth';
 import { isAuth } from '../helpers/auth';
 import { useState } from 'react';
@@ -7,9 +7,10 @@ import '../assests/styles.css';
 import '../assests/getstarted.css';
 import '../assests/investing.css';
 import {toast } from 'react-toastify';
+// import { useHistory } from 'react-router-dom';
 
 export default function Othernavbar() {
-
+  let history = useHistory()
     const [navStyle, setNav] = useState({
     });
     //when burger is clciked
@@ -57,7 +58,7 @@ export default function Othernavbar() {
                         {isAuth() && <li onClick={() => {
                     signout(() => {
                       toast.error('Signout Successfully');
-                    //   history.push('/login');
+                      history.push('/login');
                     });
                     }} className="others"><a href="#">Sign Out</a></li>}
                         <div className="cross" onClick={cross}>X</div>

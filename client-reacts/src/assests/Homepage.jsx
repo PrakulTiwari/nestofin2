@@ -117,7 +117,7 @@ export default function Homepage() {
                     <div className="win4-para1">
                         We want you to have a transparent and delightful experience without any hassles.
                     </div>
-                    {/* <img src="./assets/images/undraw_Security_on_ff2u.png" alt="" className="win4-img1" /> */}
+                    <img src="./assets/images/undraw_Security_on_ff2u.png" alt="" className="win4-img1" />
                     <div className="win4-head2">
                         <h1>Security & Privacy</h1>
                     </div>

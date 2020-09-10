@@ -5,31 +5,63 @@ import axios from 'axios';
 import { authenticate, isAuth } from '../helpers/auth';
 import { Link, Redirect } from 'react-router-dom';
 import '../assests/talwind.min.css';
-import axiosRetry from 'axios-retry';
-
+import Firebase from '../helpers/Firebase';
+import 'react-phone-number-input/style.css'
+import PhoneInput from 'react-phone-number-input'
 const Register = () => {
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     password1: '',
     password2: '',
+    phonenumber:'',
     textChange: 'Sign Up'
   });
 
-  const { name, email, password1, password2, textChange} = formData;
+  const [value, setValue] = useState()
+  const [btntext, settext] = useState('Verify Mobile Number');
+  const [allowed, setpermission] = useState(false);
+  const { name, email, password1, password2, phonenumber, textChange} = formData;
   const handleChange = text => e => {
     setFormData({ ...formData, [text]: e.target.value });
   };
-  const handleSubmit = e => {
+
+  const handlenumberClick=()=>{
+    // alert('Clicked');
+    // console.log(`phone :${phonenumber} value: ${value}`);
+    var recaptcha = new Firebase.auth.RecaptchaVerifier('recaptcha',{'size':'invisible'});
+    var number = value;
+    Firebase.auth().signInWithPhoneNumber(number, recaptcha)
+                  .then( function(e) {
+                    var code = prompt('Enter the otp', '');
+                      if(code === null) return;
+                      e.confirm(code).then(function (result) {
+                          // console.log(result.user.phoneNumber);
+                          settext('Mobile Number Verified');
+                          setpermission(true);
+                          setFormData({ ...formData, phonenumber: result.user.phoneNumber });
+                      }).catch(function (error) {
+                          console.error( error);
+                      });
+                  })
+                  .catch(function (error) {
+                      console.error( `cant authrorised ${error}`);
+                  });
+  }
+
+  const handleSubmit = e => { 
     e.preventDefault();
-    if (name && email && password1) {
+    if (name && email && password1 && phonenumber) {
+      if(allowed){
       if (password1 === password2) {
         setFormData({ ...formData, textChange: 'Submitting' });
-          axiosRetry(axios,{retries:3});
-          axios.post(`${process.env.REACT_APP_API_URL}/register`, {
+        axios
+          .post(`${process.env.REACT_APP_API_URL}/register`, {
             name,
             email,
-            password: password1
+            password: password1,
+            phonenumber
           })
           .then(res => {
             setFormData({
@@ -38,6 +70,7 @@ const Register = () => {
               email: '',
               password1: '',
               password2: '',
+              phonenumber:'',
               textChange: 'Submitted'
             });
 
@@ -50,23 +83,25 @@ const Register = () => {
               email: '',
               password1: '',
               password2: '',
+              phonenumber:'',
               textChange: 'Sign Up'
             });
-            console.log(err.response);
-            console.log(err);
-            toast.error("Something went wrong!");
+            console.log(`Register send :${err.response}`);
+            toast.error("An account with that email already exists");
           });
       } else {
         toast.error("Passwords don't match");
+      }
+      } else {
+        toast.error("Please Verify Phone Number");
       }
     } else {
       toast.error('Please fill all fields');
     }
   };
-
   return (
     <div className='min-h-screen bg-gray-100 text-gray-900 flex justify-center'>
-      {isAuth() ? <Redirect to='/' /> : null}
+      {isAuth() ? <Redirect to='/dashboard' /> : null}
       <ToastContainer />
       <div className='max-w-screen-xl m-0 sm:m-20 bg-white shadow sm:rounded-lg flex justify-center flex-1'>
         <div className='lg:w-1/2 xl:w-5/12 p-6 sm:p-12'>
@@ -108,6 +143,19 @@ const Register = () => {
                   onChange={handleChange('password2')}
                   value={password2}
                 />
+                <PhoneInput
+                  className='w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5'
+                  placeholder="Enter phone number"
+                  value={value}
+                  onChange={setValue}
+                />
+                <div>
+                  <div id="recaptcha"></div>
+                  <div
+                  onClick={handlenumberClick} 
+                  className='bg-indigo-500 text-white text-sm rounded-md p-2 mt-4 mx-auto focus:outline-none w-3/4 text-center'
+                  >{btntext}</div>
+                </div>
                 <button
                   type='submit'
                   className='mt-5 tracking-wide font-semibold bg-indigo-500 text-gray-100 w-full py-4 rounded-lg hover:bg-indigo-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none'
@@ -142,7 +190,7 @@ const Register = () => {
           ></div>
         </div>
       </div>
-      
+      ;
     </div>
   );
 };
