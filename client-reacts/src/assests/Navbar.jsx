@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, Redirect, useHistory } from 'react-router-dom';
-import { signout } from '../helpers/auth';
-import { isAuth } from '../helpers/auth';
+import { signout } from '../helpers/Linkuth';
+import { isAuth } from '../helpers/Linkuth';
 import { toast } from 'react-toastify';
 import { useState } from 'react';
 import './script';
@@ -49,10 +49,10 @@ function Navbar({ history }) {
                 <div className="outer">
                 <div className="wrapper">
                 <ul  style={navStyle}>
-                    <li className="others"><a href="/investing">Investing</a></li>
-                    <li className="others"><a href="/borrowing">Borrowing</a></li>
-                    <li className="others"><a href="/planning">Planning</a></li>
-                    <li className="others"><a href="/learnmore">Learn More</a></li>
+                    <li className="others"><Link to="/investing">Investing</Link></li>
+                    <li className="others"><Link to="/borrowing">Borrowing</Link></li>
+                    <li className="others"><Link to="/planning">Planning</Link></li>
+                    <li className="others"><Link to="/learnmore">Learn More</Link></li>
                     {!isAuth() && <Link to='/login'><li className="log">Login</li></Link>}
                     {!isAuth() && <Link to='/register'><li className="log">Sign Up</li></Link>}
                     {isAuth() && <li onClick={() => {
@@ -61,11 +61,11 @@ function Navbar({ history }) {
                       history.push('/login');
                     });
                   }} className="log">Sign Out</li>}
-                    <li className="gets"><a href='/getstarted'>Get Started</a></li>
+                    <li className="gets"><Link to='/getstarted'>Get Started</Link></li>
                     <div className="cross" onClick={cross}>X</div>
                 </ul>
-                {isAuth() && <div className='borderbox'><span id="name">Welcome <a href="/dashboard" title='YOUR Dashboard'>{isAuth().name}</a></span></div>}
-                {/*replace upper line to {!isAuth() && <span className="others" id="name">Welcome Back <a href="/dashboard" title='YOUR Dashboard'>Name</a></span>}*/}
+                {isAuth() && <div className='borderbox'><span id="name">Welcome <Link to="/dashboard" title='YOUR Dashboard'>{isAuth().name}</Link></span></div>}
+                {/*replace upper line to {!isAuth() && <span className="others" id="name">Welcome Back <Link to="/dashboard" title='YOUR Dashboard'>Name</Link></span>}*/}
                 </div>
                 <div className="hamburger" onClick={burger}>
                     <div className="bun"></div>

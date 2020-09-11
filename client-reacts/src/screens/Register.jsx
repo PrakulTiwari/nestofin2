@@ -30,6 +30,7 @@ const Register = () => {
   const handlenumberClick=()=>{
     // alert('Clicked');
     // console.log(`phone :${phonenumber} value: ${value}`);
+    toast.success('Please Wait for a moment');
     var recaptcha = new Firebase.auth.RecaptchaVerifier('recaptcha',{'size':'invisible'});
     var number = value;
     Firebase.auth().signInWithPhoneNumber(number, recaptcha)
