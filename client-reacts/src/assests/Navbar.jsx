@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, Redirect, useHistory } from 'react-router-dom';
-import { signout } from '../helpers/Linkuth';
-import { isAuth } from '../helpers/Linkuth';
+import { signout } from '../helpers/auth';
+import { isAuth } from '../helpers/auth';
 import { toast } from 'react-toastify';
 import { useState } from 'react';
 import './script';
