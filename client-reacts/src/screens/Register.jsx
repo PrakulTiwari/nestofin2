@@ -6,8 +6,8 @@ import { authenticate, isAuth } from '../helpers/auth';
 import { Link, Redirect } from 'react-router-dom';
 import '../assests/talwind.min.css';
 import Firebase from '../helpers/Firebase';
-import 'react-phone-number-input/style.css'
-import PhoneInput from 'react-phone-number-input'
+import 'react-phone-number-input/style.css';
+import PhoneInput from 'react-phone-number-input';
 const Register = () => {
 
   const [formData, setFormData] = useState({
