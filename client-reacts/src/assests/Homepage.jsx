@@ -22,7 +22,7 @@ export default function Homepage() {
                     Let us optimize your finances and take the work out of banking, investing, borrowing, and planning.
                 </div>
                 <div className="getstart">
-                    <Link to='/getstarted'>Get Started</Link>
+                    <Link to='/'>Get Started</Link>
                 </div>
             </div>
             <div className="window2">
@@ -58,7 +58,7 @@ export default function Homepage() {
                             ~Direct investment and get instant withdrawals.<br />~Risk reduction by diversification.<br /> ~Use Apple Pay, Google Pay, Paytm, Phonepe, UPI, Net Banking.
                         </div>
                         <div className="win3btn">
-                            <Link to='/getstarted'>Get Started</Link>
+                            <Link to='/'>Get Started</Link>
                         </div>
                     </div>
                     <div className="img1">
@@ -79,7 +79,7 @@ export default function Homepage() {
                         We believe in passive investing, which is the time-tested approach to grow your long-term savings. Let our software automatically execute investment best practices, and take the work out of managing your own investments.
                     </div>
                     <div className="second-btn">
-                        <Link to='/getstarted'>Get Started</Link>
+                        <Link to='/'>Get Started</Link>
                     </div>
                     <ul>
                         <li className="win3-sec-paras li-para1">
