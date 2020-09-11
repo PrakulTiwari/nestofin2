@@ -1,5 +1,6 @@
 import React from 'react';
 import './styles.css';
+import { Link, Redirect, useHistory } from 'react-router-dom';
 
 export default function Footer() {
     return (
@@ -11,7 +12,7 @@ export default function Footer() {
                         <li className="others"><Link to="/planning">Planning</Link></li>
                         <li className="others"><Link to="/learnmore">Learn More</Link></li>
                         <li className="others"><Link to="/">Go To Home</Link></li>
-                        <li><Link to="#top">Back to Top</Link></li>
+                        <li><a href="#top">Back to Top</a></li>
                     </ul>
                 </div>
                 <div className="terms-conditions">
