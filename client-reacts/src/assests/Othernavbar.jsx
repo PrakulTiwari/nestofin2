@@ -52,19 +52,19 @@ export default function Othernavbar() {
                 <Link to='/'><h1>NESTO/Fin.</h1></Link>
                 <div className="wrapper">
                     <ul style={navStyle}>
-                        <li className="others"><a href="#">Help Center</a></li>
-                        {!isAuth() && <li className="others"><a href="/login">Login</a></li>}
-                        {!isAuth() && <li className="others"><a href="/register">Sign Up</a></li>}
+                        <li className="others"><Link to="#">Help Center</Link></li>
+                        {!isAuth() && <li className="others"><Link to="/login">Login</Link></li>}
+                        {!isAuth() && <li className="others"><Link to="/register">Sign Up</Link></li>}
                         {isAuth() && <li onClick={() => {
                     signout(() => {
                       toast.error('Signout Successfully');
                       history.push('/login');
                     });
-                    }} className="others"><a href="#">Sign Out</a></li>}
+                    }} className="others"><Link to="#">Sign Out</Link></li>}
                         <div className="cross" onClick={cross}>X</div>
                     </ul>
-                    {isAuth() && <span className="others" id="name">Welcome Back <a href="/dashboard" title='YOUR Dashboard'>{isAuth().name}</a></span>}
-                    {/*replace upper line to {!isAuth() && <span className="others" id="name">Welcome Back <a href="/dashboard" title='YOUR Dashboard'>Name</a></span>}*/}
+                    {isAuth() && <span className="others" id="name">Welcome Back <Link to="/dashboard" title='YOUR Dashboard'>{isAuth().name}</Link></span>}
+                    {/*replace upper line to {!isAuth() && <span className="others" id="name">Welcome Back <Link to="/dashboard" title='YOUR Dashboard'>Name</Link></span>}*/}
                 </div>
                 <div className="hamburger" onClick={burger}>
                     <div className="bun"></div>

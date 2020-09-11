@@ -21,7 +21,7 @@ function Investing({ history }) {
                             <p className="main-win-sub-win-para2">Choose your first account to grow your cash or automate your investments.</p>
                             <p className="main-win-sub-win-para3">Fund with ease. Get started with $1 for cash and $500 for investment accounts.</p>
                             <form><script src="https://cdn.razorpay.com/static/widget/payment-button.js" data-payment_button_id="pl_FVeWx1Ay2BVrRa"></script> </form>
-                            <a href="#" className="planning-btn">Explore our free planning website</a>
+                            <Link to="#" className="planning-btn">Explore our free planning website</Link>
                             <Buybutton />
                         </div>
                         <div className="img">

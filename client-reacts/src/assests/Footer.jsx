@@ -6,12 +6,12 @@ export default function Footer() {
         <div className="window5">
                 <div className="last-nav">
                     <ul>
-                        <li className="others"><a href="/investing">Investing</a></li>
-                        <li className="others"><a href="/borrowing">Borrowing</a></li>
-                        <li className="others"><a href="/planning">Planning</a></li>
-                        <li className="others"><a href="/learnmore">Learn More</a></li>
-                        <li className="others"><a href="/">Go To Home</a></li>
-                        <li><a href="#top">Back to Top</a></li>
+                        <li className="others"><Link to="/investing">Investing</Link></li>
+                        <li className="others"><Link to="/borrowing">Borrowing</Link></li>
+                        <li className="others"><Link to="/planning">Planning</Link></li>
+                        <li className="others"><Link to="/learnmore">Learn More</Link></li>
+                        <li className="others"><Link to="/">Go To Home</Link></li>
+                        <li><Link to="#top">Back to Top</Link></li>
                     </ul>
                 </div>
                 <div className="terms-conditions">
