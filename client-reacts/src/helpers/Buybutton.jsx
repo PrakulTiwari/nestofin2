@@ -25,6 +25,7 @@ const loadscript = (src) =>{
 function Buybutton() {
 
     let history= useHistory();
+    let [count,setCount] = useState(1);
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -67,7 +68,9 @@ function Buybutton() {
     if(isAuth()){
         loadscript('https://checkout.razorpay.com/v1/checkout.js')
         .then(() => {
-          axios.post(`${process.env.REACT_APP_API_URL}/user/order`)
+          axios.post(`${process.env.REACT_APP_API_URL}/user/order`,{
+            count
+          })
             .then((res) => {
               console.log(`Order details: ${res.data.id}`);
               const options = {
@@ -106,13 +109,33 @@ function Buybutton() {
       } 
   }
 
+  
+  const up = () => {
+    const temp = count+1;
+    setCount(temp);
+  }
+  const down = () => {
+    if(count>1){
+      const temp = count-1;
+      setCount(temp);
+    }
+  }
   return (
-    <button
-      onClick={clickhandler}
-      className='mt-5 tracking-wide font-semibold bg-indigo-500 text-gray-100 w-full py-4 rounded-lg hover:bg-indigo-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none'
-    >
-      BUY NOW
-    </button>
+    <div className='payment'>
+      <div className="count">
+        {count}
+        <div className="control">
+        <div className="button" onClick={up}>&#8593;</div>
+        <div className="button" onClick={down}>&#8595;</div>
+        </div>
+      </div>
+      <button
+        onClick={clickhandler}
+        className='tracking-wide font-semibold text-gray-100 w-full py-4 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none'
+        >
+        BUY NOW
+      </button>
+    </div>
   );
 }
 

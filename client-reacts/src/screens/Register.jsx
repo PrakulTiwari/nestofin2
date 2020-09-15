@@ -6,8 +6,8 @@ import { authenticate, isAuth } from '../helpers/auth';
 import { Link, Redirect } from 'react-router-dom';
 import '../assests/talwind.min.css';
 import Firebase from '../helpers/Firebase';
-import 'react-phone-number-input/style.css';
-import PhoneInput from 'react-phone-number-input';
+import 'react-phone-number-input/style.css'
+import PhoneInput from 'react-phone-number-input'
 const Register = () => {
 
   const [formData, setFormData] = useState({
@@ -19,7 +19,7 @@ const Register = () => {
     textChange: 'Sign Up'
   });
 
-  const [value, setValue] = useState()
+  const [value, setValue] = useState('')
   const [btntext, settext] = useState('Verify Mobile Number');
   const [allowed, setpermission] = useState(false);
   const { name, email, password1, password2, phonenumber, textChange} = formData;
@@ -28,9 +28,6 @@ const Register = () => {
   };
 
   const handlenumberClick=()=>{
-    // alert('Clicked');
-    // console.log(`phone :${phonenumber} value: ${value}`);
-    toast.success('Please Wait for a moment');
     var recaptcha = new Firebase.auth.RecaptchaVerifier('recaptcha',{'size':'invisible'});
     var number = value;
     Firebase.auth().signInWithPhoneNumber(number, recaptcha)
@@ -38,7 +35,6 @@ const Register = () => {
                     var code = prompt('Enter the otp', '');
                       if(code === null) return;
                       e.confirm(code).then(function (result) {
-                          // console.log(result.user.phoneNumber);
                           settext('Mobile Number Verified');
                           setpermission(true);
                           setFormData({ ...formData, phonenumber: result.user.phoneNumber });
@@ -50,7 +46,6 @@ const Register = () => {
                       console.error( `cant authrorised ${error}`);
                   });
   }
-
   const handleSubmit = e => { 
     e.preventDefault();
     if (name && email && password1 && phonenumber) {
@@ -87,7 +82,9 @@ const Register = () => {
               phonenumber:'',
               textChange: 'Sign Up'
             });
-            console.log(`Register send :${err.response}`);
+            settext('Verify Mobile Number');
+            setpermission(false);
+            console.log(err.response);
             toast.error("An account with that email already exists");
           });
       } else {
@@ -114,6 +111,7 @@ const Register = () => {
             <form
               className='w-full flex-1 mt-8 text-indigo-500'
               onSubmit={handleSubmit}
+              autoComplete='off'
             >
               <div className='mx-auto max-w-xs relative '>
                 <input
@@ -171,15 +169,15 @@ const Register = () => {
                 </div>
               </div>
               <div className='flex flex-col items-center'>
-                <Link
+                <a
                   className='w-full max-w-xs font-bold shadow-sm rounded-lg py-3
            bg-indigo-100 text-gray-800 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline mt-5'
-                  to='/login'
-                  
+                  href='/login'
+                  target='_self'
                 >
                   <i className='fas fa-sign-in-alt fa 1x w-6  -ml-2 text-indigo-500' />
                   <span className='ml-4'>Sign In</span>
-                </Link>
+                </a>
               </div>
             </form>
           </div>

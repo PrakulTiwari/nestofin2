@@ -12,6 +12,7 @@ exports.validSign = [
     .isEmail()
     .withMessage('Must be a valid email address'),
 
+    check('email', 'email is required').notEmpty(),
     check('password', 'password is required').notEmpty(),
 
     check('password').isLength({

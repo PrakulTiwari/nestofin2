@@ -109,7 +109,7 @@ function Dashboard({ history }) {
                         <i className="fa fa-clock-o" aria-hidden="true"></i> 3 MONTHS
                       </div>
                       <div className='refund'>
-                        <h3>For taking refund of any of your YOLK enter Payment Id provided to you on your Email</h3>
+                        <h3>For taking refund of any of your YOLK enter Payment Id provided to you on your Email and specify quantity of yolk want to refund</h3>
                         <Refundform />
                       </div>  
                   </div>

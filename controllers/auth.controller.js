@@ -11,11 +11,29 @@ const { errorHandler } = require('../helpers/dbErrorHandling');
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.MAIL_KEY);
 
+const firebase = require("firebase/app");
+
+// Add the Firebase products that you want to use
+require("firebase/auth");
+require("firebase/firestore");
+
+const firebaseConfig = {
+    apiKey: process.env.FAPIKEY,
+    authDomain: process.env.AUTHDOMAIN,
+    databaseURL: process.env.DATABASEURL,
+    projectId: process.env.PROJECTID,
+    storageBucket: process.env.STORAGEBUCKET,
+    messagingSenderId: process.env.MESSAGINGSENDERID,
+    appId: process.env.APPID
+};
+firebase.initializeApp(firebaseConfig);
+
+
 exports.registerController = (req, res) => {
     console.log('Register is connected');
     const { name, email, password, phonenumber } = req.body;
+    console.log(email);
     const errors = validationResult(req);
-
     if (!errors.isEmpty()) {
         const firstError = errors.array().map(error => error.msg)[0];
         return res.status(422).json({
@@ -44,30 +62,13 @@ exports.registerController = (req, res) => {
             }
         );
 
-        const emailData = {
-            from: process.env.EMAIL_FROM,
-            pass: process.env.EMAIL_PASS,
-            to: email,
-            subject: 'Account activation link',
-            html: `   
-                <h1>You are just one click away!</h1>
-                <p>${process.env.CLIENT_URL}/api/user/activate/${token}>Click Here!</p>
-                <hr />
-                <p>This email may containe sensitive information</p>
-                <p>${process.env.CLIENT_URL}</p>
-            `
-        }; //we have to change href urls localhost with our server url
+        const actionCodeSettings = {
+            url: `${process.env.CLIENT_URL}/users/activate/${token}`,
+            handleCodeInApp: true,
+        };
 
-        
-        // console.log(`${token}`);
-        // return res.json({
-        //     message: `Email has been sent to ${email}`
-        // });
-        // console.log(`Email Data: ${Object.keys(emailData).length}`);
-        sgMail
-            .send(emailData)
-            .then(sent => {
-                console.log('Email Send');
+        firebase.auth().sendSignInLinkToEmail(email, actionCodeSettings)
+            .then(function() {
                 return res.json({
                     message: `Email has been sent to ${email}`
                 });
@@ -79,12 +80,50 @@ exports.registerController = (req, res) => {
                     errors: errorHandler(err)
                 });
             });
+
+
+
+        // const emailData = {
+        //     from: process.env.EMAIL_FROM,
+        //     pass: process.env.EMAIL_PASS,
+        //     to: email,
+        //     subject: 'Account activation link',
+        //     html: `   
+        //         <h1>You are just one click away!</h1>
+        //         <a href=http://localhost:5000/api/user/activate/${token}>Click Here!</a>
+        //         <hr />
+        //         <p>This email may containe sensitive information</p>
+        //         <p>${process.env.CLIENT_URL}</p>
+        //     `
+        // }; //we have to change href urls localhost with our server url
+
+
+        // console.log(`${token}`);
+        // return res.json({
+        //     message: `Email has been sent to ${email}`
+        // });
+        // console.log(`Email Data: ${Object.keys(emailData).length}`);
+        // sgMail
+        //     .send(emailData)
+        //     .then(sent => {
+        //         console.log('Email Send');
+        //         return res.json({
+        //             message: `Email has been sent to ${email}`
+        //         });
+        //     })
+        //     .catch(err => {
+        //         console.log(`Email Not send : ${err}`);
+        //         return res.status(400).json({
+        //             success: false,
+        //             errors: errorHandler(err)
+        //         });
+        //     });
+
     }
 };
 
 exports.activationController = (req, res) => {
     const { token } = req.body;
-    console.log('relax I go it');
     if (token) {
         jwt.verify(token, process.env.JWT_ACCOUNT_ACTIVATION, (err, decoded) => {
             if (err) {
@@ -94,8 +133,6 @@ exports.activationController = (req, res) => {
                 });
             } else {
                 const { name, email, password, phonenumber } = jwt.decode(token);
-
-                console.log(email);
                 const user = new User({
                     name,
                     email,

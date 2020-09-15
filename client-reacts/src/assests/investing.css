@@ -173,3 +173,40 @@
         width: 80vw;
     }
 }
+
+.payment {
+    display: flex;
+    background-color: royalblue;
+    border-radius: 10px;
+    padding: 5px 20px;
+}
+
+.control {}
+
+.count {
+    text-align-last: center;
+    font-weight: 900;
+    color: white;
+}
+
+.button {
+    width: 2rem;
+    font-size: 0.6rem;
+    border: 1px solid #fff;
+    text-align: center;
+    box-shadow: 0 2px 1px 0 rgb(21, 56, 160);
+    transition: ease-in;
+}
+
+.button:active {
+    transform: translate(0, 1px);
+    box-shadow: 0 1px 1px 0 rgb(21, 56, 160);
+}
+
+.button:first-child {
+    margin-bottom: 2px;
+}
+
+.payment button {
+    margin-left: 20px;
+}

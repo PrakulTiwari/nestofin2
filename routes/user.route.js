@@ -6,7 +6,6 @@ const { requireSignin, adminMiddleware } = require('../controllers/auth.controll
 const { readController, updateController, activateController, orderController, verifyController, successController, refundController, refundSuccessController } = require('../controllers/user.controller');
 
 router.get('/user/:id', requireSignin, readController);
-router.get('/user/activate/:token', activateController);
 router.put('/user/update', requireSignin, updateController);
 router.put('/admin/update', requireSignin, adminMiddleware, updateController);
 router.post('/user/order', orderController);
