@@ -27,13 +27,10 @@ const Register = () => {
     setFormData({ ...formData, [text]: e.target.value });
   };
 
-  const [value, setValue] = useState('')
+
   const [eText, settext] = useState('Verify Email');
-  const [allowed, setpermission] = useState(false);
-  const { name, email, password1, password2, phonenumber, textChange} = formData;
-  const handleChange = text => e => {
-    setFormData({ ...formData, [text]: e.target.value });
-  };
+
+  
 
   const handlenumberClick=()=>{
     var recaptcha = new Firebase.auth.RecaptchaVerifier('recaptcha',{'size':'invisible'});
@@ -56,8 +53,7 @@ const Register = () => {
   }
 
   const numberclick=()=>{
-    var recaptcha = new Firebase.auth.RecaptchaVerifier('recaptcha',{'size':'invisible'});
-    var mail = email;
+
     Firebase.auth().signInWithEmailAndPassword(email, password)
       .catch(function(error) {
         // Handle Errors here.
