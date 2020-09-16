@@ -21,16 +21,12 @@ const Register = () => {
 
   const [value, setValue] = useState('')
   const [btntext, settext] = useState('Verify Mobile Number');
+  const eText= useState('Verify Email');
   const [allowed, setpermission] = useState(false);
   const { name, email, password1, password2, phonenumber, textChange} = formData;
   const handleChange = text => e => {
     setFormData({ ...formData, [text]: e.target.value });
   };
-
-
-  const [eText, settext] = useState('Verify Email');
-
-  
 
   const handlenumberClick=()=>{
     var recaptcha = new Firebase.auth.RecaptchaVerifier('recaptcha',{'size':'invisible'});
@@ -55,6 +51,11 @@ const Register = () => {
   const numberclick=()=>{
 
     Firebase.auth().signInWithEmailAndPassword(email, password)
+      .then(function(){
+        settext('Mobile Number Verified');
+        setpermission(true);
+        setFormData({ ...formData, phonenumber: result.user.phoneNumber });
+      })
       .catch(function(error) {
         // Handle Errors here.
         var errorCode = error.code;
