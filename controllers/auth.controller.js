@@ -63,7 +63,7 @@ exports.registerController = (req, res) => {
         );
 
         const actionCodeSettings = {
-            url: `${process.env.CLIENT_URL}/users/activate/${token}`,
+            url: `${process.env.CLIENT_URL}/${token}`,
             handleCodeInApp: true,
         };
 

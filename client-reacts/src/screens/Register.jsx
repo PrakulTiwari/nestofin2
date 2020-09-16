@@ -27,6 +27,14 @@ const Register = () => {
     setFormData({ ...formData, [text]: e.target.value });
   };
 
+  const [value, setValue] = useState('')
+  const [eText, settext] = useState('Verify Email');
+  const [allowed, setpermission] = useState(false);
+  const { name, email, password1, password2, phonenumber, textChange} = formData;
+  const handleChange = text => e => {
+    setFormData({ ...formData, [text]: e.target.value });
+  };
+
   const handlenumberClick=()=>{
     var recaptcha = new Firebase.auth.RecaptchaVerifier('recaptcha',{'size':'invisible'});
     var number = value;
@@ -45,6 +53,23 @@ const Register = () => {
                   .catch(function (error) {
                       console.error( `cant authrorised ${error}`);
                   });
+  }
+
+  const numberclick=()=>{
+    var recaptcha = new Firebase.auth.RecaptchaVerifier('recaptcha',{'size':'invisible'});
+    var mail = email;
+    Firebase.auth().signInWithEmailAndPassword(email, password)
+      .catch(function(error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        if (errorCode === 'auth/wrong-password') {
+          alert('Wrong password.');
+        } else {
+          alert(errorMessage);
+        }
+        console.log(error);
+      });
   }
   const handleSubmit = e => { 
     e.preventDefault();
@@ -85,7 +110,7 @@ const Register = () => {
             settext('Verify Mobile Number');
             setpermission(false);
             console.log(err.response);
-            toast.error("An account with that email already exists");
+            toast.error("Something went wrong");
           });
       } else {
         toast.error("Passwords don't match");
@@ -128,6 +153,13 @@ const Register = () => {
                   onChange={handleChange('email')}
                   value={email}
                 />
+                <div>
+                  <div id="recaptcha"></div>
+                  <div
+                  onClick={numberclick} 
+                  className='bg-indigo-500 text-white text-sm rounded-md p-2 mt-4 mx-auto focus:outline-none w-3/4 text-center'
+                  >{eText}</div>
+                </div>
                 <input
                   className='w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5'
                   type='password'
