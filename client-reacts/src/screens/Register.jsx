@@ -21,7 +21,6 @@ const Register = () => {
 
   const [value, setValue] = useState('')
   const [btntext, settext] = useState('Verify Mobile Number');
-  const eText= useState('Verify Email');
   const [allowed, setpermission] = useState(false);
   const { name, email, password1, password2, phonenumber, textChange} = formData;
   const handleChange = text => e => {
@@ -46,27 +45,6 @@ const Register = () => {
                   .catch(function (error) {
                       console.error( `cant authrorised ${error}`);
                   });
-  }
-
-  const numberclick=()=>{
-
-    Firebase.auth().signInWithEmailAndPassword(email, password)
-      .then(function(){
-        settext('Mobile Number Verified');
-        setpermission(true);
-        setFormData({ ...formData, phonenumber: result.user.phoneNumber });
-      })
-      .catch(function(error) {
-        // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        if (errorCode === 'auth/wrong-password') {
-          alert('Wrong password.');
-        } else {
-          alert(errorMessage);
-        }
-        console.log(error);
-      });
   }
   const handleSubmit = e => { 
     e.preventDefault();
@@ -107,7 +85,7 @@ const Register = () => {
             settext('Verify Mobile Number');
             setpermission(false);
             console.log(err.response);
-            toast.error("Something went wrong");
+            toast.error("An account with that email already exists");
           });
       } else {
         toast.error("Passwords don't match");
@@ -150,13 +128,6 @@ const Register = () => {
                   onChange={handleChange('email')}
                   value={email}
                 />
-                <div>
-                  <div id="recaptcha"></div>
-                  <div
-                  onClick={numberclick} 
-                  className='bg-indigo-500 text-white text-sm rounded-md p-2 mt-4 mx-auto focus:outline-none w-3/4 text-center'
-                  >{eText}</div>
-                </div>
                 <input
                   className='w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5'
                   type='password'
@@ -198,15 +169,15 @@ const Register = () => {
                 </div>
               </div>
               <div className='flex flex-col items-center'>
-                <a
+                <Link
                   className='w-full max-w-xs font-bold shadow-sm rounded-lg py-3
            bg-indigo-100 text-gray-800 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline mt-5'
-                  href='/login'
-                  target='_self'
+                  to='/login'
+            
                 >
                   <i className='fas fa-sign-in-alt fa 1x w-6  -ml-2 text-indigo-500' />
                   <span className='ml-4'>Sign In</span>
-                </a>
+                </Link>
               </div>
             </form>
           </div>
