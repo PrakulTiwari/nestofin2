@@ -71,6 +71,7 @@ const Register = () => {
             });
 
             toast.success(res.data.message);
+            toast.success('Now you can open the activation page from below.');
           })
           .catch(err => {
             setFormData({
@@ -169,15 +170,15 @@ const Register = () => {
                 </div>
               </div>
               <div className='flex flex-col items-center'>
-                <a
+                <Link
                   className='w-full max-w-xs font-bold shadow-sm rounded-lg py-3
            bg-indigo-100 text-gray-800 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline mt-5'
-                  href='/users/activate'
-                  target='_self'
+                  to='/users/activate'
+                  
                 >
                   <i className='fas fa-sign-in-alt fa 1x w-6  -ml-2 text-indigo-500' />
                   <span className='ml-4'>Activate Account</span>
-                </a>
+                </Link>
               </div>
               <div className='my-12 border-b text-center'>
                 <div className='leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2'>
@@ -185,15 +186,15 @@ const Register = () => {
                 </div>
               </div>
               <div className='flex flex-col items-center'>
-                <a
+                <Link
                   className='w-full max-w-xs font-bold shadow-sm rounded-lg py-3
            bg-indigo-100 text-gray-800 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline mt-5'
-                  href='/login'
-                  target='_self'
+                  to='/login'
+                 
                 >
                   <i className='fas fa-sign-in-alt fa 1x w-6  -ml-2 text-indigo-500' />
                   <span className='ml-4'>Sign In</span>
-                </a>
+                </Link>
               </div>
             </form>
           </div>
