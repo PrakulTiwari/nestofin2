@@ -163,7 +163,7 @@ exports.registerController = (req, res) => {
 
 exports.activationController = (req, res) => {
     const { otp } = req.body;
-    let token = '';
+    var token = '';
     if (otp) {
 
         Tokenotp.findOne({
