@@ -65,7 +65,6 @@ app.use('/api', authRouter)
 app.use('/api', userRouter)
 
 
-//fvh
 app.use((req, res) => {
     res.status(404).json({
         success: false,
