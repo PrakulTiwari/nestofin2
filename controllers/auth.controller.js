@@ -1,4 +1,5 @@
 const User = require('../models/auth.model');
+const Tokenotp = require('../models/otptoken.model');
 const expressJwt = require('express-jwt');
 const _ = require('lodash');
 const { OAuth2Client } = require('google-auth-library');
@@ -9,24 +10,25 @@ const jwt = require('jsonwebtoken');
 const expressJWT = require('express-jwt');
 const { errorHandler } = require('../helpers/dbErrorHandling');
 const sgMail = require('@sendgrid/mail');
+const { getEnv } = require('google-auth-library/build/src/auth/envDetect');
 sgMail.setApiKey(process.env.MAIL_KEY);
 
-const firebase = require("firebase/app");
+// const firebase = require("firebase/app");
 
-// Add the Firebase products that you want to use
-require("firebase/auth");
-require("firebase/firestore");
+// // Add the Firebase products that you want to use
+// require("firebase/auth");
+// require("firebase/firestore");
 
-const firebaseConfig = {
-    apiKey: process.env.FAPIKEY,
-    authDomain: process.env.AUTHDOMAIN,
-    databaseURL: process.env.DATABASEURL,
-    projectId: process.env.PROJECTID,
-    storageBucket: process.env.STORAGEBUCKET,
-    messagingSenderId: process.env.MESSAGINGSENDERID,
-    appId: process.env.APPID
-};
-firebase.initializeApp(firebaseConfig);
+// const firebaseConfig = {
+//     apiKey: process.env.FAPIKEY,
+//     authDomain: process.env.AUTHDOMAIN,
+//     databaseURL: process.env.DATABASEURL,
+//     projectId: process.env.PROJECTID,
+//     storageBucket: process.env.STORAGEBUCKET,
+//     messagingSenderId: process.env.MESSAGINGSENDERID,
+//     appId: process.env.APPID
+// };
+// firebase.initializeApp(firebaseConfig);
 
 
 exports.registerController = (req, res) => {
@@ -62,51 +64,49 @@ exports.registerController = (req, res) => {
             }
         );
 
-        const actionCodeSettings = {
-            url: `${process.env.CLIENT_URL}/users/activate/${token}`,
-            handleCodeInApp: true,
-        };
+        function generateOTP() {
 
-        firebase.auth().sendSignInLinkToEmail(email, actionCodeSettings)
-            .then(function() {
-                return res.json({
-                    message: `Email has been sent to ${email}`
-                });
-            })
-            .catch(err => {
-                console.log(`Email Not send : ${err}`);
-                return res.status(400).json({
-                    success: false,
+            var digits = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()_+';
+
+            var otpLength = 6;
+
+            var otp = '';
+
+            for (let i = 1; i <= otpLength; i++)
+
+            {
+
+                var index = Math.floor(Math.random() * (digits.length));
+
+                otp = otp + digits[index];
+
+            }
+
+            return otp;
+
+        }
+        const otp = generateOTP();
+
+        const tokenotp = new Tokenotp({
+            token,
+            otp
+        });
+
+        tokenotp.save((err, tokenotp) => {
+            if (err) {
+                console.log('Save error', errorHandler(err));
+                return res.status(401).json({
                     errors: errorHandler(err)
                 });
-            });
+            }
+        });
+        // const actionCodeSettings = {
+        //     url: `${process.env.CLIENT_URL}/users/activate/${token}`,
+        //     handleCodeInApp: true,
+        // };
 
-
-
-        // const emailData = {
-        //     from: process.env.EMAIL_FROM,
-        //     pass: process.env.EMAIL_PASS,
-        //     to: email,
-        //     subject: 'Account activation link',
-        //     html: `   
-        //         <h1>You are just one click away!</h1>
-        //         <a href=http://localhost:5000/api/user/activate/${token}>Click Here!</a>
-        //         <hr />
-        //         <p>This email may containe sensitive information</p>
-        //         <p>${process.env.CLIENT_URL}</p>
-        //     `
-        // }; //we have to change href urls localhost with our server url
-
-
-        // console.log(`${token}`);
-        // return res.json({
-        //     message: `Email has been sent to ${email}`
-        // });
-        // console.log(`Email Data: ${Object.keys(emailData).length}`);
-        // sgMail
-        //     .send(emailData)
-        //     .then(sent => {
-        //         console.log('Email Send');
+        // firebase.auth().sendSignInLinkToEmail(email, actionCodeSettings)
+        //     .then(function() {
         //         return res.json({
         //             message: `Email has been sent to ${email}`
         //         });
@@ -119,17 +119,69 @@ exports.registerController = (req, res) => {
         //         });
         //     });
 
+
+
+        const emailData = {
+            from: process.env.EMAIL_FROM,
+            pass: process.env.EMAIL_PASS,
+            to: email,
+            subject: 'Account activation link',
+            html: `   
+                <h1>You are just one click away!</h1>
+                <h3>YOUR OTP IS ${otp} valid for 5 minutes</h3>
+                <h4>go to ${process.env.CLIENT_URL}/users/activate to input otp</h4>
+                <hr />
+                <p>This email may containe sensitive information</p>
+                <p>${process.env.CLIENT_URL}</p>
+            `
+        }; //we have to change href urls localhost with our server url
+
+
+        // console.log(`${token}`);
+        // return res.json({
+        //     message: `Email has been sent to ${email}`
+        // });
+        // console.log(`Email Data: ${Object.keys(emailData).length}`);
+        sgMail
+            .send(emailData)
+            .then(sent => {
+                console.log('Email Send');
+                return res.json({
+                    message: `Email has been sent to ${email}`
+                });
+            })
+            .catch(err => {
+                console.log(`Email Not send : ${err}`);
+                return res.status(400).json({
+                    success: false,
+                    errors: errorHandler(err)
+                });
+            });
+
     }
 };
 
 exports.activationController = (req, res) => {
-    const { token } = req.body;
-    if (token) {
+    const { otp } = req.body;
+    let token = '';
+    if (otp) {
+
+        Tokenotp.findOne({
+            otp
+        }).exec((err, tokendetail) => {
+            if (tokendetail) {
+                token = tokendetail.token
+            } else {
+                return res.status(401).json({
+                    errors: 'Not a valid otp or User has been registered'
+                });
+            }
+        })
         jwt.verify(token, process.env.JWT_ACCOUNT_ACTIVATION, (err, decoded) => {
             if (err) {
                 console.log('Activation error');
                 return res.status(401).json({
-                    errors: 'Expired link. Signup again'
+                    errors: 'Expired OTP. Signup again'
                 });
             } else {
                 const { name, email, password, phonenumber } = jwt.decode(token);
@@ -147,11 +199,21 @@ exports.activationController = (req, res) => {
                             errors: errorHandler(err)
                         });
                     } else {
-                        return res.json({
-                            success: true,
-                            message: user,
-                            message: 'Signup success'
-                        });
+                        Tokenotp.remove({ token })
+                            .then(count => {
+                                if (count) {
+                                    return res.json({
+                                        success: true,
+                                        message: 'Signup success'
+                                    });
+                                }
+                            })
+                            .catch(err => {
+                                console.log(err)
+                                return res.json({
+                                    message: 'error happening please try again'
+                                });
+                            });
                     }
                 });
             }
