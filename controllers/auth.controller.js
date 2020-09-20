@@ -163,68 +163,81 @@ exports.registerController = (req, res) => {
 
 exports.activationController = (req, res) => {
     const { otp } = req.body;
-    var token = '';
+    let token = '';
     if (otp) {
 
         Tokenotp.findOne({
             otp
         }).exec((err, tokendetail) => {
             if (tokendetail) {
-                token = tokendetail.token
+                token = tokendetail.token;
+                jwt.verify(token, process.env.JWT_ACCOUNT_ACTIVATION, (err, decoded) => {
+                    if (err) {
+                        console.log('Activation error');
+
+                        Tokenotp.remove({ otp })
+                            .then(count => {
+                                if (count) {
+                                    console.log('duplicate toke deleted')
+                                }
+                            })
+                            .catch(err => {
+                                console.log(err)
+                            });
+
+                        return res.status(401).json({
+                            errors: 'Expired OTP. Signup again'
+                        });
+                    } else {
+                        const { name, email, password, phonenumber } = jwt.decode(token);
+                        const user = new User({
+                            name,
+                            email,
+                            password,
+                            phonenumber
+                        });
+
+                        user.save((err, user) => {
+                            if (err) {
+                                console.log('Save error', errorHandler(err));
+                                return res.status(401).json({
+                                    errors: errorHandler(err)
+                                });
+                            } else {
+                                Tokenotp.remove({ token })
+                                    .then(count => {
+                                        if (count) {
+                                            return res.json({
+                                                success: true,
+                                                message: 'Signup success'
+                                            });
+                                        }
+                                    })
+                                    .catch(err => {
+                                        console.log(err)
+                                        return res.json({
+                                            message: 'error happening please try again'
+                                        });
+                                    });
+                            }
+                        });
+                    }
+                });
+
+
             } else {
                 return res.status(401).json({
                     errors: 'Not a valid otp or User has been registered'
                 });
             }
         })
-        jwt.verify(token, process.env.JWT_ACCOUNT_ACTIVATION, (err, decoded) => {
-            if (err) {
-                console.log('Activation error');
-                return res.status(401).json({
-                    errors: 'Expired OTP. Signup again'
-                });
-            } else {
-                const { name, email, password, phonenumber } = jwt.decode(token);
-                const user = new User({
-                    name,
-                    email,
-                    password,
-                    phonenumber
-                });
 
-                user.save((err, user) => {
-                    if (err) {
-                        console.log('Save error', errorHandler(err));
-                        return res.status(401).json({
-                            errors: errorHandler(err)
-                        });
-                    } else {
-                        Tokenotp.remove({ token })
-                            .then(count => {
-                                if (count) {
-                                    return res.json({
-                                        success: true,
-                                        message: 'Signup success'
-                                    });
-                                }
-                            })
-                            .catch(err => {
-                                console.log(err)
-                                return res.json({
-                                    message: 'error happening please try again'
-                                });
-                            });
-                    }
-                });
-            }
-        });
     } else {
         return res.json({
             message: 'error happening please try again'
         });
     }
 };
-
 exports.signinController = (req, res) => {
     const { email, password } = req.body;
     const errors = validationResult(req);
