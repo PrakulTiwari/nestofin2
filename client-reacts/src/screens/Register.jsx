@@ -28,6 +28,7 @@ const Register = () => {
   };
 
   const handlenumberClick=()=>{
+    settext('Verifying...');
     var recaptcha = new Firebase.auth.RecaptchaVerifier('recaptcha',{'size':'invisible'});
     var number = value;
     Firebase.auth().signInWithPhoneNumber(number, recaptcha)
