@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
 import App from './App.jsx';
-import Getstarted from './screens/Getstarted';
 import Learnmore from './screens/Learnmore';
 import Planning from './screens/Planning';
 import Borrowing from './screens/Borrowing';
@@ -23,7 +22,6 @@ ReactDOM.render(
   <BrowserRouter>
     <Switch>
       <Route path='/' exact render={props => <App {...props} />} />
-      <Route path='/getstarted' exact render={props => <Getstarted {...props} />} />
       <Route path='/learnmore' exact render={props => <Learnmore {...props} />} />
       <Route path='/planning' exact render={props => <Planning {...props} />} />
       <Route path='/investing' exact render={props => <Investing {...props} />} />
