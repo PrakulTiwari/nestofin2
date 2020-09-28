@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, Redirect, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { signout } from '../helpers/auth';
 import { isAuth } from '../helpers/auth';
 import { toast } from 'react-toastify';
@@ -61,11 +61,10 @@ function Navbar({ history }) {
                       history.push('/login');
                     });
                   }} className="log">Sign Out</li>}
-                    <li className="gets"><Link to='/getstarted'>Get Started</Link></li>
                     <div className="cross" onClick={cross}>X</div>
                 </ul>
                 {isAuth() && <div className='borderbox'><span id="name">Welcome <Link to="/dashboard" title='YOUR Dashboard'>{isAuth().name}</Link></span></div>}
-                {/*replace upper line to {!isAuth() && <span className="others" id="name">Welcome Back <Link to="/dashboard" title='YOUR Dashboard'>Name</Link></span>}*/}
+                {/*replace upper line to {!isAuth() && <span className="others" id="name">Welcome Back <a href="/dashboard" title='YOUR Dashboard'>Name</a></span>}*/}
                 </div>
                 <div className="hamburger" onClick={burger}>
                     <div className="bun"></div>

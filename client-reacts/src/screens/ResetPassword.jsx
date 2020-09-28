@@ -7,37 +7,31 @@ const ResetPassword = ({match}) => {
   const [formData, setFormData] = useState({
       password1: '',
       password2: '',
-      token: '',
-    textChange: 'Submit'
+      otp: '',
+      textChange: 'Submit'
   });
-    const { password1, password2, textChange, token } = formData;
+    const { password1, password2, textChange, otp } = formData;
     
-    useEffect(() => {
-        let token = match.params.token
-        if(token) {
-            setFormData({...formData, token,})
-        }
-        
-    }, [])
   const handleChange = text => e => {
     setFormData({ ...formData, [text]: e.target.value });
   };
     const handleSubmit = e => {
-      console.log(password1, password2)
+      // console.log(password1, password2)
     e.preventDefault();
-    if ((password1 === password2) && password1 && password2) {
+    if ((password1 === password2) && password1 && password2 && otp) {
       setFormData({ ...formData, textChange: 'Submitting' });
       axios
         .put(`${process.env.REACT_APP_API_URL}/resetpassword`, {
             newPassword: password1,
-            resetPasswordLink: token
+            otp: otp
         })
         .then(res => {
           console.log(res.data.message)
             setFormData({
               ...formData,
                password1: '',
-              password2: ''
+              password2: '',
+              otp:''
             });
             toast.success(res.data.message);
           
@@ -66,12 +60,19 @@ const ResetPassword = ({match}) => {
               >
                 <input
                   className='w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white'
+                  type='text'
+                  placeholder='Put OTP that you got on your Email Here'
+                  onChange={handleChange('otp')}
+                  value={otp}
+                  />
+                <input
+                  className='w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white'
                   type='password'
                   placeholder='password'
                   onChange={handleChange('password1')}
                   value={password1}
                   />
-                  <input
+                <input
                   className='w-full mt-5 px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white'
                   type='password'
                   placeholder='Confirm password'

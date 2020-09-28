@@ -92,7 +92,7 @@ function Dashboard({ history }) {
                       </div>
                     </div>
                     <div className="totalmoney">
-                      <span id="money">2,000</span> Rs.
+                      <span id="money">{formData.yolk_count*100}</span> Rs.
                     </div>
                   </div>
 

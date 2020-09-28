@@ -13,22 +13,6 @@ const sgMail = require('@sendgrid/mail');
 const { getEnv } = require('google-auth-library/build/src/auth/envDetect');
 sgMail.setApiKey(process.env.MAIL_KEY);
 
-// const firebase = require("firebase/app");
-
-// // Add the Firebase products that you want to use
-// require("firebase/auth");
-// require("firebase/firestore");
-
-// const firebaseConfig = {
-//     apiKey: process.env.FAPIKEY,
-//     authDomain: process.env.AUTHDOMAIN,
-//     databaseURL: process.env.DATABASEURL,
-//     projectId: process.env.PROJECTID,
-//     storageBucket: process.env.STORAGEBUCKET,
-//     messagingSenderId: process.env.MESSAGINGSENDERID,
-//     appId: process.env.APPID
-// };
-// firebase.initializeApp(firebaseConfig);
 
 
 exports.registerController = (req, res) => {
@@ -65,25 +49,14 @@ exports.registerController = (req, res) => {
         );
 
         function generateOTP() {
-
-            var digits = '0123456789';
-
+            var digits = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()_+';
             var otpLength = 6;
-
             var otp = '';
-
-            for (let i = 1; i <= otpLength; i++)
-
-            {
-
+            for (let i = 1; i <= otpLength; i++) {
                 var index = Math.floor(Math.random() * (digits.length));
-
                 otp = otp + digits[index];
-
             }
-
             return otp;
-
         }
         const otp = generateOTP();
 
@@ -100,24 +73,6 @@ exports.registerController = (req, res) => {
                 });
             }
         });
-        // const actionCodeSettings = {
-        //     url: `${process.env.CLIENT_URL}/users/activate/${token}`,
-        //     handleCodeInApp: true,
-        // };
-
-        // firebase.auth().sendSignInLinkToEmail(email, actionCodeSettings)
-        //     .then(function() {
-        //         return res.json({
-        //             message: `Email has been sent to ${email}`
-        //         });
-        //     })
-        //     .catch(err => {
-        //         console.log(`Email Not send : ${err}`);
-        //         return res.status(400).json({
-        //             success: false,
-        //             errors: errorHandler(err)
-        //         });
-        //     });
 
 
 
@@ -125,7 +80,7 @@ exports.registerController = (req, res) => {
             from: process.env.EMAIL_FROM,
             pass: process.env.EMAIL_PASS,
             to: email,
-            subject: 'Account activation link',
+            subject: 'Account activation OTP',
             html: `   
                 <h1>You are just one click away!</h1>
                 <h3>YOUR OTP IS ${otp} valid for 5 minutes</h3>
@@ -134,13 +89,7 @@ exports.registerController = (req, res) => {
                 <p>This email may containe sensitive information</p>
                 <p>${process.env.CLIENT_URL}</p>
             `
-        }; //we have to change href urls localhost with our server url
-
-
-        // console.log(`${token}`);
-        // return res.json({
-        //     message: `Email has been sent to ${email}`
-        // });
+        };
         // console.log(`Email Data: ${Object.keys(emailData).length}`);
         sgMail
             .send(emailData)
@@ -238,6 +187,7 @@ exports.activationController = (req, res) => {
         });
     }
 };
+
 exports.signinController = (req, res) => {
     const { email, password } = req.body;
     const errors = validationResult(req);
@@ -340,18 +290,65 @@ exports.forgotPasswordController = (req, res) => {
                     }
                 );
 
+                function generateOTP() {
+                    var digits = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()_+';
+                    var otpLength = 6;
+                    var otp = '';
+                    for (let i = 1; i <= otpLength; i++) {
+                        var index = Math.floor(Math.random() * (digits.length));
+                        otp = otp + digits[index];
+                    }
+                    return otp;
+                }
+                const otp = generateOTP();
+
+                const tokenotp = new Tokenotp({
+                    token,
+                    otp
+                });
+
+                tokenotp.save((err, tokenotp) => {
+                    if (err) {
+                        console.log('Save error', errorHandler(err));
+                        return res.status(401).json({
+                            errors: errorHandler(err)
+                        });
+                    }
+                });
+
+
+
                 const emailData = {
                     from: process.env.EMAIL_FROM,
+                    pass: process.env.EMAIL_PASS,
                     to: email,
-                    subject: `Password Reset link`,
-                    html: `
-                    <h1>Please use the following link to reset your password</h1>
-                    <a href=${process.env.CLIENT_URL}/users/password/reset/${token}>Click Here!</a>
-                    <hr />
-                    <p>This email may contain sensetive information</p>
-                    <p>${process.env.CLIENT_URL}</p>
-                `
+                    subject: 'Reset Password Otp',
+                    html: `   
+                        <h1>Please use the following OTP to reset your password</h1>
+                        <h3>YOUR OTP IS ${otp} valid for 5 minutes</h3>
+                        <h4>go to ${process.env.CLIENT_URL}/users/password/reset to input otp</h4>
+                        <hr />
+                        <p>This email may containe sensitive information</p>
+                        <p>${process.env.CLIENT_URL}</p>
+                    `
                 };
+
+                // console.log(`Email Data: ${Object.keys(emailData).length}`);
+                sgMail
+                    .send(emailData)
+                    .then(sent => {
+                        console.log('Email Send');
+                        return res.json({
+                            message: `Email has been sent to ${email}`
+                        });
+                    })
+                    .catch(err => {
+                        console.log(`Email Not send : ${err}`);
+                        return res.status(400).json({
+                            success: false,
+                            errors: errorHandler(err)
+                        });
+                    });
 
                 return user.updateOne({
                         resetPasswordLink: token
@@ -386,8 +383,8 @@ exports.forgotPasswordController = (req, res) => {
 };
 
 exports.resetPasswordController = (req, res) => {
-    const { resetPasswordLink, newPassword } = req.body;
-
+    const { otp, newPassword } = req.body;
+    let resetPasswordLink = '';
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
@@ -396,46 +393,62 @@ exports.resetPasswordController = (req, res) => {
             errors: firstError
         });
     } else {
-        if (resetPasswordLink) {
-            jwt.verify(resetPasswordLink, process.env.JWT_RESET_PASSWORD, function(
-                err,
-                decoded
-            ) {
-                if (err) {
-                    return res.status(400).json({
-                        error: 'Expired link. Try again'
-                    });
-                }
+        if (otp) {
+            Tokenotp.findOne({ otp })
+                .exec((err, tokendetail) => {
+                    if (tokendetail) {
+                        resetPasswordLink = tokendetail.token;
+                        if (resetPasswordLink) {
+                            jwt.verify(resetPasswordLink, process.env.JWT_RESET_PASSWORD, function(
+                                err,
+                                decoded
+                            ) {
+                                if (err) {
+                                    return res.status(400).json({
+                                        error: 'Expired link. Try again'
+                                    });
+                                }
 
-                User.findOne({
-                        resetPasswordLink
-                    },
-                    (err, user) => {
-                        if (err || !user) {
-                            return res.status(400).json({
-                                error: 'Something went wrong. Try later'
+                                User.findOne({
+                                        resetPasswordLink
+                                    },
+                                    (err, user) => {
+                                        if (err || !user) {
+                                            return res.status(400).json({
+                                                error: 'Something went wrong. Try later'
+                                            });
+                                        }
+
+                                        const updatedFields = {
+                                            password: newPassword,
+                                            resetPasswordLink: ''
+                                        };
+
+                                        user = _.extend(user, updatedFields);
+
+                                        user.save((err, result) => {
+                                            if (err) {
+                                                return res.status(400).json({
+                                                    error: 'Error resetting user password'
+                                                });
+                                            }
+                                            res.json({
+                                                message: `Great! Now you can login with your new password`
+                                            });
+                                        });
+                                    }
+                                );
                             });
                         }
-
-                        const updatedFields = {
-                            password: newPassword,
-                            resetPasswordLink: ''
-                        };
-
-                        user = _.extend(user, updatedFields);
-
-                        user.save((err, result) => {
-                            if (err) {
-                                return res.status(400).json({
-                                    error: 'Error resetting user password'
-                                });
-                            }
-                            res.json({
-                                message: `Great! Now you can login with your new password`
-                            });
+                    } else {
+                        return res.status(401).json({
+                            errors: 'Not a valid otp or User has been registered'
                         });
                     }
-                );
+                })
+        } else {
+            return res.json({
+                message: 'error happening please try again'
             });
         }
     }

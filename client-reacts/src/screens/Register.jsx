@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import authSvg from '../assests/auth.svg';
 import { ToastContainer, toast } from 'react-toastify';
 import axios from 'axios';
-import { authenticate, isAuth } from '../helpers/auth';
+import { isAuth } from '../helpers/auth';
 import { Link, Redirect } from 'react-router-dom';
 import '../assests/talwind.min.css';
 import Firebase from '../helpers/Firebase';
@@ -26,18 +26,25 @@ const Register = () => {
   const handleChange = text => e => {
     setFormData({ ...formData, [text]: e.target.value });
   };
-
+  const [btnstyle,setbtnstyle] = useState({
+    cursor:'not-allowed',
+    backgroundColor:'#808080'
+  });
   const handlenumberClick=()=>{
-    settext('Verifying...');
-    var recaptcha = new Firebase.auth.RecaptchaVerifier('recaptcha',{'size':'invisible'});
-    var number = value;
+    settext('Sending OTP...wait');
+    let recaptcha = new Firebase.auth.RecaptchaVerifier('recaptcha',{'size':'invisible'});
+    let number = value;
     Firebase.auth().signInWithPhoneNumber(number, recaptcha)
                   .then( function(e) {
-                    var code = prompt('Enter the otp', '');
+                    let code = prompt('Enter the otp', ''); 
                       if(code === null) return;
                       e.confirm(code).then(function (result) {
                           settext('Mobile Number Verified');
                           setpermission(true);
+                          setbtnstyle({
+                            cursor:'pointer',
+                            backgroundColor:'#667eea'
+                          })
                           setFormData({ ...formData, phonenumber: result.user.phoneNumber });
                       }).catch(function (error) {
                           console.error( error);
@@ -72,7 +79,6 @@ const Register = () => {
             });
 
             toast.success(res.data.message);
-            toast.success('Now you can open the activation page from below.');
           })
           .catch(err => {
             setFormData({
@@ -107,7 +113,7 @@ const Register = () => {
         <div className='lg:w-1/2 xl:w-5/12 p-6 sm:p-12'>
           <div className='mt-12 flex flex-col items-center'>
             <h1 className='text-2xl xl:text-3xl font-extrabold'>
-              Sign Up for <Link to='/'>NESTO/Fin.</Link>
+              Sign Up for <span style={{textDecoration:'underline'}}><Link to='/'>NESTO/Fin.</Link></span>
             </h1>
             <p className='text-2m font-extrabold'>Note: The password must contain a number</p>
             <form
@@ -149,17 +155,20 @@ const Register = () => {
                   placeholder="Enter phone number"
                   value={value}
                   onChange={setValue}
+                  defaultCountry='IN'
                 />
                 <div>
                   <div id="recaptcha"></div>
                   <div
-                  onClick={handlenumberClick} 
+                  onClick={handlenumberClick}
+                  style={{cursor:'pointer'}} 
                   className='bg-indigo-500 text-white text-sm rounded-md p-2 mt-4 mx-auto focus:outline-none w-3/4 text-center'
                   >{btntext}</div>
                 </div>
                 <button
                   type='submit'
                   className='mt-5 tracking-wide font-semibold bg-indigo-500 text-gray-100 w-full py-4 rounded-lg hover:bg-indigo-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none'
+                  style={btnstyle}
                 >
                   <i className='fas fa-user-plus fa 1x w-6  -ml-2' />
                   <span className='ml-3'>{textChange}</span>
@@ -175,11 +184,12 @@ const Register = () => {
                   className='w-full max-w-xs font-bold shadow-sm rounded-lg py-3
            bg-indigo-100 text-gray-800 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline mt-5'
                   to='/users/activate'
-                  
+                  target='_self'
                 >
                   <i className='fas fa-sign-in-alt fa 1x w-6  -ml-2 text-indigo-500' />
                   <span className='ml-4'>Activate Account</span>
                 </Link>
+                <strong>Using OTP that was send to your email</strong>
               </div>
               <div className='my-12 border-b text-center'>
                 <div className='leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2'>
@@ -191,7 +201,7 @@ const Register = () => {
                   className='w-full max-w-xs font-bold shadow-sm rounded-lg py-3
            bg-indigo-100 text-gray-800 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline mt-5'
                   to='/login'
-                 
+                  target='_self'
                 >
                   <i className='fas fa-sign-in-alt fa 1x w-6  -ml-2 text-indigo-500' />
                   <span className='ml-4'>Sign In</span>

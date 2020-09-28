@@ -1,0 +1,97 @@
+.backdrop {
+    position: fixed;
+    background: rgb(85, 88, 218);
+    background: radial-gradient(circle, rgba(85, 88, 218, 1) 16%, rgba(95, 209, 249, 0.6984475186558998) 81%);
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    animation: show 0.5s ease-in-out;
+}
+
+@keyframes show {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 100%;
+    }
+}
+
+.helpbox {
+    position: fixed;
+    left: calc(50% - 200px);
+    top: 10%;
+    background-color: white;
+    width: 400px;
+    height: 80%;
+    padding: 10px;
+    text-align: center;
+    animation: show 0.5s ease-in-out;
+    overflow-y: scroll;
+}
+
+.helpbox form input,
+.helpbox form textarea {
+    border-bottom: 2px solid royalblue;
+    width: 90%;
+    padding: 10px;
+    border-radius: 10px;
+    background: white;
+    margin-bottom: 30px;
+    color: black;
+}
+
+.helpbox form input:focus,
+.helpbox form textarea:focus {
+    outline: none;
+    background: rgba(65, 105, 225, 0.3);
+}
+
+.helpbox form .submit {
+    padding: 10px 40px;
+    font-size: 1.5rem;
+    border-radius: 20px;
+    background: rgb(85, 88, 218);
+    background: radial-gradient(circle, rgba(85, 88, 218, 1) 16%, rgba(95, 209, 249, 1) 81%);
+    border-bottom: 2px solid royalblue;
+    transition: border-bottom 0.1s ease-in;
+    position: relative;
+}
+
+.helpbox form .submit:hover {
+    animation: change 0.6s linear alternate;
+}
+
+.helpbox form .submit:focus {
+    outline: none;
+}
+
+.helpbox form .submit:active {
+    top: 2px;
+    border-bottom: 0px solid royalblue;
+}
+
+@keyframes change {
+    0% {
+        background: rgb(85, 88, 218);
+        background: radial-gradient(circle, rgba(85, 88, 218, 1) 16%, rgba(95, 209, 249, 1) 81%);
+        border-bottom: 2px solid rgb(85, 88, 218);
+    }
+    50% {
+        background: rgb(85, 88, 218);
+        background: linear-gradient(to right, rgba(95, 209, 249, 1) 30%, rgba(85, 88, 218, 1));
+    }
+    100% {
+        background: rgb(95, 209, 249);
+        background: radial-gradient(circle, rgba(95, 209, 249, 1) 16%, rgba(85, 88, 218, 1) 81%);
+        border-bottom: 2px solid rgb(95, 209, 249);
+    }
+}
+
+@media(max-width:500px) {
+    .helpbox {
+        left: 3%;
+        width: 94%;
+    }
+}
