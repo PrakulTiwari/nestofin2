@@ -14,6 +14,15 @@ require('dotenv').config({
 
 const app = express()
 
+// "functions": {
+//     "predeploy":  [
+//       "cd client-reacts && npm run build",
+//       "cd client-reacts && npm install",
+//       "node server.js",
+//       "cd client-reacts && npm start"
+//     ]
+//   }
+
 // Connect to database
 //hrlll
 //hell
@@ -45,6 +54,7 @@ else if (process.env.NODE_ENV === 'production') {
     
     app.use(morgan('tiny'))
    
+    
     // app.get("/",(req,res)=>{
     //     res.sendFile(path.join('client-reacts','build','index.html'))
     // })
