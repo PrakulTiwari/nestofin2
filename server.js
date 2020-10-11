@@ -4,7 +4,6 @@ const connectDB = require('./config/db')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const path = require('path')
-const sslredirect = require('heroku-ssl-redirect')
 // Config dotev
 
 
@@ -28,7 +27,7 @@ const app = express()
 //hrlll
 //hell
 connectDB();
-app.use(sslredirect())
+
 // body parser
 app.use(bodyParser.json())
 // Load routes
@@ -55,7 +54,9 @@ else if (process.env.NODE_ENV === 'production') {
 
     app.use(morgan('tiny'))
 
-
+    app.get('https://www.nestofin.com', (req, res) => {
+        res.redirect('/')
+    })
 
     // app.get('*', (req, res) => {
     //     console.log(req.url)
