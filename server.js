@@ -56,10 +56,10 @@ else if (process.env.NODE_ENV === 'production') {
 
 
 
-    app.get('*', (req, res) => {
-        console.log(req.url)
-        res.redirect('http://' + req.headers.host + req.url)
-    })
+    // app.get('*', (req, res) => {
+    //     console.log(req.url)
+    //     res.redirect('http://' + req.headers.host + req.url)
+    // })
 
 
     // app.get("/", (req, res) => {
