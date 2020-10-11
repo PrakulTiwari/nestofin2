@@ -4,6 +4,7 @@ const connectDB = require('./config/db')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const path = require('path')
+const sslredirect = require('heroku-ssl-redirect')
 // Config dotev
 
 
@@ -27,7 +28,7 @@ const app = express()
 //hrlll
 //hell
 connectDB();
-
+app.use(sslredirect())
 // body parser
 app.use(bodyParser.json())
 // Load routes
