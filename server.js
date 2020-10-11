@@ -54,7 +54,7 @@ else if (process.env.NODE_ENV === 'production') {
 
     app.use(morgan('tiny'))
 
-    app.get('https://www.nestofin.com', (req, res) => {
+    app.get('*', (req, res) => {
         res.redirect('/')
     })
 
