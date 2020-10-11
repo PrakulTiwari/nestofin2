@@ -47,16 +47,23 @@ if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'))
 }
 else if (process.env.NODE_ENV === 'production') {
-    app.use (express.static(path.join('client-reacts', 'build')))
+    app.use(express.static(path.join('client-reacts', 'build')))
     app.use(cors({
-        origin: process.env.CLIENT_URL 
+        origin: process.env.CLIENT_URL
     }))
-    
+
     app.use(morgan('tiny'))
-   
-    
-    // app.get("/",(req,res)=>{
-    //     res.sendFile(path.join('client-reacts','build','index.html'))
+
+
+
+    app.get('*', (req, res) => {
+        console.log(req.url)
+        res.redirect('http://' + req.headers.host + req.url)
+    })
+
+
+    // app.get("/", (req, res) => {
+    //     res.sendFile(path.join('client-reacts', 'build', 'index.html'))
     // })
     // app.get("/*",(req,res)=>{
     //     res.sendFile(path.join('client-reacts','build','index.html'))
@@ -64,10 +71,10 @@ else if (process.env.NODE_ENV === 'production') {
     // app.get("*",(req,res)=>{
     //     res.sendFile(path.join('client-reacts','build','index.html'))
     // })
-    
+
     // app.use(express.cookieParser('your secret here!'))
-//    app.use(express.session())
-//     app.use(require('express-session')) 
+    //    app.use(express.session())
+    //     app.use(require('express-session')) 
 }
 
 // Use Routes

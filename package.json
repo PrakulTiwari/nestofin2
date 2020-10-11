@@ -1,42 +1,42 @@
 {
-  "name": "auth_server",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "engine": {
-    "node": "12.18.2",
-    "npm": "6.14.5"
-  },
-  "scripts": {
-    "build": "cd client-reacts && npm run build",
-    "install-client": "cd client-reacts && npm install",
-    "heroku-postbuild": "npm run install-client && npm run build",
-    "start": "node server.js",
-    "backend": "nodemon server.js",
-    "client": "cd client-reacts && npm start",
-    "dev": "concurrently \"npm run backend\" \"npm run start\" \"cd client-reacts\" \"npm start\""
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "@sendgrid/mail": "^6.5.5",
-    "body-parser": "^1.19.0",
-    "cors": "^2.8.5",
-    "crypto": "^1.0.1",
-    "dotenv": "^8.2.0",
-    "express": "^4.17.1",
-    "express-jwt": "^5.3.1",
-    "firebase": "^7.20.0",
-    "express-validator": "^6.4.0",
-    "google-auth-library": "^6.0.0",
-    "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.9.6",
-    "morgan": "^1.10.0",
-    "node-fetch": "^2.6.0",
-    "nodemailer": "^6.4.11",
-    "razorpay": "^2.0.6",
-    "shortid": "^2.2.15",
-    "sib-api-v3-sdk": "^7.2.4"
+    "name": "auth_server",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "engine":{
+      "node":"12.18.2",
+      "npm":"6.14.5"
+    } ,
+    "scripts": {
+      "build": "cd client-reacts && npm run build",
+      "install-client": "cd client-reacts && npm install",
+      "heroku-postbuild":"npm run install-client && npm run build",
+      "start": "node server.js",
+      "backend":"nodemon server.js",
+      "client": "cd client-reacts && npm start"
+      
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@sendgrid/mail": "^6.5.5",
+        "body-parser": "^1.19.0",
+        "cors": "^2.8.5",
+        "crypto": "^1.0.1",
+        "dotenv": "^8.2.0",
+        "express": "^4.17.1",
+        "express-jwt": "^5.3.1",
+        "express-validator": "^6.4.0",
+        "google-auth-library": "^6.0.0",
+        "jsonwebtoken": "^8.5.1",
+        "mongoose": "^5.9.6",
+        "morgan": "^1.10.0",
+        "node-fetch": "^2.6.0",
+        "nodemailer": "^6.4.11",
+        "razorpay": "^2.0.6",
+        "shortid": "^2.2.15",
+        "sib-api-v3-sdk": "^7.2.4"
+    }
   }
-}
+  
