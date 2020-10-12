@@ -195,7 +195,7 @@
     /* box-shadow: 0 2px 1px 0 rgb(21, 56, 160); */
     transition: ease-in;
     background-color: white;
-    color: royalblue;
+    color: royalblue
 }
 
 .button:active {
