@@ -1,8 +1,10 @@
 const User = require('../models/auth.model');
 const Payment = require('../models/payment.model');
+const Service = require('../models/services.model')
 const Razorpay = require('razorpay')
 const shortid = require('shortid');
 const crypto = require('crypto');
+const { io } = require('../server');
 require('dotenv').config({
     path: './config/config.env'
 })
@@ -79,13 +81,27 @@ exports.orderController = (req, res) => {
         receipt: shortid.generate(),
         payment_capture: 1
     };
-    instance.orders.create(options, function(err, order) {
-        if (err) {
-            console.log(`Order create error: ${err}`);
-            return res.status(400).json({ error: err });
-        }
-        res.json(order);
-    });
+    Service.findOne({ productName: 'YOLK' })
+        .exec((err, yolk) => {
+            if (err) {
+                return res.status(400).json({ error: err });
+            } else if (yolk) {
+                if (yolk.count > 0 && yolk.available && (yolk.count - req.body.count) >= 0) {
+                    instance.orders.create(options, function (err, order) {
+                        if (err) {
+                            console.log(`Order create error: ${err}`);
+                            return res.status(400).json({ error: err });
+                        }
+                        res.json(order);
+                    });
+                } else {
+                    return res.status(400).json({ error: `${yolk.count} YOLKs AVAILABLE` });
+                }
+            } else {
+                return res.status(400).json({ error: 'We don\'t serve YOLKs NOW' });
+            }
+        })
+
 };
 
 const instance = new Razorpay({
@@ -116,6 +132,25 @@ exports.successController = (req, res) => {
         const order_id = req.body.payload.payment.entity.order_id;
         const method = req.body.payload.payment.entity.method;
         const status = 'Paid';
+        Service.findOne({ productName: 'YOLK' })
+            .exec((err, yolk) => {
+                console.log('Entering in YOLK')
+                if (!err && yolk) {
+                    yolk.count -= (amount / 10000);
+                    //add socket here
+                    io.emit('updateYolk', { count: yolk.count });
+                    if (yolk.count <= 0) {
+                        yolk.available = false;
+                    }
+                    yolk.save((err, yolk) => {
+                        if (err) {
+                            console.log(`Yolk permission update error: ${err}`)
+                        } else {
+                            console.log('Yolk Updated');
+                        }
+                    })
+                }
+            })
         console.log(email + " " + contact + " " + payment_id + " " + order_id + " " + method + " " + amount);
         const payment = new Payment({
             email,
@@ -296,6 +331,21 @@ exports.refundController = (req, res) => {
 exports.refundSuccessController = (req, res) => {
     if (req.body.event === "refund.processed") {
         const payment_id = req.body.payload.refund.entity.payment_id;
+        const count = req.body.payload.refund.entity.amount / 10000;
+        Service.findOne({ productName: 'YOLK' })
+            .exec((err, yolk) => {
+                yolk.count += count;
+                if (!yolk.available) {
+                    yolk.available = true;
+                    io.emit('updateYolk', { count: yolk.count });
+                }
+
+                yolk.save((err, yolk) => {
+                    if (err) {
+                        console.log(`Yolk increase on refund error: ${err}`);
+                    }
+                })
+            });
         Payment.findOne({ payment_id }, (err, payment) => {
             if (payment) {
                 payment.status = 'Refund Processed';
@@ -309,7 +359,7 @@ exports.refundSuccessController = (req, res) => {
 
                 User.findOne({ email }, (err, user) => {
                     if (user) {
-                        user.yolk_count -= 1;
+                        user.yolk_count -= count;
                         user.save((err, updatedUser) => {
                             if (err) {
                                 console.log('USER UPDATE ERROR', err);
