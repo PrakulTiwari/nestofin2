@@ -1,7 +1,7 @@
 const express = require('express')
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
-
+const path = require('path')
 const cors = require('cors')
 const Service = require('./models/services.model')
 // Config dotev
