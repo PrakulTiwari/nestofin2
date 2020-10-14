@@ -38,14 +38,14 @@ exports.registerController = (req, res) => {
         })
 
         const token = jwt.sign({
-                name,
-                email,
-                password,
-                phonenumber
-            },
+            name,
+            email,
+            password,
+            phonenumber
+        },
             process.env.JWT_ACCOUNT_ACTIVATION, {
-                expiresIn: '5m'
-            }
+            expiresIn: '5m'
+        }
         );
 
         function generateOTP() {
@@ -214,11 +214,11 @@ exports.signinController = (req, res) => {
             }
             // generate a token and send to client
             const token = jwt.sign({
-                    _id: user._id
-                },
+                _id: user._id
+            },
                 process.env.JWT_SECRET, {
-                    expiresIn: '7d'
-                }
+                expiresIn: '7d'
+            }
             );
             const { _id, name, email, role, yolk_count, phonenumber } = user; //C 
 
@@ -273,8 +273,8 @@ exports.forgotPasswordController = (req, res) => {
         });
     } else {
         User.findOne({
-                email
-            },
+            email
+        },
             (err, user) => {
                 if (err || !user) {
                     return res.status(400).json({
@@ -283,15 +283,15 @@ exports.forgotPasswordController = (req, res) => {
                 }
 
                 const token = jwt.sign({
-                        _id: user._id
-                    },
+                    _id: user._id
+                },
                     process.env.JWT_RESET_PASSWORD, {
-                        expiresIn: '10m'
-                    }
+                    expiresIn: '10m'
+                }
                 );
 
                 function generateOTP() {
-                    var digits = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()_+';
+                    var digits = '0123456789';
                     var otpLength = 6;
                     var otp = '';
                     for (let i = 1; i <= otpLength; i++) {
@@ -351,8 +351,8 @@ exports.forgotPasswordController = (req, res) => {
                     });
 
                 return user.updateOne({
-                        resetPasswordLink: token
-                    },
+                    resetPasswordLink: token
+                },
                     (err, success) => {
                         if (err) {
                             console.log('RESET PASSWORD LINK ERROR', err);
@@ -399,7 +399,7 @@ exports.resetPasswordController = (req, res) => {
                     if (tokendetail) {
                         resetPasswordLink = tokendetail.token;
                         if (resetPasswordLink) {
-                            jwt.verify(resetPasswordLink, process.env.JWT_RESET_PASSWORD, function(
+                            jwt.verify(resetPasswordLink, process.env.JWT_RESET_PASSWORD, function (
                                 err,
                                 decoded
                             ) {
@@ -410,8 +410,8 @@ exports.resetPasswordController = (req, res) => {
                                 }
 
                                 User.findOne({
-                                        resetPasswordLink
-                                    },
+                                    resetPasswordLink
+                                },
                                     (err, user) => {
                                         if (err || !user) {
                                             return res.status(400).json({
@@ -514,46 +514,46 @@ exports.facebookController = (req, res) => {
         fetch(url, {
             method: 'GET'
         })
-        .then(response => response.json())
-        // .then(response => console.log(response))
-        .then(response => {
-            const { email, name } = response;
-            User.findOne({ email }).exec((err, user) => {
-                if (user) {
-                    const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
-                        expiresIn: '7d'
-                    });
-                    const { _id, email, name, role, yolk_count, phonenumber } = user; //C
-                    return res.json({
-                        token,
-                        user: { _id, email, name, role, yolk_count, phonenumber } //C
-                    });
-                } else {
-                    let password = email + process.env.JWT_SECRET;
-                    user = new User({ name, email, password });
-                    user.save((err, data) => {
-                        if (err) {
-                            console.log('ERROR FACEBOOK LOGIN ON USER SAVE', err);
-                            return res.status(400).json({
-                                error: 'User signup failed with facebook'
-                            });
-                        }
-                        const token = jwt.sign({ _id: data._id },
-                            process.env.JWT_SECRET, { expiresIn: '7d' }
-                        );
-                        const { _id, email, name, role, yolk_count, phonenumber } = data; //C
+            .then(response => response.json())
+            // .then(response => console.log(response))
+            .then(response => {
+                const { email, name } = response;
+                User.findOne({ email }).exec((err, user) => {
+                    if (user) {
+                        const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
+                            expiresIn: '7d'
+                        });
+                        const { _id, email, name, role, yolk_count, phonenumber } = user; //C
                         return res.json({
                             token,
                             user: { _id, email, name, role, yolk_count, phonenumber } //C
                         });
-                    });
-                }
-            });
-        })
-        .catch(error => {
-            res.json({
-                error: 'Facebook login failed. Try later'
-            });
-        })
+                    } else {
+                        let password = email + process.env.JWT_SECRET;
+                        user = new User({ name, email, password });
+                        user.save((err, data) => {
+                            if (err) {
+                                console.log('ERROR FACEBOOK LOGIN ON USER SAVE', err);
+                                return res.status(400).json({
+                                    error: 'User signup failed with facebook'
+                                });
+                            }
+                            const token = jwt.sign({ _id: data._id },
+                                process.env.JWT_SECRET, { expiresIn: '7d' }
+                            );
+                            const { _id, email, name, role, yolk_count, phonenumber } = data; //C
+                            return res.json({
+                                token,
+                                user: { _id, email, name, role, yolk_count, phonenumber } //C
+                            });
+                        });
+                    }
+                });
+            })
+            .catch(error => {
+                res.json({
+                    error: 'Facebook login failed. Try later'
+                });
+            })
     );
 };

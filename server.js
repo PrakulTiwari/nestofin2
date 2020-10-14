@@ -54,7 +54,9 @@ else if (process.env.NODE_ENV === 'production') {
 
     app.use(morgan('tiny'))
 
-
+    app.get('*', (req, res) => {
+        res.redirect(req.url())
+    })
     // app.get("/",(req,res)=>{
     //     res.sendFile(path.join('client-reacts','build','index.html'))
     // })
