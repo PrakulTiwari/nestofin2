@@ -27,11 +27,11 @@ ReactDOM.render(
       <Route path='/investing' exact render={props => <Investing {...props} />} />
       <Route path='/borrowing' exact render={props => <Borrowing {...props} />} />
       {/* <Route path='/dashboard' exact render={props => <Dashboard {...props} />} />  */}
-      {/*To check dashboard without login uncomment above line--------------------------------------------*/}    
+      {/*To check dashboard without login uncomment above line--------------------------------------------*/}
       <Route path='/login' exact render={props => <Login {...props} />} />
       <Route path='/register' exact render={props => <Register {...props} />} />
       <Route path='/users/password/forget' exact render={props => <ForgetPassword {...props} />} />
-      <Route path='/users/password/reset/:token' exact render={props => <ResetPassword {...props} />} />
+      <Route path='/users/password/reset' exact render={props => <ResetPassword {...props} />} />
       <Route path='/users/activate' exact render={props => <Activate {...props} />} />
       <PrivateRoute path="/dashboard" exact component={Dashboard} />
       <PrivateRoute path="/private" exact component={Private} />
