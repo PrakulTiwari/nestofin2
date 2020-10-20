@@ -12,6 +12,6 @@ router.post('/user/order', orderController);
 router.post('/user/verify', verifyController);
 router.post('/user/success', successController);
 router.post('/user/refund', refundController);
-router.post('/user/refund/success', refundSuccessController);
+// router.post('/user/refund/success', refundSuccessController);
 
 module.exports = router;

@@ -7,6 +7,7 @@ import { ToastContainer } from 'react-toastify';
 import img from '../assests/images/borrowing.png';
 import Othernavbar from '../assests/Othernavbar'
 import Buybutton from '../helpers/Buybutton';
+import Displayyolk from '../helpers/Displayyolk';
 
 function Investing({ history }) {
 
@@ -24,6 +25,7 @@ function Investing({ history }) {
             <p className="main-win-sub-win-para3">Fund with ease. Get started with $1 for cash and $500 for investment accounts.</p>
             <form><script src="https://cdn.razorpay.com/static/widget/payment-button.js" data-payment_button_id="pl_FVeWx1Ay2BVrRa"></script> </form>
             <Link to="/planning" className="planning-btn">Explore our free planning website</Link>
+            <Displayyolk />
             <Buybutton />
           </div>
           <div className="img">

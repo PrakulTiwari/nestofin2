@@ -11,19 +11,22 @@ const paymentScheama = new mongoose.Schema({
     contact: {
         type: String
     },
-    payment_id: {
+    referenceId: {
+        type: String
+    },
+    orderId: {
         type: String,
         required: true
     },
-    order_id: {
-        type: String,
-        required: true
-    },
-    method: {
+    paymentMode: {
         type: String
     },
-    status: {
+    txStatus: {
         type: String
+    },
+    amount: {
+        type: Number,
+        require: true
     }
 }, {
     timestamps: true

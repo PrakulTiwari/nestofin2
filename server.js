@@ -1,49 +1,24 @@
 const express = require('express')
 const morgan = require('morgan')
-const connectDB = require('./config/db')
 const bodyParser = require('body-parser')
+
 const cors = require('cors')
-const path = require('path')
+const Service = require('./models/services.model')
 // Config dotev
-
-
 require('dotenv').config({
     path: './config/config.env'
 })
 
-
 const app = express()
-
-// "functions": {
-//     "predeploy":  [
-//       "cd client-reacts && npm run build",
-//       "cd client-reacts && npm install",
-//       "node server.js",
-//       "cd client-reacts && npm start"
-//     ]
-//   }
-
+//socket
+const http = require('http').createServer(app)
+const io = require('socket.io')(http)
+exports.io = io;
 // Connect to database
-//hrlll
-//hell
-connectDB();
-
-// body parser
-app.use(bodyParser.json())
-// Load routes
-const authRouter = require('./routes/auth.route')
-const userRouter = require('./routes/user.route')
-//mongodb://heroku_b0jmp3bz:in4mev1iq46vqo2bo45e5pkicl@ds033046.mlab.com:33046/heroku_b0jmp3bz
-
-//sg pass :jt991s539944
-
-//app182679152@heroku.com
-
+const connectDB = require('./config/db')
 // Dev Logginf Middleware
 if (process.env.NODE_ENV === 'development') {
-    app.use(cors({
-        origin: process.env.CLIENT_URL
-    }))
+    app.use(cors());
     app.use(morgan('dev'))
 }
 else if (process.env.NODE_ENV === 'production') {
@@ -72,10 +47,53 @@ else if (process.env.NODE_ENV === 'production') {
     //     app.use(require('express-session')) 
 }
 
+// body parser
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json())
+
+// Load routes
+const authRouter = require('./routes/auth.route')
+const userRouter = require('./routes/user.route')
 // Use Routes
 app.use('/api', authRouter)
+
 app.use('/api', userRouter)
 
+
+
+connectDB().then(
+    () => {
+        console.log('Database Connected');
+    },
+    err => {
+        console.log(`Database connection error: ${err}`)
+    }
+);
+io.on('connection', socket => {
+    Service.findOne({ productName: 'YOLK' }, (err, yolk) => {
+        if (err) {
+            console.log('Check if DATABASE is connected')
+        } else if (!yolk) {
+            const newyolk = new Service({
+                productName: 'YOLK',
+                count: 25,
+            })
+            newyolk.save((err, nyolk) => {
+                if (err) {
+                    console.log('YOLKS not ready');
+                } else {
+                    io.emit('updateYolk', { count: nyolk.count });
+                    console.log('Ready to sell YOLKS');
+                }
+            });
+        } else {
+            console.log('Ready to sell YOLKS');
+            io.emit('updateYolk', { count: yolk.count });
+        }
+    });
+    console.log('New User Connected')
+
+});
 
 app.use((req, res) => {
     res.status(404).json({
@@ -86,6 +104,4 @@ app.use((req, res) => {
 
 const PORT = process.env.PORT || 5000
 
-app.listen(PORT, () => {
-    console.log(`App listening on port ${PORT}`);
-});
+http.listen(PORT, () => { console.log(`App listening on port ${PORT}`); });
