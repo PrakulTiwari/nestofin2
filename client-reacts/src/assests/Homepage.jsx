@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import './styles.css';
 import img from './images/undraw_Security_on_ff2u.png'
 
@@ -14,7 +14,7 @@ export default function Homepage() {
                     NESTOFIN.
                 </div>
                 <div className="a">
-                    <h1>Designed to earn you more</h1>
+                    <h1>Devised to earn you better</h1>
                 </div>
                 <div className="line"></div>
                 <div className="para1">
@@ -24,7 +24,7 @@ export default function Homepage() {
                     Let us optimize your finances and take the work out of banking, investing, borrowing, and planning.
                 </div>
                 <div className="getstart">
-                    <Link to='/getstarted'>Get Started</Link>
+                    <Link to='/register'>Get Started</Link>
                 </div>
             </div>
             <div className="window2">
@@ -48,19 +48,19 @@ export default function Homepage() {
                             Upgrade your investing
                         </div>
                         <div className="heading2">
-                            <h1>Earn 5x the interest</h1>
+                            <h1>Earn 3x the interest</h1>
                             <div className="subhead">
                                 <h1>with the Nest Account</h1>
                             </div>
                         </div>
                         <div className="win3para1">
-                            Earn 36% APY on all your investments, 5x the national average and enjoy features like:
+                            Earn 16% APY on all your investments, 3x the national average and enjoy features like:
                         </div>
                         <div className="win3para2">
-                            ~Direct investment and get instant withdrawals.<br />~Risk reduction by diversification.<br /> ~Use Apple Pay, Google Pay, Paytm, Phonepe, UPI, Net Banking.
+                            ~Direct investment and get instant withdrawals.<br />~Risk reduction by diversification.<br /> ~Use Credit card/Debit card Google Pay, Paytm, Phonepe, UPI, Net Banking.
                         </div>
                         <div className="win3btn">
-                            <Link to='/getstarted'>Get Started</Link>
+                            <Link to='/register'>Get Started</Link>
                         </div>
                     </div>
                     <div className="img1">
@@ -81,7 +81,7 @@ export default function Homepage() {
                         We believe in passive investing, which is the time-tested approach to grow your long-term savings. Let our software automatically execute investment best practices, and take the work out of managing your own investments.
                     </div>
                     <div className="second-btn">
-                        <Link to='/getstarted'>Get Started</Link>
+                        <Link to='/register'>Get Started</Link>
                     </div>
                     <ul>
                         <li className="win3-sec-paras li-para1">
@@ -128,6 +128,6 @@ export default function Homepage() {
                     </div>
                 </div>
             </div>
-    </div>
+        </div>
     );
 }
