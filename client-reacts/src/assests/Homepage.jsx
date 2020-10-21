@@ -18,10 +18,10 @@ export default function Homepage() {
                 </div>
                 <div className="line"></div>
                 <div className="para1">
-                    Unlike banks that let your cash sit in your accounts, we use technology to make more money on all your money, with no effort from you.
+                    Unlike banks that let your cash sit in your accounts, we use AI technology to make more out of less, with no effort from you.
                 </div>
                 <div className="para2">
-                    Let us optimize your finances and take the work out of banking, investing, borrowing, and planning.
+                    Let us optimize your finances and take the work out of investing, borrowing, and planning.
                 </div>
                 <div className="getstart">
                     <Link to='/register'>Get Started</Link>
@@ -29,16 +29,15 @@ export default function Homepage() {
             </div>
             <div className="window2">
                 <div className="sub-window">
-                    <div className="question">WHY CHOOSE Nestofin.?</div>
+                    <div className="question">WHY CHOOSE Nestofin?</div>
                     <div className="head1">
                         <h2>Meet Nest Egg™,</h2>
                     </div>
                     <div className="head2">
-                        <h2>our vision for the future</h2>
+                        <h2>innovation for the future</h2>
                     </div>
-                    <div className="win2para1">We want to optimize your money across spending, savings, and investments, putting it all to work effortlessly.</div>
-                    <div className="win2para2">Deposit your paycheck with Wealthfront and, with the click of a button, you can have us automate the rest. Our software can top off your emergency fund, pay all your bills, and even invest the rest to help meet your goals. We call this
-                        future Self-Driving Money™.</div>
+                    <div className="win2para1">We focus on primary allocation to cryptocurrency, land trusts, micro business lending, stock exchange and negative beta products like gold</div>
+                    <div className="win2para2">Deposit a portion of your pay with Nestofin and, with the click of a button, you can have us automate the rest. Automated investing function make sure that our client money is being invested within the right places and benefit with good rate of return along with utter stability and minimum risk.  </div>
                 </div>
             </div>
             <div className="window3">
@@ -69,12 +68,12 @@ export default function Homepage() {
                 </div>
                 <div className="second-window">
                     <div className="second-head1">
-                        LONG-TERM SAVINGS AT WORK
+                        PROFOUND SAVINGS AT WORK
                     </div>
                     <div className="second-head2">
-                        <h1>Put your investments</h1>
+                        <h1>Automate your</h1>
                         <div className="second-sub-head">
-                            <h1>on autopilot.</h1>
+                            <h1>investments.</h1>
                         </div>
                     </div>
                     <div className="second-para1">
@@ -89,21 +88,21 @@ export default function Homepage() {
                                 <div className="lines"></div>
                                 <h1>Start with a solid foundation</h1>
                             </div>
-                            We’ll build you a diversified portfolio of low-cost index funds that aims to maximize your returns while keeping you in your risk comfort zone. And our software maintains the appropriate investment mix over time.
+                            We’ll build you a diversified portfolio of cryptocurrency, land trusts, micro business lending, stock exchange. And our software maintains the appropriate investment mix over time.
                         </li>
                         <li className="win3-sec-paras li-para2">
                             <div className="para-para">
                                 <div className="lines"></div>
                                 <h1>Safety & Transparency</h1>
                             </div>
-                            (Content Writing)By implementing strategies like Tax-Loss Harvesting, our software helps lower the taxes you pay, so you’ll have more money to invest.
+                            Our aim and objective is to realize - healthy beta value in portfolio, therefore giving our clients - return with utter most stability and adaptability.
                         </li>
                         <li className="win3-sec-paras li-para3">
                             <div className="para-para">
                                 <div className="lines"></div>
                                 <h1>Flexibility</h1>
                             </div>
-                            (Content Writing)We don’t let higher fees eat away at your returns. Pay only a 0.25% annual advisory fee on what you invest. No trading commissions. No sales calls. No, really.
+                            We start investments with the very bit of Rs 100 and provide same day withdrawls with no penalty or extra charges thus making your money extra flexible!
                         </li>
                     </ul>
                     <div className="img2">

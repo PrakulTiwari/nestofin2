@@ -12,32 +12,28 @@ import Othernavbar from '../assests/Othernavbar';
 
 function Planning({ history }) {
 
-  return (
-            <div className="getstarted-page" id='top'>
-                <Othernavbar />
-                <ToastContainer />
-                <div className="main-win">
-                    <div className="sub-win">
-                        <div className="text-part">
-                            <h1>COMING SOON...</h1>
-                            <h1>Planning made delightfully easy</h1>
-                            <p className="main-win-sub-win-para1">Share personal info so we can verify your identity and tailor your advice.</p>
-                            <p className="main-win-sub-win-para2">Choose your first account to grow your cash or automate your investments.</p>
-                            <p className="main-win-sub-win-para3">Fund with ease. Get started with $1 for cash and $500 for investment accounts.</p>
-                            <Link to="/register" className="nest-btn">Open a Nest Account</Link>
-                            <Link to="/planning" className="planning-btn">Explore our free planning website</Link>
-                        </div>
-                        <div className="img">
-                          <img src={img} alt="image" />
-                          <div  className='planbuybutton'>
-                              <button>Buy Now</button>
-                          </div>
+    return (
+        <div className="getstarted-page" id='top'>
+            <Othernavbar />
+            <ToastContainer />
+            <div className="main-win">
+                <div className="sub-win">
+                    <div className="text-part">
+                        <h1>COMING SOON...</h1>
+                        <h3>Planning is simple with us.</h3>
+                        <p className="main-win-sub-win-para1">With the help of SEBI registered advisors and machine learning algorithm we tend to provide you complete solution in diversified portfolio creation with focus given on every nook and cranny.Our planning and advisory plans starts with a small ₹99 for a month’s unlimited financial and creative money management advice.We focus on individual client based needs and help you achieve your financial goals in a safe environment.Be it a salaried individual or a student, proper money management is a key to successful life and we deliver the planning, fabrication and countless hours of our research to your hands.</p>
+                    </div>
+                    <div className="img">
+                        <img src={img} alt="image" />
+                        <div className='planbuybutton'>
+                            <button>Buy Now</button>
                         </div>
                     </div>
                 </div>
-                <Footer />
             </div>
-  );
+            <Footer />
+        </div>
+    );
 }
 
 export default Planning;
