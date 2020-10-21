@@ -25,7 +25,7 @@
     width: 25vw;
     text-align: center;
     outline: none;
-    color: white;
+    color: black;
     transition: 0.25s;
 }
 
@@ -39,7 +39,7 @@
     background: none;
     outline: none;
     border: none;
-    color: white;
+    color: black;
     border: 2px solid greenyellow;
     padding: 15px;
     border-radius: 25px;
@@ -59,11 +59,11 @@
 }
 
 .planning .name h2 {
-    color: white;
+    color: black;
     transition: 0.25s;
 }
 
 .planning .name h4 {
-    color: white;
+    color: black;
     transition: 0.25s;
 }
