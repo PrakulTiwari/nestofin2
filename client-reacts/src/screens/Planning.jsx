@@ -48,7 +48,7 @@ function Planning({ history }) {
                 <input type="text" placeholder="Enter your name" className="n i" />
                 <input type="text" placeholder="Enter your age" className="n j" />
                 <input type="text" placeholder="Enter your salary" className="n k" />
-                <input type="submit" value="Submit" className="submit" onClick="sumit" />
+                <input type="submit" value="Submit" className="submit" onClick={sumit} />
                 <div className="name">
 
                 </div>
