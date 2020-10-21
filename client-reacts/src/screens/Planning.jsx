@@ -14,8 +14,7 @@ import '../assests/temp.css';
 const sumit = () => {
     const name = document.querySelector('.planning .i');
     const place = document.querySelector('.planning .name');
-    place.innerHTML = '<h2>Hello there ' + name.value + '!<h2>';
-    place.innerHTML = '<h4>Best Mutual funds for you are Axis Long Term Equity Fund and Axis Bluechip fund.</h4>'
+    place.innerHTML = '<h2>Hello there ' + name.value + '!<h2><h4>Best Mutual funds for you are Axis Long Term Equity Fund and Axis Bluechip fund.</h4>';
 }
 
 function Planning({ history }) {
