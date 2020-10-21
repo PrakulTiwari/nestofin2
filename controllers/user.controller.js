@@ -1,10 +1,8 @@
 const User = require('../models/auth.model');
 const Payment = require('../models/payment.model');
-const Service = require('../models/services.model')
 const shortid = require('shortid');
 const request = require('request');
 const crypto = require('crypto');
-const { io } = require('../server');
 require('dotenv').config({
     path: './config/config.env'
 })
@@ -106,88 +104,27 @@ exports.orderController = (req, res) => {
     }
 
     console.log(`URL: ${url} MODE: ${mode} SIGNATURE: ${signature}`)
-    Service.findOne({ productName: 'YOLK' })
-        .exec((err, yolk) => {
-            if (err) {
-                console.log('Error finding yolk')
-                return res.status(400).json({ error: err });
-            } else if (yolk) {
-                if (yolk.count > 0 && yolk.available && (yolk.count - req.body.count) >= 0) {
-                    yolk.count -= req.body.count;
-                    if (yolk.count <= 0) {
-                        yolk.available = false
-                    }
-                    yolk.save((err, yolk) => {
-                        if (yolk) {
-                            io.emit('updateYolk', { count: yolk.count });
-                        }
-                    })
-                    const payment = new Payment({
-                        email: postData.customerEmail,
-                        contact: postData.customerPhone,
-                        orderId: postData.orderId,
-                        amount: postData.orderAmount,
-                        txStatus: 'Ordered Pending...'
-                    });
-                    payment.save((err, paymentDetail) => {
-                        if (err) {
-                            console.log(`Payment Save error ${err}`);
-                        }
-                    });
-                    res.json({
-                        postData: JSON.stringify(postData),
-                        url
-                    });
-                } else {
-                    return res.status(400).json({ error: `${yolk.count} YOLKs AVAILABLE` });
-                }
-            } else {
-                return res.status(400).json({ error: 'We don\'t serve YOLKs NOW' });
-            }
-        })
+    const payment = new Payment({
+        email: postData.customerEmail,
+        contact: postData.customerPhone,
+        orderId: postData.orderId,
+        amount: postData.orderAmount,
+        txStatus: 'Ordered Pending...'
+    });
+    payment.save((err, paymentDetail) => {
+        if (err) {
+            console.log(`Payment Save error ${err}`);
+        }
+    });
+    res.json({
+        postData: JSON.stringify(postData),
+        url
+    });
 
 };
-/*
-Service.findOne({ productName: 'YOLK' })
-                        .exec((err, yolk) => {
-                            if (!err && yolk) {
-                                yolk.count -= (postData.orderAmount / 100);
-                                //add socket here
-                                io.emit('updateYolk', { count: yolk.count });
-                                if (yolk.count <= 0) {
-                                    yolk.available = false;
-                                }
-                                yolk.save((err, yolk) => {
-                                    if (err) {
-                                        console.log(`Yolk permission update error: ${err}`)
-                                    } else {
-                                        console.log('Yolk Updated');
-                                    }
-                                })
-                            }
-                        })
-*/
 exports.verifyController = (req, res) => {
     console.log(req.body.txStatus)
     if (req.body.txStatus === 'CANCELLED' || req.body.txStatus === 'FAILED') {
-        Service.findOne({ productName: 'YOLK' })
-            .exec((err, yolk) => {
-                if (!err && yolk) {
-                    yolk.count += (req.body.orderAmount / 100);
-                    //add socket here
-                    io.emit('updateYolk', { count: yolk.count });
-                    if (yolk.count > 0) {
-                        yolk.available = true;
-                    }
-                    yolk.save((err, yolk) => {
-                        if (err) {
-                            console.log(`Yolk permission update error: ${err}`)
-                        } else {
-                            console.log('Yolk Updated');
-                        }
-                    })
-                }
-            })
         Payment.deleteOne({ orderId: req.body.orderId }, err => {
             if (err) console.log('Deleting Order Error');
         });
@@ -195,7 +132,6 @@ exports.verifyController = (req, res) => {
     res.redirect(`${process.env.CLIENT_URL}/dashboard`)
 };
 exports.successController = (req, res) => {
-    console.log('Success Here Payment Successfull')
     const postData = {
         orderId: req.body.orderId,
         orderAmount: req.body.orderAmount,
@@ -222,7 +158,6 @@ exports.successController = (req, res) => {
                         payment.paymentMode = postData.paymentMode;
                         payment.referenceId = postData.referenceId;
                         payment.txStatus = 'Paid';
-
                         const email = payment.email;
                         User.findOne({ email }, (err, user) => {
                             if (user) {
@@ -263,45 +198,7 @@ exports.successController = (req, res) => {
                         console.log(`Payment Update Error ${err}`)
                     }
                 })
-        } else {
-            Service.findOne({ productName: 'YOLK' })
-                .exec((err, yolk) => {
-                    if (!err && yolk) {
-                        yolk.count += (postData.orderAmount / 100);
-                        //add socket here
-                        io.emit('updateYolk', { count: yolk.count });
-                        if (yolk.count > 0) {
-                            yolk.available = true;
-                        }
-                        yolk.save((err, yolk) => {
-                            if (err) {
-                                console.log(`Yolk permission update error: ${err}`)
-                            } else {
-                                console.log('Yolk Updated');
-                            }
-                        })
-                    }
-                })
         }
-    } else {
-        Service.findOne({ productName: 'YOLK' })
-            .exec((err, yolk) => {
-                if (!err && yolk) {
-                    yolk.count += (postData.orderAmount / 100);
-                    //add socket here
-                    io.emit('updateYolk', { count: yolk.count });
-                    if (yolk.count > 0) {
-                        yolk.available = true;
-                    }
-                    yolk.save((err, yolk) => {
-                        if (err) {
-                            console.log(`Yolk permission update error: ${err}`)
-                        } else {
-                            console.log('Yolk Updated');
-                        }
-                    })
-                }
-            })
     }
 };
 
@@ -320,8 +217,13 @@ exports.refundController = (req, res) => {
                 Payment.findOne({ referenceId }, (err, payment) => {
                     if (payment) {
                         if (payment.amount < refundAmount) {
-                            return res.status(200).json({
+                            return res.status(400).json({
                                 message: "Can't refund more than you bought"
+                            })
+                        }
+                        if (payment.txStatus !== 'Paid' || payment.txStatus !== 'Partially Refunded') {
+                            return res.status(400).json({
+                                message: "Either you have not Paid or you have Already applied for refund"
                             })
                         }
                         dataString = `appId=${process.env.CASHAPPID}&
@@ -335,11 +237,7 @@ exports.refundController = (req, res) => {
                         user.yolk_count -= count;
                         user.save();
                         payment.txStatus = 'Refund Processing...';
-                        payment.save((err, updatedpayment) => {
-                            if (err) {
-                                console.log('Payment UPDATE ERROR', err);
-                            }
-                        });
+                        payment.save();
                         const headers = {
                             'cache-control': 'no-cache',
                             'content-type': 'application/x-www-form-urlencoded'
@@ -363,7 +261,7 @@ exports.refundController = (req, res) => {
                             html: `   
                                 <h1>We will try to Serve you BETTER</h1>
                                 <br />
-                                <h3>Refund process for your Payment ID ${payment_id} will be initiated shortly</h3>
+                                <h3>Refund process for your Payment ID ${referenceId} will be initiated shortly</h3>
                                 <hr />
                                 <p>This email may containe sensitive information</p>
                                 <p>${process.env.CLIENT_URL}</p>
@@ -384,28 +282,34 @@ exports.refundController = (req, res) => {
                                 payment.save();
                                 user.yolk_count += count;
                                 user.save();
-                                return res.json(errors);
+                                return res.status(400).json(errors);
                             } else {
-                                Service.findOne({ productName: 'YOLK' })
-                                    .exec((err, yolk) => {
-                                        yolk.count += count;
-                                        if (!yolk.available) {
-                                            yolk.available = true;
-                                            io.emit('updateYolk', { count: yolk.count });
-                                        }
-
-                                        yolk.save((err, yolk) => {
-                                            if (err) {
-                                                console.log(`Yolk increase on refund error: ${err}`);
-                                            }
-                                        })
+                                const emailData = {
+                                    from: process.env.EMAIL_FROM,
+                                    pass: process.env.EMAIL_PASS,
+                                    to: payment.email,
+                                    subject: 'Refund Processed',
+                                    html: `   
+                                        <h1>We will try to Serve you BETTER</h1>
+                                        <br />
+                                        <h3>Refund processed for your Payment ID ${referenceId}</h3>
+                                        <hr />
+                                        <p>This email may containe sensitive information</p>
+                                        <p>${process.env.CLIENT_URL}</p>
+                                    `
+                                };
+                                sgMail
+                                    .send(emailData)
+                                    .then()
+                                    .catch(err => {
+                                        console.log(`Email Not send : ${err}`);
                                     });
                                 if (payment.amount === 0) {
                                     Payment.deleteOne({ referenceId: payment.referenceId }, err => {
                                         if (err) console.log('Deleting Payment Error');
                                     })
                                 } else {
-                                    payment.txStatus = 'Paid'
+                                    payment.txStatus = 'Partially Refunded'
                                     payment.save();
                                 }
                                 return res.status(200).json({
@@ -416,77 +320,10 @@ exports.refundController = (req, res) => {
                     }
                 });
             } else {
-                return res.status(200).json({
+                return res.status(400).json({
                     message: "Can't refund more than you have"
                 })
             }
         }
     })
 };
-
-/*exports.refundSuccessController = (req, res) => {
-    if (req.body.event === "refund.processed") {
-        const payment_id = req.body.payload.refund.entity.payment_id;
-        const count = req.body.payload.refund.entity.amount / 10000;
-        Service.findOne({ productName: 'YOLK' })
-            .exec((err, yolk) => {
-                yolk.count += count;
-                if (!yolk.available) {
-                    yolk.available = true;
-                    io.emit('updateYolk', { count: yolk.count });
-                }
-
-                yolk.save((err, yolk) => {
-                    if (err) {
-                        console.log(`Yolk increase on refund error: ${err}`);
-                    }
-                })
-            });
-        Payment.findOne({ payment_id }, (err, payment) => {
-            if (payment) {
-                payment.status = 'Refund Processed';
-                payment.save((err, updatedpayment) => {
-                    if (err) {
-                        console.log('Payment UPDATE ERROR', err);
-                    }
-                });
-
-                const email = payment.email;
-
-                User.findOne({ email }, (err, user) => {
-                    if (user) {
-                        user.yolk_count -= count;
-                        user.save((err, updatedUser) => {
-                            if (err) {
-                                console.log('USER UPDATE ERROR', err);
-                            }
-                        });
-                    }
-                });
-
-                const emailData = {
-                    from: process.env.EMAIL_FROM,
-                    pass: process.env.EMAIL_PASS,
-                    to: payment.email,
-                    subject: 'Refund Processed',
-                    html: `
-                        <h1>We will try to Serve you BETTER</h1>
-                        <br />
-                        <h3>Refund processed for your Payment ID ${payment_id}</h3>
-                        <hr />
-                        <p>This email may containe sensitive information</p>
-                        <p>${process.env.CLIENT_URL}</p>
-                    `
-                };
-                sgMail
-                    .send(emailData)
-                    .then()
-                    .catch(err => {
-                        console.log(`Email Not send : ${err}`);
-                    });
-            }
-        });
-    }
-
-    res.json({ status: 'ok' })
-};*/

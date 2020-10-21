@@ -3,7 +3,6 @@ const morgan = require('morgan')
 const bodyParser = require('body-parser')
 
 const cors = require('cors')
-const Service = require('./models/services.model')
 const path = require('path')
 // Config dotev
 require('dotenv').config({
@@ -11,15 +10,13 @@ require('dotenv').config({
 })
 
 const app = express()
-//socket
-const http = require('http').createServer(app)
-const io = require('socket.io')(http)
-exports.io = io;
 // Connect to database
 const connectDB = require('./config/db')
 // Dev Logginf Middleware
 if (process.env.NODE_ENV === 'development') {
-    app.use(cors());
+    app.use(cors({
+        origin: process.env.CLIENT_URL
+    }));
     app.use(morgan('dev'))
 }
 else if (process.env.NODE_ENV === 'production') {
@@ -70,31 +67,6 @@ connectDB().then(
         console.log(`Database connection error: ${err}`)
     }
 );
-io.on('connection', socket => {
-    Service.findOne({ productName: 'YOLK' }, (err, yolk) => {
-        if (err) {
-            console.log('Check if DATABASE is connected')
-        } else if (!yolk) {
-            const newyolk = new Service({
-                productName: 'YOLK',
-                count: 25,
-            })
-            newyolk.save((err, nyolk) => {
-                if (err) {
-                    console.log('YOLKS not ready');
-                } else {
-                    io.emit('updateYolk', { count: nyolk.count });
-                    console.log('Ready to sell YOLKS');
-                }
-            });
-        } else {
-            console.log('Ready to sell YOLKS');
-            io.emit('updateYolk', { count: yolk.count });
-        }
-    });
-    console.log('New User Connected')
-
-});
 
 app.use((req, res) => {
     res.status(404).json({
@@ -105,4 +77,4 @@ app.use((req, res) => {
 
 const PORT = process.env.PORT || 5000
 
-http.listen(PORT, () => { console.log(`App listening on port ${PORT}`); });
+app.listen(PORT, () => { console.log(`App listening on port ${PORT}`); });
