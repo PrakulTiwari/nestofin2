@@ -11,7 +11,7 @@ import img from '../assests/images/planning.png';
 import Othernavbar from '../assests/Othernavbar';
 import '../assests/temp.css';
 
-function sumit() {
+const sumit = () => {
     const name = document.querySelector('.planning .i');
     const place = document.querySelector('.planning .name');
     place.innerHTML = '<h2>Hello there ' + name.value + '!<h2>';
