@@ -44,10 +44,10 @@ function Planning({ history }) {
         //     </div>
         //     <Footer />
         // </div>
-        <div classNameName="page" id="top">
+        <div className="page" id="top">
             <Othernavbar />
             <ToastContainer />
-            <div classNameName="planning">
+            <div className="planning">
                 <input type="text" placeholder="Enter your name" className="n" />
                 <input type="number" placeholder="Enter your age" className="n age" />
                 <label htmlFor="monthly-savings">Monthly Savings</label>
