@@ -17,9 +17,9 @@ const sumit = () => {
     place.innerHTML = '<h2>Hello there ' + name.value + '!<h2><h3>The best mutual funds recommended for you are: <ol><li>1. Mirae Asset Emerging Bluechip Fund</li><li>2. HDFC Midcap oppurtunities fund</li></ol>';
 }
 
-const updateTextInput = () => {
-    document.getElementById('textInput').value = '₹' + document.querySelector('.savings').value;
-}
+// const updateTextInput = () => {
+//     document.getElementById('textInput').value = '₹' + document.querySelector('.savings').value;
+// }
 
 function Planning({ history }) {
 
@@ -53,7 +53,7 @@ function Planning({ history }) {
                 <label htmlFor="monthly-savings">Monthly Savings</label>
                 <div className="range-monthly-savings" />
 
-                <input type="range" name="rangeInput" min="1000" max="20000" step="100" class="savings" onchange={updateTextInput} />
+                <input type="range" name="rangeInput" min="1000" max="20000" step="100" class="savings" onchange={document.getElementById('textInput').value = '₹' + document.querySelector('.savings').value} />
                 <input type="text" id="textInput" value="" />
                 <input type="email" className="n email" placeholder="Enter your email" />
                 <textarea name="goals" id="goals" cols="30" rows="10" placeholder="Describe your short and long term goals" className="n"></textarea>
