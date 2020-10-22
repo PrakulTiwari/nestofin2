@@ -48,7 +48,7 @@ function Planning({ history }) {
             <Othernavbar />
             <ToastContainer />
             <div className="planning">
-                <input type="text" placeholder="Enter your name" className="n" />
+                <input type="text" placeholder="Enter your name" className="n i" />
                 <input type="number" placeholder="Enter your age" className="n age" />
                 <label htmlFor="monthly-savings">Monthly Savings</label>
                 <div className="range-monthly-savings" />
