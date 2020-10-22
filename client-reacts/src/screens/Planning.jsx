@@ -53,7 +53,7 @@ function Planning({ history }) {
                 <label htmlFor="monthly-savings">Monthly Savings</label>
                 <div className="range-monthly-savings" />
                 <input type="text" id="textInput" value="" />
-                <input type="range" name="rangeInput" min="1000" max="20000" step="100" onchange={updateTextInput(this.value)} />
+                <input type="range" name="rangeInput" min="1000" max="20000" step="100" class="savings" onchange={updateTextInput(document.querySelector('.savings').value)} />
                 <input type="email" className="n email" placeholder="Enter your email" />
                 <textarea name="goals" id="goals" cols="30" rows="10" placeholder="Describe your short and long term goals" className="n"></textarea>
                 <input type="submit" value="Submit" className="submit" />
