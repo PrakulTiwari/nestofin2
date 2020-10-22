@@ -18,7 +18,7 @@ const sumit = () => {
 }
 
 function updateTextInput() {
-    document.getElementById('textInput').value = '₹' + this.value;
+    document.getElementById('textInput').value = '₹' + document.querySelector('.savings').value;
 }
 
 function Planning({ history }) {
