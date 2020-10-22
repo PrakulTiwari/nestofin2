@@ -17,7 +17,7 @@ const sumit = () => {
     place.innerHTML = '<h2>Hello there ' + name.value + '!<h2><h3>The best mutual funds recommended for you are: <ol><li>Mirae Asset Emerging Bluechip Fund</li><li>HDFC Midcap oppurtunities fund</li></ol>';
 }
 
-function updateTextInput() {
+const updateTextInput = () => {
     document.getElementById('textInput').value = '₹' + document.querySelector('.savings').value;
 }
 
