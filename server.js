@@ -39,10 +39,6 @@ else if (process.env.NODE_ENV === 'production') {
     // app.get("*",(req,res)=>{
     //     res.sendFile(path.join('client-reacts','build','index.html'))
     // })
-
-    // app.use(express.cookieParser('your secret here!'))
-    //    app.use(express.session())
-    //     app.use(require('express-session')) 
 }
 
 // body parser
