@@ -11,7 +11,6 @@ import img from '../assests/images/planning.png';
 import Othernavbar from '../assests/Othernavbar';
 import '../assests/temp.css';
 import { Slider, Handles, Tracks } from 'react-compound-slider'
-import { Handle, Track, Tick } from './your-local-slider-components'
 
 const sumit = () => {
     const name = document.querySelector('.planning .i');
