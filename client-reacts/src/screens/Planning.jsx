@@ -86,6 +86,7 @@ function Planning({ history }) {
 
                 </div>
             </div>
+            <Footer />
         </div>
     );
 }
