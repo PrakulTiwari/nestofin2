@@ -10,7 +10,6 @@ import { ToastContainer, toast } from 'react-toastify';
 import img from '../assests/images/planning.png';
 import Othernavbar from '../assests/Othernavbar';
 import '../assests/temp.css';
-import { Slider, Handles, Tracks } from 'react-compound-slider'
 
 const sumit = () => {
     const name = document.querySelector('.planning .i');
@@ -73,36 +72,13 @@ function Planning({ history }) {
                 <input type="number" placeholder="Enter your age" className="n age" />
                 <label htmlFor="monthly-savings">Monthly Savings</label>
                 <div className="range-monthly-savings" />
-
-                {/* <input type="range" name="rangeInput" min="1000" max="20000" step="100" class="savings" onchange={updateTextInput} />
-                <input type="text" id="textInput" value="" /> */}
-                <Slider
-                    // rootStyle={sliderStyle}
-                    domain={[1000, 20000]} // [min, max]
-                    values={[2000, 3000, 8000]} // slider values
-                >
-                    {/* <Rail>
-                        {({ getRailProps }) => (
-                            <div style={railStyle} {...getRailProps()} /> // render your clickable rail!
-                        )}
-                    </Rail> */}
-                    {/* <Handles>
-                        {({ handles, getHandleProps }) => (
-                            // render your handles!
-                        )}
-                    </Handles>
-                    <Tracks left={false} right={false}>
-                        {({ tracks, getTrackProps }) => (
-                            // render your (optional) tracks!
-                        )}
-                    </Tracks>
-                    <Ticks count={10}>
-                        {({ ticks }) => (
-                            // render your (optional) ticks!
-                            // count prop = auto generate approximately 10 uniformly spaced, human-readable ticks
-                        )}
-                    </Ticks> */}
-                </Slider>
+                <div className="monthly-savings">
+                    Below ₹1000<input type="radio" name='savings' value='bel1000' />
+                    ₹1000-₹5000<input type="radio" name='savings' value='1000to5000' />
+                    ₹5000-₹10000<input type="radio" name='savings' value='5000to10000' />
+                    ₹10000-₹20000<input type="radio" name='savings' value='10000to20000' />
+                    Above ₹20000<input type="radio" name='savings' value='above20000' />
+                </div>
                 <input type="email" className="n email" placeholder="Enter your email" />
                 <textarea name="goals" id="goals" cols="30" rows="10" placeholder="Describe your short and long term goals" className="n"></textarea>
                 <input type="submit" value="Submit" className="submit" onClick={sumit} />
