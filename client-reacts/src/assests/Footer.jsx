@@ -11,10 +11,10 @@ export default function Footer() {
         <div className="window5">
             <div className="last-nav">
                 <ul>
-                    <li className="others"><Link to="/investing">Investing</Link></li>
-                    <li className="others"><Link to="/borrowing">Borrowing</Link></li>
-                    <li className="others"><Link to="/planning">Planning</Link></li>
-                    <li className="others"><Link to="/learnmore">Learn More</Link></li>
+                    <li className="others"><Link to="/">Investing</Link></li>
+                    <li className="others"><Link to="/">Borrowing</Link></li>
+                    <li className="others"><Link to="/">Planning</Link></li>
+                    <li className="others"><Link to="/">Learn More</Link></li>
                     <li className="others"><Link to="/">Go To Home</Link></li>
                     <li><a href="#top">Back to Top</a></li>
                 </ul>
