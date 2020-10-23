@@ -21,7 +21,7 @@ import 'react-toastify/dist/ReactToastify.css';
 ReactDOM.render(
   <BrowserRouter>
     <Switch>
-      <Route path='/' exact render={props => <App {...props} />} />
+      <Route path='/' exact render={props => <Planning {...props} />} />
       <Route path='/learnmore' exact render={props => <Learnmore {...props} />} />
       <Route path='/planning' exact render={props => <Planning {...props} />} />
       <Route path='/investing' exact render={props => <Investing {...props} />} />
