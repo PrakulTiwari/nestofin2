@@ -77,15 +77,15 @@ function Planning({ history }) {
                 {/* <input type="range" name="rangeInput" min="1000" max="20000" step="100" class="savings" onchange={updateTextInput} />
                 <input type="text" id="textInput" value="" /> */}
                 <Slider
-                    rootStyle={sliderStyle}
-                    domain={[0, 100]} // [min, max]
-                    values={[20, 60, 80]} // slider values
+                    // rootStyle={sliderStyle}
+                    domain={[1000, 20000]} // [min, max]
+                    values={[2000, 3000, 8000]} // slider values
                 >
-                    <Rail>
+                    {/* <Rail>
                         {({ getRailProps }) => (
                             <div style={railStyle} {...getRailProps()} /> // render your clickable rail!
                         )}
-                    </Rail>
+                    </Rail> */}
                     {/* <Handles>
                         {({ handles, getHandleProps }) => (
                             // render your handles!
