@@ -81,5 +81,9 @@
 }
 
 .planning .monthly-savings {
+    display: flex;
+    width: 100vw;
+    align-items: center;
+    justify-content: space-around;
     color: black;
 }
