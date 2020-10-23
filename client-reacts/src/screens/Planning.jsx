@@ -21,6 +21,25 @@ const updateTextInput = (val) => {
     document.getElementById('textInput').value = '₹' + val;
 }
 
+// getInitialState: function() {
+//     return {value: 3};
+//   },
+//   handleChange: function(event) {
+//     this.setState({value: event.target.value});
+//   },
+//   render: function() {
+//     return (
+//       <input 
+//         id="typeinp" 
+//         type="range" 
+//         min="0" max="5" 
+//         value={this.state.value} 
+//         onChange={this.handleChange}
+//         step="1"/>
+//     );
+//   }
+
+
 function Planning({ history }) {
 
     return (
@@ -53,7 +72,7 @@ function Planning({ history }) {
                 <label htmlFor="monthly-savings">Monthly Savings</label>
                 <div className="range-monthly-savings" />
 
-                <input type="range" name="rangeInput" min="1000" max="20000" step="100" class="savings" onchange={updateTextInput('this.value')} />
+                <input type="range" name="rangeInput" min="1000" max="20000" step="100" class="savings" onchange={updateTextInput(this.state.value)} />
                 <input type="text" id="textInput" value="" />
                 <input type="email" className="n email" placeholder="Enter your email" />
                 <textarea name="goals" id="goals" cols="30" rows="10" placeholder="Describe your short and long term goals" className="n"></textarea>
