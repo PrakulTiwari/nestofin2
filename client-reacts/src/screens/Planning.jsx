@@ -67,7 +67,7 @@ function Planning({ history }) {
         <div className="page" id="top">
             <Othernavbar />
             <ToastContainer />
-            <p>Fill in the details so that our algorithm can decide which mutual funds are best for you!</p>
+            <h1>Fill in the details so that our algorithm can decide which mutual funds are best for you!</h1>
             <div className="planning">
                 <input type="text" placeholder="Enter your name" className="n i" />
                 <input type="number" placeholder="Enter your age" className="n age" />
