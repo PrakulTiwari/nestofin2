@@ -36,7 +36,7 @@ ReactDOM.render(
       <PrivateRoute path="/dashboard" exact component={Dashboard} />
       <PrivateRoute path="/private" exact component={Private} />
       <AdminRoute path="/admin" exact component={Admin} />
-      <Redirect to='/' />
+      {/* <Redirect to='/' /> */}
     </Switch>
   </BrowserRouter>,
   document.getElementById('root')

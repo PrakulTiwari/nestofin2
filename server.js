@@ -66,12 +66,12 @@ connectDB().then(
     }
 );
 
-// app.use((req, res) => {
-//     res.status(404).json({
-//         success: false,
-//         msg: "Page not founded"
-//     })
-// })
+app.use((req, res) => {
+    res.status(404).json({
+        success: false,
+        msg: "Page not founded"
+    })
+})
 
 const PORT = process.env.PORT || 5000
 
