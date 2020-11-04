@@ -28,7 +28,9 @@ else if (process.env.NODE_ENV === 'production') {
     app.use(morgan('tiny'))
 
     // app.get('*', (req, res) => {
-    //     res.redirect(req.url())
+    //     console.log(req.path)
+    //     console.log(req.hostname)
+    //     res.redirect(req.path + req.hostname)
     // })
     // app.get("/",(req,res)=>{
     //     res.sendFile(path.join('client-reacts','build','index.html'))
@@ -64,12 +66,12 @@ connectDB().then(
     }
 );
 
-app.use((req, res) => {
-    res.status(404).json({
-        success: false,
-        msg: "Page not founded"
-    })
-})
+// app.use((req, res) => {
+//     res.status(404).json({
+//         success: false,
+//         msg: "Page not founded"
+//     })
+// })
 
 const PORT = process.env.PORT || 5000
 
