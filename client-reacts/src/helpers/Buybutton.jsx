@@ -97,7 +97,7 @@ function Buybutton() {
   }
   return (
     <div className='payment'>
-      <form action="https://www.cashfree.com/checkout/post/submit" id='frm1' name='frm1' method="post"></form>
+      <form action={url} id='frm1' name='frm1' method="post"></form>
       <div className="count">
         {count}
         <div className="control">
