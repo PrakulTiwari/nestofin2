@@ -26,21 +26,15 @@ else if (process.env.NODE_ENV === 'production') {
     }))
 
     app.use(morgan('tiny'))
-
-    // app.get('*', (req, res) => {
-    //     console.log(req.path)
-    //     console.log(req.hostname)
-    //     res.redirect(req.path + req.hostname)
-    // })
     // app.get("/",(req,res)=>{
     //     res.sendFile(path.join('client-reacts','build','index.html'))
     // })
     // app.get("/*",(req,res)=>{
     //     res.sendFile(path.join('client-reacts','build','index.html'))
     // })
-    // app.get("*",(req,res)=>{
-    //     res.sendFile(path.join('client-reacts','build','index.html'))
-    // })
+    app.get("*", (req, res) => {
+        res.sendFile(path.join('client-reacts', 'build', 'index.html'))
+    })
 }
 
 // body parser
