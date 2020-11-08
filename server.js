@@ -34,9 +34,9 @@ else if (process.env.NODE_ENV === 'production') {
     // app.get("/*",(req,res)=>{
     //     res.sendFile(path.join('client-reacts','build','index.html'))
     // })
-    app.get("*", (req, res) => {
-        res.sendFile(path.join('client-reacts', 'build', 'index.html'))
-    })
+    // app.get("*", (req, res) => {
+    //     res.sendFile(path.join('client-reacts', 'build', 'index.html'))
+    // })
 }
 
 // body parser
