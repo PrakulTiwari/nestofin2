@@ -149,7 +149,7 @@ exports.successController = (req, res) => {
     },
         secretKey = process.env.CASHSECRETKEY,
 
-        signatureData = "";
+    var signatureData = "";
     for (let key in postData) {
         signatureData += postData[key];
     }
