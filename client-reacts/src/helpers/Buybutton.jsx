@@ -47,11 +47,13 @@ function Buybutton() {
         }
       });
   };
+  const [buytext, setbuytext] = useState('BUY NOW');
   const [url, seturl] = useState('#');
   const name = formData.name;
   const email = formData.email;
   const contact = formData.phonenumber;
   const clickhandler = () => {
+    setbuytext('Wait...')
     if (isAuth()) {
       axios
         .post(`${process.env.REACT_APP_API_URL}/user/order`, {
@@ -109,7 +111,7 @@ function Buybutton() {
         onClick={clickhandler}
         className='tracking-wide font-semibold text-gray-100 w-full py-4 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none'
       >
-        BUY NOW
+        {buytext}
       </button>
     </div>
   );

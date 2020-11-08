@@ -2,10 +2,16 @@ const mongoose = require('mongoose');
 const crypto = require('crypto');
 // payment schema
 const paymentScheama = new mongoose.Schema({
+    orderId: {
+        type: String,
+        unique:true,
+        required: true
+    },
     email: {
         type: String,
         trim: true,
-        required: true,
+        unique:false,
+        // required: true,
         lowercase: true
     },
     contact: {
@@ -13,10 +19,6 @@ const paymentScheama = new mongoose.Schema({
     },
     referenceId: {
         type: String
-    },
-    orderId: {
-        type: String,
-        required: true
     },
     paymentMode: {
         type: String

@@ -28,8 +28,6 @@ exports.readController = (req, res) => {
 };
 
 exports.updateController = (req, res) => {
-
-    // console.log('UPDATE USER - req.user', req.user, 'UPDATE DATA', req.body);
     const { name, password } = req.body;
 
     User.findOne({ _id: req.user._id }, (err, user) => {
@@ -112,35 +110,43 @@ exports.orderController = (req, res) => {
         txStatus: 'Ordered Pending...'
     });
     payment.save((err, paymentDetail) => {
-        if (err) {
+        if (err || !paymentDetail) {
             console.log(`Payment Save error ${err}`);
+            res.status(400).json({
+                errors: `Can't proceed`
+            });
+            res.end()
+        } else {
+            res.json({
+                postData: JSON.stringify(postData),
+                url
+            });
+            res.end()
         }
     });
-    res.json({
-        postData: JSON.stringify(postData),
-        url
-    });
-
 };
 exports.verifyController = (req, res) => {
-    console.log(req.body.txStatus)
+    console.log(req.body)
     if (req.body.txStatus === 'CANCELLED' || req.body.txStatus === 'FAILED') {
         Payment.deleteOne({ orderId: req.body.orderId }, err => {
             if (err) console.log('Deleting Order Error');
         });
+        res.render('afterpayment', { success: false })
+    } else {
+        res.render('afterpayment', { success: true })
     }
-    res.redirect(`${process.env.CLIENT_URL}/dashboard`)
+
 };
 exports.successController = (req, res) => {
     const postData = {
-        orderId: req.body.orderId,
-        orderAmount: req.body.orderAmount,
-        referenceId: req.body.referenceId,
-        txStatus: req.body.txStatus,
-        paymentMode: req.body.paymentMode,
-        txMsg: req.body.txMsg,
-        txTime: req.body.txTime
-    },
+            orderId: req.body.orderId,
+            orderAmount: req.body.orderAmount,
+            referenceId: req.body.referenceId,
+            txStatus: req.body.txStatus,
+            paymentMode: req.body.paymentMode,
+            txMsg: req.body.txMsg,
+            txTime: req.body.txTime
+        },
         secretKey = process.env.CASHSECRETKEY,
 
         signatureData = "";

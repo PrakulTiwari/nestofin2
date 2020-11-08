@@ -10,6 +10,8 @@ require('dotenv').config({
 })
 
 const app = express()
+app.use(express.static(__dirname + '/public'));
+app.set('view engine', 'ejs')
 // Connect to database
 const connectDB = require('./config/db')
 // Dev Logginf Middleware
