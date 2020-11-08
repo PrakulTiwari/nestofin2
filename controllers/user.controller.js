@@ -139,14 +139,14 @@ exports.verifyController = (req, res) => {
 };
 exports.successController = (req, res) => {
     const postData = {
-            orderId: req.body.orderId,
-            orderAmount: req.body.orderAmount,
-            referenceId: req.body.referenceId,
-            txStatus: req.body.txStatus,
-            paymentMode: req.body.paymentMode,
-            txMsg: req.body.txMsg,
-            txTime: req.body.txTime
-        },
+        orderId: req.body.orderId,
+        orderAmount: req.body.orderAmount,
+        referenceId: req.body.referenceId,
+        txStatus: req.body.txStatus,
+        paymentMode: req.body.paymentMode,
+        txMsg: req.body.txMsg,
+        txTime: req.body.txTime
+    },
         secretKey = process.env.CASHSECRETKEY,
 
         signatureData = "";
