@@ -26,9 +26,9 @@ function Refundform() {
             setformvalue('')
             setRefundstate(res.data.message)
           }
-        }).catch((errors) => {
+        }).catch((err) => {
           setformvalue('')
-          console.log(`Refund Error: ${errors.error}`)
+          console.log(`Refund Error: ${err.error}`)
         });
     }
     else {
