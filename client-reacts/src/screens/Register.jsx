@@ -15,89 +15,89 @@ const Register = () => {
     email: '',
     password1: '',
     password2: '',
-    phonenumber:'',
+    phonenumber: '',
     textChange: 'Sign Up'
   });
 
   const [value, setValue] = useState('')
   const [btntext, settext] = useState('Verify Mobile Number');
   const [allowed, setpermission] = useState(false);
-  const { name, email, password1, password2, phonenumber, textChange} = formData;
+  const { name, email, password1, password2, phonenumber, textChange } = formData;
   const handleChange = text => e => {
     setFormData({ ...formData, [text]: e.target.value });
   };
-  const [btnstyle,setbtnstyle] = useState({
-    cursor:'not-allowed',
-    backgroundColor:'#808080'
+  const [btnstyle, setbtnstyle] = useState({
+    cursor: 'not-allowed',
+    backgroundColor: '#808080'
   });
-  const handlenumberClick=()=>{
+  const handlenumberClick = () => {
     settext('Sending OTP...wait');
-    let recaptcha = new Firebase.auth.RecaptchaVerifier('recaptcha',{'size':'invisible'});
+    let recaptcha = new Firebase.auth.RecaptchaVerifier('recaptcha', { 'size': 'invisible' });
     let number = value;
     Firebase.auth().signInWithPhoneNumber(number, recaptcha)
-                  .then( function(e) {
-                    let code = prompt('Enter the otp', ''); 
-                      if(code === null) return;
-                      e.confirm(code).then(function (result) {
-                          settext('Mobile Number Verified');
-                          setpermission(true);
-                          setbtnstyle({
-                            cursor:'pointer',
-                            backgroundColor:'#667eea'
-                          })
-                          setFormData({ ...formData, phonenumber: result.user.phoneNumber });
-                      }).catch(function (error) {
-                          console.error( error);
-                      });
-                  })
-                  .catch(function (error) {
-                      console.error( `cant authrorised ${error}`);
-                  });
+      .then(function (e) {
+        let code = prompt('Enter the otp', '');
+        if (code === null) return;
+        e.confirm(code).then(function (result) {
+          settext('Mobile Number Verified');
+          setpermission(true);
+          setbtnstyle({
+            cursor: 'pointer',
+            backgroundColor: '#667eea'
+          })
+          setFormData({ ...formData, phonenumber: result.user.phoneNumber });
+        }).catch(function (error) {
+          console.error(error);
+        });
+      })
+      .catch(function (error) {
+        console.error(`cant authrorised ${error}`);
+      });
   }
-  const handleSubmit = e => { 
+  const handleSubmit = e => {
     e.preventDefault();
     if (name && email && password1 && phonenumber) {
-      if(allowed){
-      if (password1 === password2) {
-        setFormData({ ...formData, textChange: 'Submitting' });
-        axios
-          .post(`${process.env.REACT_APP_API_URL}/register`, {
-            name,
-            email,
-            password: password1,
-            phonenumber
-          })
-          .then(res => {
-            setFormData({
-              ...formData,
-              name: '',
-              email: '',
-              password1: '',
-              password2: '',
-              phonenumber:'',
-              textChange: 'Submitted'
-            });
+      if (allowed) {
+        if (password1 === password2) {
+          setFormData({ ...formData, textChange: 'Submitting' });
+          axios
+            .post(`${process.env.REACT_APP_API_URL}/register`, {
+              name,
+              email,
+              password: password1,
+              phonenumber
+            })
+            .then(res => {
+              setFormData({
+                ...formData,
+                name: '',
+                email: '',
+                password1: '',
+                password2: '',
+                phonenumber: '',
+                textChange: 'Submitted'
+              });
 
-            toast.success(res.data.message);
-          })
-          .catch(err => {
-            setFormData({
-              ...formData,
-              name: '',
-              email: '',
-              password1: '',
-              password2: '',
-              phonenumber:'',
-              textChange: 'Sign Up'
+              toast.success(res.data.message);
+            })
+            .catch(err => {
+              setFormData({
+                ...formData,
+                name: '',
+                email: '',
+                password1: '',
+                password2: '',
+                phonenumber: '',
+                textChange: 'Sign Up'
+              });
+              settext('Verify Mobile Number');
+              setpermission(false);
+              console.log(err.response);
+              toast.error("An account with that email already exists");
             });
-            settext('Verify Mobile Number');
-            setpermission(false);
-            console.log(err.response);
-            toast.error("An account with that email already exists");
-          });
-      } else {
-        toast.error("Passwords don't match");
-      }
+        } else {
+          toast.error("Passwords don't match");
+        }
       } else {
         toast.error("Please Verify Phone Number");
       }
@@ -113,7 +113,7 @@ const Register = () => {
         <div className='lg:w-1/2 xl:w-5/12 p-6 sm:p-12'>
           <div className='mt-12 flex flex-col items-center'>
             <h1 className='text-2xl xl:text-3xl font-extrabold'>
-              Sign Up for <span style={{textDecoration:'underline'}}><Link to='/'>NESTO/Fin.</Link></span>
+              Sign Up for <span style={{ textDecoration: 'underline' }}><Link to='/'>NESTO/Fin.</Link></span>
             </h1>
             <p className='text-2m font-extrabold'>Note: The password must contain a number</p>
             <form
@@ -160,9 +160,9 @@ const Register = () => {
                 <div>
                   <div id="recaptcha"></div>
                   <div
-                  onClick={handlenumberClick}
-                  style={{cursor:'pointer'}} 
-                  className='bg-indigo-500 text-white text-sm rounded-md p-2 mt-4 mx-auto focus:outline-none w-3/4 text-center'
+                    onClick={handlenumberClick}
+                    style={{ cursor: 'pointer' }}
+                    className='bg-indigo-500 text-white text-sm rounded-md p-2 mt-4 mx-auto focus:outline-none w-3/4 text-center'
                   >{btntext}</div>
                 </div>
                 <button
