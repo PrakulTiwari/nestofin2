@@ -148,7 +148,7 @@ exports.successController = (req, res) => {
         txTime: req.body.txTime
     },
         secretKey = process.env.CASHSECRETKEY,
-    const signatureData = "";
+        signatureData = "";
     for (let key in postData) {
         signatureData += postData[key];
     }
