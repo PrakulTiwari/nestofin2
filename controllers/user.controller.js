@@ -138,7 +138,7 @@ exports.verifyController = (req, res) => {
 
 };
 exports.successController = (req, res) => {
-    const postData = {
+    let postData = {
         orderId: req.body.orderId,
         orderAmount: req.body.orderAmount,
         referenceId: req.body.referenceId,
