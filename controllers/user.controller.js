@@ -146,9 +146,9 @@ exports.successController = (req, res) => {
         paymentMode: req.body.paymentMode,
         txMsg: req.body.txMsg,
         txTime: req.body.txTime
-    },
-    const secretKey = process.env.CASHSECRETKEY,
-    const signatureData = "";
+    }
+    const secretKey = process.env.CASHSECRETKEY;
+    let signatureData = "";
     for (let key in postData) {
         signatureData += postData[key];
     }
