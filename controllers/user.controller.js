@@ -81,7 +81,7 @@ exports.orderController = (req, res) => {
         customerEmail: req.body.email,
         customerPhone: req.body.contact,
         returnUrl: `${req.body.url}/user/verify`,
-        notifyUrl: `https://40bbdeaf647a.ngrok.io/api/user/success`
+        notifyUrl: `https://www.nestofin.com/api/user/success`
     }
     mode = process.env.CASHMODE,
         secretKey = process.env.CASHSECRETKEY,
