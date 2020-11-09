@@ -75,14 +75,14 @@ exports.orderController = (req, res) => {
     const postData = {
         appId: process.env.CASHAPPID,
         orderId: shortid.generate(),
-        orderAmount: req.body.count * 100,
+        orderAmount: req.body.count * parseInt(process.env.YOLK_PRICE),
         orderCurrency: 'INR',
         orderNote: req.body.email,
         customerName: req.body.name,
         customerEmail: req.body.email,
         customerPhone: req.body.contact,
         returnUrl: `${req.body.url}/user/verify`,
-        notifyUrl: `http://www.nestofin.com/api/user/success`
+        notifyUrl: `https://797333f63b55.ngrok.io/api/user/success`
     }
     mode = process.env.CASHMODE,
         secretKey = process.env.CASHSECRETKEY,
@@ -142,14 +142,14 @@ exports.verifyController = (req, res) => {
 exports.successController = (req, res) => {
     console.log('Successfull Payment')
     const postData = {
-        orderId: req.body.orderId,
-        orderAmount: req.body.orderAmount,
-        referenceId: req.body.referenceId,
-        txStatus: req.body.txStatus,
-        paymentMode: req.body.paymentMode,
-        txMsg: req.body.txMsg,
-        txTime: req.body.txTime
-    }
+            orderId: req.body.orderId,
+            orderAmount: req.body.orderAmount,
+            referenceId: req.body.referenceId,
+            txStatus: req.body.txStatus,
+            paymentMode: req.body.paymentMode,
+            txMsg: req.body.txMsg,
+            txTime: req.body.txTime
+        }
     const secretKey = process.env.CASHSECRETKEY;
 
     let signatureData = "";
@@ -170,7 +170,7 @@ exports.successController = (req, res) => {
                         const email = payment.email;
                         User.findOne({ email }, (err, user) => {
                             if (user) {
-                                user.yolk_count += (postData.orderAmount / 100);
+                                user.yolk_count += (postData.orderAmount / parseInt(process.env.YOLK_PRICE));
                                 user.save((err, updatedUser) => {
                                     if (err) {
                                         console.log('USER UPDATE ERROR', err);
@@ -187,7 +187,7 @@ exports.successController = (req, res) => {
                             html: `   
                             <h1>THANK YOU FOR TRUSTING US</h1>
                             <br />
-                            <p>You have paid through ${postData.paymentMode}</p>
+                            <p>You have paid throw ${postData.paymentMode}</p>
                             <br />
                             <h3>This is your Order ID ${postData.orderId}</h3>
                             <br />
@@ -218,11 +218,11 @@ exports.refundController = (req, res) => {
     const count = req.body.count;
     const email = req.body.email;
     const errors = {};
-    const refundAmount = count * 100;
+    const refundAmount = count * parseInt(process.env.YOLK_PRICE);
     User.findOne({ email }, (err, user) => {
         if (!err && user) {
             if (user.yolk_count - count >= 0) {
-
+                
                 Payment.findOne({ referenceId }, (err, payment) => {
                     if (!err && payment) {
                         console.log('Refund Started')
@@ -282,9 +282,9 @@ exports.refundController = (req, res) => {
                             .catch(err => {
                                 console.log(`Email Not send : ${err}`);
                             });
-                        request(options, (err, response, body) => {
-                            console.log(body.status == 'ERROR')
-                            console.log(body.status === 'ERROR')
+                        request(options, (err,response,body) => {
+                            console.log(body.status=='ERROR')
+                            console.log(body.status==='ERROR')
                             if (body.status == 'ERROR') {
                                 errors.error = body.message;
                                 errors.message = body.reason;
@@ -328,7 +328,7 @@ exports.refundController = (req, res) => {
                                 })
                             }
                         });
-                    } else {
+                    }else {
                         errors.error = `Payment Not Found`;
                         return res.status(400).json(errors);
                     }
@@ -337,7 +337,7 @@ exports.refundController = (req, res) => {
                 errors.error = `Can't Refund More than you Have`;
                 return res.status(400).json(errors);
             }
-        } else {
+        } else{
             errors.error = `User Data Not Found`;
             return res.status(400).json(errors);
         }
