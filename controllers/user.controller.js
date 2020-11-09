@@ -71,6 +71,7 @@ exports.updateController = (req, res) => {
 
 
 exports.orderController = (req, res) => {
+    console.log('Order created');
     const postData = {
         appId: process.env.CASHAPPID,
         orderId: shortid.generate(),
@@ -81,7 +82,7 @@ exports.orderController = (req, res) => {
         customerEmail: req.body.email,
         customerPhone: req.body.contact,
         returnUrl: `${req.body.url}/user/verify`,
-        notifyUrl: `http://www.nestofin.com/api/user/success`
+        notifyUrl: `https://797333f63b55.ngrok.io/api/user/success`
     }
     mode = process.env.CASHMODE,
         secretKey = process.env.CASHSECRETKEY,
@@ -101,7 +102,7 @@ exports.orderController = (req, res) => {
         url = "https://test.cashfree.com/billpay/checkout/post/submit";
     }
 
-    console.log(`URL: ${url} MODE: ${mode} SIGNATURE: ${signature}`)
+    // console.log(`URL: ${url} MODE: ${mode} SIGNATURE: ${signature}`)
     const payment = new Payment({
         email: postData.customerEmail,
         contact: postData.customerPhone,
@@ -126,7 +127,8 @@ exports.orderController = (req, res) => {
     });
 };
 exports.verifyController = (req, res) => {
-    console.log(req.body)
+    // console.log(req.body)
+    console.log('Verify payment')
     if (req.body.txStatus === 'CANCELLED' || req.body.txStatus === 'FAILED') {
         Payment.deleteOne({ orderId: req.body.orderId }, err => {
             if (err) console.log('Deleting Order Error');
@@ -138,7 +140,8 @@ exports.verifyController = (req, res) => {
 
 };
 exports.successController = (req, res) => {
-    let postData = {
+    console.log('Successfull Payment')
+    const postData = {
         orderId: req.body.orderId,
         orderAmount: req.body.orderAmount,
         referenceId: req.body.referenceId,
@@ -148,6 +151,7 @@ exports.successController = (req, res) => {
         txTime: req.body.txTime
     }
     const secretKey = process.env.CASHSECRETKEY;
+
     let signatureData = "";
     for (let key in postData) {
         signatureData += postData[key];
@@ -174,6 +178,7 @@ exports.successController = (req, res) => {
                                 });
                             }
                         });
+                        payment.save();
                         const emailData = {
                             from: process.env.EMAIL_FROM,
                             pass: process.env.EMAIL_PASS,
@@ -182,7 +187,7 @@ exports.successController = (req, res) => {
                             html: `   
                             <h1>THANK YOU FOR TRUSTING US</h1>
                             <br />
-                            <p>You have paid through ${postData.paymentMode}</p>
+                            <p>You have paid throw ${postData.paymentMode}</p>
                             <br />
                             <h3>This is your Order ID ${postData.orderId}</h3>
                             <br />
@@ -193,12 +198,12 @@ exports.successController = (req, res) => {
                             <p>${process.env.CLIENT_URL}</p>
                         `
                         };
-                        sgMail
-                            .send(emailData)
-                            .then()
-                            .catch(err => {
-                                console.log(`Email Not send : ${err}`);
-                            });
+                        // sgMail
+                        //     .send(emailData)
+                        //     .then()
+                        //     .catch(err => {
+                        //         console.log(`Email Not send : ${err}`);
+                        //     });
                     } else if (err) {
                         console.log(`Payment Update Error ${err}`)
                     }
@@ -208,41 +213,40 @@ exports.successController = (req, res) => {
 };
 
 exports.refundController = (req, res) => {
-    const orderId = '';
+    let orderId = '';
     const referenceId = req.body.id;
     const count = req.body.count;
     const email = req.body.email;
     const errors = {};
     const refundAmount = count * 100;
-
     User.findOne({ email }, (err, user) => {
-        if (user) {
+        if (!err && user) {
             if (user.yolk_count - count >= 0) {
 
                 Payment.findOne({ referenceId }, (err, payment) => {
-                    if (payment) {
+                    if (!err && payment) {
+                        console.log('Refund Started')
+                        console.log(payment)
                         if (payment.amount < refundAmount) {
-                            return res.status(400).json({
-                                message: "Can't refund more than you bought"
-                            })
+                            errors.error = `Can't refund more than you paid`;
+                            return res.status(400).json(errors);
                         }
-                        if (payment.txStatus !== 'Paid' || payment.txStatus !== 'Partially Refunded') {
-                            return res.status(400).json({
-                                message: "Either you have not Paid or you have Already applied for refund"
-                            })
+                        if (payment.txStatus !== 'Paid' && payment.txStatus !== 'Partially Refunded') {
+                            errors.error = `Amount Not Available for Refund`;
+                            return res.status(400).json(errors);
                         }
-                        dataString = `appId=${process.env.CASHAPPID}&
-                                    secretKey=${process.env.CASHSECRETKEY}&
-                                    orderId=Testx1&
-                                    referenceId=${referenceId}&
-                                    refundAmount=${refundAmount}&
-                                    refundNote=${refundAmount}%20refunded%20out%20of${payment.amount}`;
                         orderId = payment.orderId;
                         payment.amount -= refundAmount;
                         user.yolk_count -= count;
                         user.save();
                         payment.txStatus = 'Refund Processing...';
                         payment.save();
+                        dataString = `appId=${process.env.CASHAPPID}&
+                                    secretKey=${process.env.CASHSECRETKEY}&
+                                    orderId=${orderId}&
+                                    referenceId=${referenceId}&
+                                    refundAmount=${refundAmount}&
+                                    refundNote=${refundAmount}%20refunded%20out%20of${payment.amount}`;
                         const headers = {
                             'cache-control': 'no-cache',
                             'content-type': 'application/x-www-form-urlencoded'
@@ -254,7 +258,7 @@ exports.refundController = (req, res) => {
                             body: dataString
                         };
                         if (process.env.CASHMODE == "PROD") {
-                            options.url = "https://www.cashfree.com/api/v1/order/refund";
+                            options.url = "https://api.cashfree.com/api/v1/order/refund";
                         } else {
                             options.url = "https://test.cashfree.com/api/v1/order/refund";
                         }
@@ -266,22 +270,24 @@ exports.refundController = (req, res) => {
                             html: `   
                                 <h1>We will try to Serve you BETTER</h1>
                                 <br />
-                                <h3>Refund process for your Payment ID ${referenceId} will be initiated shortly</h3>
+                                <h3>Refund process for your Refrence ID ${referenceId} will be initiated shortly</h3>
                                 <hr />
                                 <p>This email may containe sensitive information</p>
                                 <p>${process.env.CLIENT_URL}</p>
                             `
                         };
-                        sgMail
-                            .send(emailData)
-                            .then()
-                            .catch(err => {
-                                console.log(`Email Not send : ${err}`);
-                            });
-                        request(options, (response) => {
-                            if (response.body.status == 'ERROR') {
-                                errors.error = response.body.message;
-                                errors.message = response.body.reason;
+                        // sgMail
+                        //     .send(emailData)
+                        //     .then()
+                        //     .catch(err => {
+                        //         console.log(`Email Not send : ${err}`);
+                        //     });
+                        request(options, (err, response, body) => {
+                            console.log(body.status == 'ERROR')
+                            console.log(body.status === 'ERROR')
+                            if (body.status == 'ERROR') {
+                                errors.error = body.message;
+                                errors.message = body.reason;
                                 payment.amount += refundAmount;
                                 payment.txStatus = 'Paid'
                                 payment.save();
@@ -303,12 +309,12 @@ exports.refundController = (req, res) => {
                                         <p>${process.env.CLIENT_URL}</p>
                                     `
                                 };
-                                sgMail
-                                    .send(emailData)
-                                    .then()
-                                    .catch(err => {
-                                        console.log(`Email Not send : ${err}`);
-                                    });
+                                // sgMail
+                                //     .send(emailData)
+                                //     .then()
+                                //     .catch(err => {
+                                //         console.log(`Email Not send : ${err}`);
+                                //     });
                                 if (payment.amount === 0) {
                                     Payment.deleteOne({ referenceId: payment.referenceId }, err => {
                                         if (err) console.log('Deleting Payment Error');
@@ -318,17 +324,22 @@ exports.refundController = (req, res) => {
                                     payment.save();
                                 }
                                 return res.status(200).json({
-                                    message: res.body.message
+                                    message: 'Refunded'
                                 })
                             }
                         });
+                    } else {
+                        errors.error = `Payment Not Found`;
+                        return res.status(400).json(errors);
                     }
                 });
             } else {
-                return res.status(400).json({
-                    message: "Can't refund more than you have"
-                })
+                errors.error = `Can't Refund More than you Have`;
+                return res.status(400).json(errors);
             }
+        } else {
+            errors.error = `User Data Not Found`;
+            return res.status(400).json(errors);
         }
     })
 };

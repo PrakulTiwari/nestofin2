@@ -1,14 +1,20 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 import { isAuth } from '../helpers/auth';
 import '../assests/talwind.min.css';
 import '../assests/investing.css';
+import { useLocation } from 'react-router-dom';
 
-function Refundform() {
+function Refundform(props) {
+  let location = useLocation()
   let [count, setCount] = useState(1);
+  const [refundtext, setRefundtext] = useState('Refund')
   const [formvalue, setformvalue] = useState("");
   const [Refundstate, setRefundstate] = useState("");
   const handleClick = () => {
+
+    setRefundtext('Refunding...')
     if (formvalue) {
       axios
         .post(`${process.env.REACT_APP_API_URL}/user/refund`, {
@@ -18,22 +24,34 @@ function Refundform() {
         })
         .then((res) => {
           console.log(res)
+          setRefundtext('Refund')
           if (res.data.error) {
             setformvalue('')
-            setRefundstate(res.data.error.error.description)
+            toast.error(res.data.error.error.description)
           }
           else {
             setformvalue('')
+            toast.success(res.data.message)
             setRefundstate(res.data.message)
+            setTimeout(() => {
+              setRefundstate('')
+              props.update()
+            }, 2000);
           }
-        }).catch((err) => {
+        }).catch((errors) => {
           setformvalue('')
-          console.log(`Refund Error: ${err.error}`)
+          setRefundtext('Refund')
+          toast.error(errors.response.data.error)
+          console.log(`Refund Error: ${errors.response.data.error}`)
         });
     }
     else {
       setformvalue('')
+      setRefundtext('Refund')
       setRefundstate('Please enter valid payment id');
+      setTimeout(() => {
+        setRefundstate('')
+      }, 1000);
     }
   }
 
@@ -69,7 +87,7 @@ function Refundform() {
         type="submit"
         onClick={handleClick}
       >
-        Refund
+        {refundtext}
       </button>
       {Refundstate}
     </div>
