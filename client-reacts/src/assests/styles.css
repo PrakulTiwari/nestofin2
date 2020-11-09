@@ -603,6 +603,10 @@ body {
         color: white;
         border-bottom: 1px solid white;
     }
+    .nav ul li a{
+        color: white;
+        text-decoration: none;
+    }
     .nav .outer {
         display: flex;
         flex-direction: column-reverse;
