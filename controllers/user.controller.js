@@ -82,7 +82,7 @@ exports.orderController = (req, res) => {
         customerEmail: req.body.email,
         customerPhone: req.body.contact,
         returnUrl: `${req.body.url}/user/verify`,
-        notifyUrl: `https://797333f63b55.ngrok.io/api/user/success`
+        notifyUrl: `http://www.nestofin.com/api/user/success`
     }
     mode = process.env.CASHMODE,
         secretKey = process.env.CASHSECRETKEY,
@@ -142,14 +142,14 @@ exports.verifyController = (req, res) => {
 exports.successController = (req, res) => {
     console.log('Successfull Payment')
     const postData = {
-            orderId: req.body.orderId,
-            orderAmount: req.body.orderAmount,
-            referenceId: req.body.referenceId,
-            txStatus: req.body.txStatus,
-            paymentMode: req.body.paymentMode,
-            txMsg: req.body.txMsg,
-            txTime: req.body.txTime
-        }
+        orderId: req.body.orderId,
+        orderAmount: req.body.orderAmount,
+        referenceId: req.body.referenceId,
+        txStatus: req.body.txStatus,
+        paymentMode: req.body.paymentMode,
+        txMsg: req.body.txMsg,
+        txTime: req.body.txTime
+    }
     const secretKey = process.env.CASHSECRETKEY;
 
     let signatureData = "";
@@ -222,7 +222,7 @@ exports.refundController = (req, res) => {
     User.findOne({ email }, (err, user) => {
         if (!err && user) {
             if (user.yolk_count - count >= 0) {
-                
+
                 Payment.findOne({ referenceId }, (err, payment) => {
                     if (!err && payment) {
                         console.log('Refund Started')
@@ -282,9 +282,9 @@ exports.refundController = (req, res) => {
                             .catch(err => {
                                 console.log(`Email Not send : ${err}`);
                             });
-                        request(options, (err,response,body) => {
-                            console.log(body.status=='ERROR')
-                            console.log(body.status==='ERROR')
+                        request(options, (err, response, body) => {
+                            console.log(body.status == 'ERROR')
+                            console.log(body.status === 'ERROR')
                             if (body.status == 'ERROR') {
                                 errors.error = body.message;
                                 errors.message = body.reason;
@@ -328,7 +328,7 @@ exports.refundController = (req, res) => {
                                 })
                             }
                         });
-                    }else {
+                    } else {
                         errors.error = `Payment Not Found`;
                         return res.status(400).json(errors);
                     }
@@ -337,7 +337,7 @@ exports.refundController = (req, res) => {
                 errors.error = `Can't Refund More than you Have`;
                 return res.status(400).json(errors);
             }
-        } else{
+        } else {
             errors.error = `User Data Not Found`;
             return res.status(400).json(errors);
         }
