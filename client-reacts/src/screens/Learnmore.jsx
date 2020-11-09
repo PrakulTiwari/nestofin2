@@ -27,6 +27,7 @@ function Learnmore({ history }) {
             {/* <p className="main-win-sub-win-para1">Email - nestofin@gmail.com</p>
             <p className="main-win-sub-win-para1">Phone Number - 8076131157</p>
             <p className="main-win-sub-win-para1">Address - 175/16A, Faridabad, Haryana 121002</p> */}
+            <p className="main-win-sub-win-para1">Email Us  - help.nestofin@gmail.com</p>
 
           </div>
         </div>

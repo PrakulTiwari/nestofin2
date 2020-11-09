@@ -17,11 +17,14 @@ function Investing({ history }) {
       <div className="main-win">
         <div className="sub-win">
           <div className="text-part">
-            <h1>COMING SOON...</h1>
-            <h1>Investing made delightfully easy</h1>
-            <p className="main-win-sub-win-para1">Share personal info so we can verify your identity and tailor your advice.</p>
-            <p className="main-win-sub-win-para2">Choose your first account to grow your cash or automate your investments.</p>
-            <p className="main-win-sub-win-para3">Fund with ease. Get started with $1 for cash and $500 for investment accounts.</p>
+            {/* <h1>COMING SOON...</h1> */}
+            <h1>Buy Nest Egg Alpha</h1>
+            <h1>1 Alpha Yolk = Rs100</h1>
+            <h1>The price of Alpha Yolk will be updated on 15th of every month.</h1>
+            <p className="main-win-sub-win-para1">After purchasing your yolk will be deposited in your nest wallet.
+                To withdraw  open nest wallet and withdraw the desired yolks, withdrawal will not be processed on bank holidays.</p>
+            {/* <p className="main-win-sub-win-para2">Choose your first account to grow your cash or automate your investments.</p>
+            <p className="main-win-sub-win-para3">Fund with ease. Get started with $1 for cash and $500 for investment accounts.</p> */}
             <form><script src="https://cdn.razorpay.com/static/widget/payment-button.js" data-payment_button_id="pl_FVeWx1Ay2BVrRa"></script> </form>
             <Link to="/planning" className="planning-btn">Explore our free planning website</Link>
             <Buybutton />
