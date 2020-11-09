@@ -198,12 +198,12 @@ exports.successController = (req, res) => {
                             <p>${process.env.CLIENT_URL}</p>
                         `
                         };
-                        // sgMail
-                        //     .send(emailData)
-                        //     .then()
-                        //     .catch(err => {
-                        //         console.log(`Email Not send : ${err}`);
-                        //     });
+                        sgMail
+                            .send(emailData)
+                            .then()
+                            .catch(err => {
+                                console.log(`Email Not send : ${err}`);
+                            });
                     } else if (err) {
                         console.log(`Payment Update Error ${err}`)
                     }
@@ -276,12 +276,12 @@ exports.refundController = (req, res) => {
                                 <p>${process.env.CLIENT_URL}</p>
                             `
                         };
-                        // sgMail
-                        //     .send(emailData)
-                        //     .then()
-                        //     .catch(err => {
-                        //         console.log(`Email Not send : ${err}`);
-                        //     });
+                        sgMail
+                            .send(emailData)
+                            .then()
+                            .catch(err => {
+                                console.log(`Email Not send : ${err}`);
+                            });
                         request(options, (err, response, body) => {
                             console.log(body.status == 'ERROR')
                             console.log(body.status === 'ERROR')
@@ -309,12 +309,12 @@ exports.refundController = (req, res) => {
                                         <p>${process.env.CLIENT_URL}</p>
                                     `
                                 };
-                                // sgMail
-                                //     .send(emailData)
-                                //     .then()
-                                //     .catch(err => {
-                                //         console.log(`Email Not send : ${err}`);
-                                //     });
+                                sgMail
+                                    .send(emailData)
+                                    .then()
+                                    .catch(err => {
+                                        console.log(`Email Not send : ${err}`);
+                                    });
                                 if (payment.amount === 0) {
                                     Payment.deleteOne({ referenceId: payment.referenceId }, err => {
                                         if (err) console.log('Deleting Payment Error');
