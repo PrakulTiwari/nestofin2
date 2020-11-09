@@ -82,7 +82,7 @@ exports.orderController = (req, res) => {
         customerEmail: req.body.email,
         customerPhone: req.body.contact,
         returnUrl: `${req.body.url}/user/verify`,
-        notifyUrl: `https://797333f63b55.ngrok.io/api/user/success`
+        notifyUrl: `http://www.nestofin.com/api/user/success`
     }
     mode = process.env.CASHMODE,
         secretKey = process.env.CASHSECRETKEY,
@@ -187,7 +187,7 @@ exports.successController = (req, res) => {
                             html: `   
                             <h1>THANK YOU FOR TRUSTING US</h1>
                             <br />
-                            <p>You have paid throw ${postData.paymentMode}</p>
+                            <p>You have paid through ${postData.paymentMode}</p>
                             <br />
                             <h3>This is your Order ID ${postData.orderId}</h3>
                             <br />
