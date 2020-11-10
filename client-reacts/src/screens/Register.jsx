@@ -93,7 +93,7 @@ const Register = () => {
               settext('Verify Mobile Number');
               setpermission(false);
               console.log(err.response);
-              toast.error("An account with that email already exists");
+              toast.error(err.response.data.errors);
             });
         } else {
           toast.error("Passwords don't match");
