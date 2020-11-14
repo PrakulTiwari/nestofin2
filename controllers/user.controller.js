@@ -283,8 +283,9 @@ exports.refundController = (req, res) => {
                                 console.log(`Email Not send : ${err}`);
                             });
                         request(options, (err, response, body) => {
-                            console.log(body.status == 'ERROR')
-                            console.log(body.status === 'ERROR')
+                            // console.log(body.status == 'ERROR')
+                            // console.log(body.status === 'ERROR')
+                            console.log(body.status == 'OK')
                             if (body.status == 'ERROR') {
                                 errors.error = body.message;
                                 errors.message = body.reason;
@@ -295,6 +296,7 @@ exports.refundController = (req, res) => {
                                 user.save();
                                 return res.status(400).json(errors);
                             } else {
+                                console.log('Refund Initiated')
                                 const emailData = {
                                     from: process.env.EMAIL_FROM,
                                     pass: process.env.EMAIL_PASS,
