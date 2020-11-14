@@ -20,7 +20,7 @@ function Investing({ history }) {
             {/* <h1>COMING SOON...</h1> */}
             <h1>Buy Nest Egg Alpha</h1>
             <h3>1 Alpha Yolk = Rs100</h3>
-            <h1>The price of Alpha Yolk will be updated on 15th of every month.</h1>
+            <h3>The price of Alpha Yolk will be updated on 15th of every month.</h3>
             <p className="main-win-sub-win-para1">After purchasing your yolk will be deposited in your nest wallet.
                 To withdraw  open nest wallet and withdraw the desired yolks, withdrawal will not be processed on bank holidays.</p>
             {/* <p className="main-win-sub-win-para2">Choose your first account to grow your cash or automate your investments.</p>

@@ -105,16 +105,16 @@ function Dashboard({ history }) {
 
       </div>
       <div className="graphcontent">
-        <div className="title">
+        {/* <div className="title">
           PROFIT ANALYSIS
-        </div>
+        </div> */}
         <div className="profitlossdetail">
-          <div className="graph">
+          {/* <div className="graph">
             <Graph />
-          </div>
+          </div> */}
           <div className="durationleft">
-            <i className="fa fa-clock-o" aria-hidden="true"></i> 3 MONTHS
-                      </div>
+            {/* <i className="fa fa-clock-o" aria-hidden="true"></i> 3 MONTHS */}
+          </div>
           <div className='refund'>
             <h3>For taking refund of any of your YOLK enter Reference Id provided to you on your Email and specify quantity of yolk want to refund</h3>
             <Refundform update={update} />

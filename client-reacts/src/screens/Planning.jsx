@@ -56,9 +56,9 @@ function Planning({ history }) {
                     </div>
                     <div classNameName="img">
                         <img src={img} alt="image" />
-                        <div classNameName='planbuybutton'>
+                        {/* <div classNameName='planbuybutton'>
                             <button>Buy Now</button>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>
