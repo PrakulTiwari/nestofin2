@@ -1,47 +1,17 @@
-import React from 'react';
-import { Link, Redirect } from 'react-router-dom';
-import { signout } from '../helpers/auth';
-import { isAuth } from '../helpers/auth';
-import { useState } from 'react';
+import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import Footer from '../assests/Footer';
 import '../assests/styles.css';
 import '../assests/getstarted.css';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import img from '../assests/images/planning.png';
 import Othernavbar from '../assests/Othernavbar';
-import '../assests/temp.css';
-
-// const sumit = () => {
-//     const name = document.querySelector('.planning .i');
-//     const place = document.querySelector('.planning .name');
-//     place.innerHTML = '<h2>Hello there ' + name.value + '!<h2><h3>The best mutual funds recommended for you are: <ol><li>1. Mirae Asset Emerging Bluechip Fund</li><li>2. HDFC Midcap oppurtunities fund</li></ol>';
-// }
-
-// const updateTextInput = () => {
-//     console.log(document.getElementsByClassName('savings').value)
-//     document.getElementById('textInput').value = '₹' + document.getElementsByClassName('savings');
-// }
-
-// getInitialState: function() {
-//     return {value: 3};
-//   },
-//   handleChange: function(event) {
-//     this.setState({value: event.target.value});
-//   },
-//   render: function() {
-//     return (
-//       <input 
-//         id="typeinp" 
-//         type="range" 
-//         min="0" max="5" 
-//         value={this.state.value} 
-//         onChange={this.handleChange}
-//         step="1"/>
-//     );
-//   }
-
 
 function Planning({ history }) {
+
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    });
 
     return (
         <div classNameName="getstarted-page" id='top'>

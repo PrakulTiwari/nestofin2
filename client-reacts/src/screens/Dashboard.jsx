@@ -19,6 +19,9 @@ function Dashboard({ history }) {
     history.go(0)
   }
   useEffect(() => {
+    window.scrollTo(0, 0)
+  });
+  useEffect(() => {
     setData('')
   }, [])
 

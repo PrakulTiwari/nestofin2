@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import authSvg from '../assests/login.svg';
 import { ToastContainer, toast } from 'react-toastify';
 import axios from 'axios';
@@ -12,49 +12,15 @@ const Login = ({ history }) => {
     password1: '',
     textChange: 'Sign In'
   });
-  const { email, password1, textChange } = formData;
+  const { email, password1 } = formData;
   const handleChange = text => e => {
     setFormData({ ...formData, [text]: e.target.value });
   };
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  });
 
-  const sendGoogleToken = tokenId => {
-    axios
-      .post(`${process.env.REACT_APP_API_URL}/googlelogin`, {
-        idToken: tokenId
-      })
-      .then(res => {
-        console.log(res.data);
-        informParent(res);
-      })
-      .catch(error => {
-        console.log('GOOGLE SIGNIN ERROR', error.response);
-      });
-  };
-  const informParent = response => {
-    authenticate(response, () => {
-      isAuth() && isAuth().role === 'admin'
-        ? history.push('/admin')
-        : history.push('/private');
-    });
-  };
-
-  const sendFacebookToken = (userID, accessToken) => {
-    axios
-      .post(`${process.env.REACT_APP_API_URL}/facebooklogin`, {
-        userID,
-        accessToken
-      })
-      .then(res => {
-        console.log(res.data);
-        informParent(res);
-      })
-      .catch(error => {
-        console.log('GOOGLE SIGNIN ERROR', error.response);
-      });
-  };
-  
   const handleSubmit = e => {
-    console.log(process.env.REACT_APP_API_URL);
     e.preventDefault();
     if (email && password1) {
       setFormData({ ...formData, textChange: 'Submitting' });
@@ -99,11 +65,11 @@ const Login = ({ history }) => {
         <div className='lg:w-1/2 xl:w-5/12 p-6 sm:p-12'>
           <div className='mt-12 flex flex-col items-center'>
             <h1 className='text-2xl xl:text-3xl font-extrabold'>
-              Sign In for <span style={{textDecoration:'underline'}}><Link to='/'>NESTO/Fin.</Link></span>
+              Sign In for <span style={{ textDecoration: 'underline' }}><Link to='/'>NESTO/Fin.</Link></span>
             </h1>
             <div className='w-full flex-1 mt-8 text-indigo-500'>
               <div className='flex flex-col items-center'>
-                
+
                 <Link
                   className='w-full max-w-xs font-bold shadow-sm rounded-lg py-3
            bg-indigo-100 text-gray-800 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline mt-5'

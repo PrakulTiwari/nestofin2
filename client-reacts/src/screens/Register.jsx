@@ -177,12 +177,12 @@ const Register = () => {
               <div className='my-12 border-b text-center'>
                 <div className='leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2'>
                   Signed Up? Activate Your Account
-                </div>
+                  </div>
               </div>
               <div className='flex flex-col items-center'>
                 <Link
                   className='w-full max-w-xs font-bold shadow-sm rounded-lg py-3
-           bg-indigo-100 text-gray-800 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline mt-5'
+             bg-indigo-100 text-gray-800 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline mt-5'
                   to='/users/activate'
                   target='_self'
                 >
@@ -194,12 +194,12 @@ const Register = () => {
               <div className='my-12 border-b text-center'>
                 <div className='leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2'>
                   Or sign with email or social login
-                </div>
+                  </div>
               </div>
               <div className='flex flex-col items-center'>
                 <Link
                   className='w-full max-w-xs font-bold shadow-sm rounded-lg py-3
-           bg-indigo-100 text-gray-800 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline mt-5'
+             bg-indigo-100 text-gray-800 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline mt-5'
                   to='/login'
                   target='_self'
                 >
@@ -217,7 +217,7 @@ const Register = () => {
           ></div>
         </div>
       </div>
-      ;
+        ;
     </div>
   );
 };

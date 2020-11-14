@@ -1,16 +1,17 @@
-import React from 'react';
-import { Link, Redirect } from 'react-router-dom';
-import { signout } from '../helpers/auth';
-import { isAuth } from '../helpers/auth';
-import { useState } from 'react';
+import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import Footer from '../assests/Footer';
 import '../assests/styles.css';
 import '../assests/getstarted.css';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import img from '../assests/images/borrowing.png';
 import Othernavbar from '../assests/Othernavbar'
 
 function Borrowing({ history }) {
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  });
   return (
     <div className="getstarted-page" id='top'>
       <Othernavbar />
