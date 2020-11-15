@@ -84,10 +84,10 @@ exports.registerController = (req, res) => {
             html: `   
                 <h1>You are just one click away!</h1>
                 <h3>YOUR OTP IS ${otp} valid for 5 minutes</h3>
-                <h4>go to ${process.env.CLIENT_URL}/users/activate to input otp</h4>
+               
                 <hr />
                 <p>This email may containe sensitive information</p>
-                <p>${process.env.CLIENT_URL}</p>
+                
             `
         };
         // console.log(`Email Data: ${Object.keys(emailData).length}`);
