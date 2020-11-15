@@ -5,7 +5,6 @@ import axios from 'axios';
 import { isAuth } from '../helpers/auth';
 import { Link, Redirect } from 'react-router-dom';
 import '../assests/talwind.min.css';
-import Firebase from '../helpers/Firebase';
 import 'react-phone-number-input/style.css'
 import PhoneInput from 'react-phone-number-input'
 const Register = () => {
@@ -18,10 +17,6 @@ const Register = () => {
     phonenumber: '',
     textChange: 'Sign Up'
   });
-
-  const [value, setValue] = useState('')
-  const [btntext, settext] = useState('Verify Mobile Number');
-  const [allowed, setpermission] = useState(false);
   const { name, email, password1, password2, phonenumber, textChange } = formData;
   const handleChange = text => e => {
     setFormData({ ...formData, [text]: e.target.value });
@@ -30,81 +25,74 @@ const Register = () => {
     cursor: 'not-allowed',
     backgroundColor: '#808080'
   });
-  const handlenumberClick = () => {
-    settext('Sending OTP...wait');
-    let recaptcha = new Firebase.auth.RecaptchaVerifier('recaptcha', { 'size': 'invisible' });
-    let number = value;
-    Firebase.auth().signInWithPhoneNumber(number, recaptcha)
-      .then(function (e) {
-        let code = prompt('Enter the otp', '');
-        if (code === null) return;
-        e.confirm(code).then(function (result) {
-          settext('Mobile Number Verified');
-          setpermission(true);
-          setbtnstyle({
-            cursor: 'pointer',
-            backgroundColor: '#667eea'
-          })
-          setFormData({ ...formData, phonenumber: result.user.phoneNumber });
-        }).catch(function (error) {
-          console.error(error);
-        });
-      })
-      .catch(function (error) {
-        console.error(`cant authrorised ${error}`);
-      });
+
+  if (name && email && password1 && phonenumber) {
+    if (phonenumber.length > 12) {
+      if (btnstyle.cursor !== 'pointer') {
+        setbtnstyle({
+          cursor: 'pointer',
+          backgroundColor: '#667eea'
+        })
+      }
+    } else {
+      if (btnstyle.cursor !== 'not-allowed') {
+        setbtnstyle({
+          cursor: 'not-allowed',
+          backgroundColor: '#808080'
+        })
+      }
+    }
+  }
+
+  const handlePhonenumber = e => {
+    setFormData({ ...formData, phonenumber: e });
   }
   const handleSubmit = e => {
     e.preventDefault();
     if (name && email && password1 && phonenumber) {
-      if (allowed) {
-        if (password1 === password2) {
-          setFormData({ ...formData, textChange: 'Submitting' });
-          axios
-            .post(`${process.env.REACT_APP_API_URL}/register`, {
-              name,
-              email,
-              password: password1,
-              phonenumber
-            })
-            .then(res => {
-              setFormData({
-                ...formData,
-                name: '',
-                email: '',
-                password1: '',
-                password2: '',
-                phonenumber: '',
-                textChange: 'Submitted'
-              });
-
-              toast.success(res.data.message);
-            })
-            .catch(err => {
-              setFormData({
-                ...formData,
-                name: '',
-                email: '',
-                password1: '',
-                password2: '',
-                phonenumber: '',
-                textChange: 'Sign Up'
-              });
-              settext('Verify Mobile Number');
-              setpermission(false);
-              console.log(err.response);
-              toast.error(err.response.data.errors);
+      if (password1 === password2) {
+        setFormData({ ...formData, textChange: 'Submitting' });
+        axios
+          .post(`${process.env.REACT_APP_API_URL}/register`, {
+            name,
+            email,
+            password: password1,
+            phonenumber
+          })
+          .then(res => {
+            setFormData({
+              ...formData,
+              name: '',
+              email: '',
+              password1: '',
+              password2: '',
+              phonenumber: '',
+              textChange: 'Submitted'
             });
-        } else {
-          toast.error("Passwords don't match");
-        }
+
+            toast.success(res.data.message);
+          })
+          .catch(err => {
+            setFormData({
+              ...formData,
+              name: '',
+              email: '',
+              password1: '',
+              password2: '',
+              phonenumber: '',
+              textChange: 'Sign Up'
+            });
+            console.log(err.response);
+            toast.error(err.response.data.errors);
+          });
       } else {
-        toast.error("Please Verify Phone Number");
+        toast.error("Passwords don't match");
       }
     } else {
       toast.error('Please fill all fields');
     }
   };
+
   return (
     <div className='min-h-screen bg-gray-100 text-gray-900 flex justify-center'>
       {isAuth() ? <Redirect to='/dashboard' /> : null}
@@ -153,18 +141,10 @@ const Register = () => {
                 <PhoneInput
                   className='w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5'
                   placeholder="Enter phone number"
-                  value={value}
-                  onChange={setValue}
+                  value={phonenumber}
+                  onChange={handlePhonenumber}
                   defaultCountry='IN'
                 />
-                <div>
-                  <div id="recaptcha"></div>
-                  <div
-                    onClick={handlenumberClick}
-                    style={{ cursor: 'pointer' }}
-                    className='bg-indigo-500 text-white text-sm rounded-md p-2 mt-4 mx-auto focus:outline-none w-3/4 text-center'
-                  >{btntext}</div>
-                </div>
                 <button
                   type='submit'
                   className='mt-5 tracking-wide font-semibold bg-indigo-500 text-gray-100 w-full py-4 rounded-lg hover:bg-indigo-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none'
@@ -177,12 +157,12 @@ const Register = () => {
               <div className='my-12 border-b text-center'>
                 <div className='leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2'>
                   Signed Up? Activate Your Account
-                  </div>
+                </div>
               </div>
               <div className='flex flex-col items-center'>
                 <Link
                   className='w-full max-w-xs font-bold shadow-sm rounded-lg py-3
-             bg-indigo-100 text-gray-800 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline mt-5'
+           bg-indigo-100 text-gray-800 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline mt-5'
                   to='/users/activate'
                   target='_self'
                 >
@@ -194,12 +174,12 @@ const Register = () => {
               <div className='my-12 border-b text-center'>
                 <div className='leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2'>
                   Or sign with email or social login
-                  </div>
+                </div>
               </div>
               <div className='flex flex-col items-center'>
                 <Link
                   className='w-full max-w-xs font-bold shadow-sm rounded-lg py-3
-             bg-indigo-100 text-gray-800 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline mt-5'
+           bg-indigo-100 text-gray-800 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline mt-5'
                   to='/login'
                   target='_self'
                 >
@@ -217,7 +197,7 @@ const Register = () => {
           ></div>
         </div>
       </div>
-        ;
+      ;
     </div>
   );
 };
