@@ -126,6 +126,9 @@ exports.orderController = (req, res) => {
         }
     });
 };
+
+
+
 exports.verifyController = (req, res) => {
     console.log('Verify payment')
     if (req.body.txStatus === 'CANCELLED' || req.body.txStatus === 'FAILED') {
@@ -164,30 +167,31 @@ exports.successController = (req, res) => {
             Payment.findOne({ orderId: postData.orderId })
                 .exec((err, payment) => {
                     if (!err && payment) {
-                        payment.paymentMode = postData.paymentMode;
-                        payment.referenceId = postData.referenceId;
-                        payment.txStatus = 'Paid';
-                        const email = payment.email;
-                        User.findOne({ email }, (err, user) => {
-                            if (user) {
-                                user.yolk_count += (postData.orderAmount / parseInt(process.env.YOLK_PRICE));
-                                user.save((err, updatedUser) => {
-                                    if (err) {
-                                        console.log('USER UPDATE ERROR', err);
-                                    }
-                                });
-                            }
-                        });
-                        payment.save();
-                        const emailData = {
-                            from: process.env.EMAIL_FROM,
-                            pass: process.env.EMAIL_PASS,
-                            to: email,
-                            subject: 'YOLK ORDER PAID',
-                            html: `   
+                        if (payment.txStatus === 'Ordered Pending...') {
+                            payment.paymentMode = postData.paymentMode;
+                            payment.referenceId = postData.referenceId;
+                            payment.txStatus = 'Paid';
+                            const email = payment.email;
+                            User.findOne({ email }, (err, user) => {
+                                if (user) {
+                                    user.yolk_count += (postData.orderAmount / parseInt(process.env.YOLK_PRICE));
+                                    user.save((err, updatedUser) => {
+                                        if (err) {
+                                            console.log('USER UPDATE ERROR', err);
+                                        }
+                                    });
+                                }
+                            });
+                            payment.save();
+                            const emailData = {
+                                from: process.env.EMAIL_FROM,
+                                pass: process.env.EMAIL_PASS,
+                                to: email,
+                                subject: 'YOLK ORDER PAID',
+                                html: `   
                             <h1>THANK YOU FOR TRUSTING US</h1>
                             <br />
-                            <p>You have paid through ${postData.paymentMode}</p>
+                            <p>You have paid throw ${postData.paymentMode}</p>
                             <br />
                             <h3>This is your Order ID ${postData.orderId}</h3>
                             <br />
@@ -197,13 +201,14 @@ exports.successController = (req, res) => {
                             <p>This email may containe sensitive information</p>
                             <p>${process.env.CLIENT_URL}</p>
                         `
-                        };
-                        sgMail
-                            .send(emailData)
-                            .then()
-                            .catch(err => {
-                                console.log(`Email Not send : ${err}`);
-                            });
+                            };
+                            sgMail
+                                .send(emailData)
+                                .then()
+                                .catch(err => {
+                                    console.log(`Email Not send : ${err}`);
+                                });
+                        }
                     } else {
                         console.log(`Payment Update Error ${err}`)
                     }
@@ -291,6 +296,26 @@ exports.refundController = (req, res) => {
                                 payment.save();
                                 user.yolk_count += count;
                                 user.save();
+                                const emailData = {
+                                    from: process.env.EMAIL_FROM,
+                                    pass: process.env.EMAIL_PASS,
+                                    to: payment.email,
+                                    subject: 'Refund Can not be Processed',
+                                    html: `   
+                                        <h1>We will try to Serve you BETTER</h1>
+                                        <br />
+                                        <h3>Refund not processed for your Payment ID ${referenceId}</h3>
+                                        <hr />
+                                        <p>This email may containe sensitive information</p>
+                                        <p>${process.env.CLIENT_URL}</p>
+                                    `
+                                };
+                                sgMail
+                                    .send(emailData)
+                                    .then()
+                                    .catch(err => {
+                                        console.log(`Email Not send : ${err}`);
+                                    });
                                 return res.status(400).json(errors)
                             } else if (body.status == "OK") {
                                 console.log('Refund Done')
@@ -334,6 +359,26 @@ exports.refundController = (req, res) => {
                                 payment.save();
                                 user.yolk_count += count;
                                 user.save();
+                                const emailData = {
+                                    from: process.env.EMAIL_FROM,
+                                    pass: process.env.EMAIL_PASS,
+                                    to: payment.email,
+                                    subject: 'Refund Can not be Processed',
+                                    html: `   
+                                        <h1>We will try to Serve you BETTER</h1>
+                                        <br />
+                                        <h3>Refund not processed for your Payment ID ${referenceId}</h3>
+                                        <hr />
+                                        <p>This email may containe sensitive information</p>
+                                        <p>${process.env.CLIENT_URL}</p>
+                                    `
+                                };
+                                sgMail
+                                    .send(emailData)
+                                    .then()
+                                    .catch(err => {
+                                        console.log(`Email Not send : ${err}`);
+                                    });
                                 return res.status(400).json(errors)
                             }
                         });
