@@ -191,7 +191,7 @@ exports.successController = (req, res) => {
                                 html: `   
                             <h1>THANK YOU FOR TRUSTING US</h1>
                             <br />
-                            <p>You have paid throw ${postData.paymentMode}</p>
+                            <p>You have paid through ${postData.paymentMode}</p>
                             <br />
                             <h3>This is your Order ID ${postData.orderId}</h3>
                             <br />
