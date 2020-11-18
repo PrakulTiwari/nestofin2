@@ -101,8 +101,6 @@ exports.orderController = (req, res) => {
     } else {
         url = "https://test.cashfree.com/billpay/checkout/post/submit";
     }
-
-    // console.log(`URL: ${url} MODE: ${mode} SIGNATURE: ${signature}`)
     const payment = new Payment({
         email: postData.customerEmail,
         contact: postData.customerPhone,
@@ -135,7 +133,6 @@ exports.verifyController = (req, res) => {
         Payment.deleteOne({ orderId: req.body.orderId }, err => {
             if (err) console.log('Deleting Order Error');
         });
-        // res.redirect('http://localhost:3000/register')
         res.render('afterpayment', { success: false })
     } else {
         res.render('afterpayment', { success: true })
@@ -191,7 +188,7 @@ exports.successController = (req, res) => {
                                 html: `   
                             <h1>THANK YOU FOR TRUSTING US</h1>
                             <br />
-                            <p>You have paid through ${postData.paymentMode}</p>
+                            <p>You have paid throw ${postData.paymentMode}</p>
                             <br />
                             <h3>This is your Order ID ${postData.orderId}</h3>
                             <br />
@@ -215,6 +212,9 @@ exports.successController = (req, res) => {
                 })
         }
     }
+    return res.status(200).send({
+        status: "success",
+    })
 };
 
 exports.refundController = (req, res) => {
