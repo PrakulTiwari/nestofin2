@@ -174,11 +174,42 @@
     }
 }
 
+input:invalid {
+    border: 2px;
+    border-style: inherit;
+    border-color: red;
+}
+
+input:required {
+    border: 2px;
+    border-style: inherit;
+    border-color: rgb(255, 123, 0);
+}
+
+input:required:valid {
+    border: 2px;
+    border-style: inherit;
+    border-color: green;
+}
+
+input:required:focus:valid {
+    border: 2px;
+    border-style: inherit;
+    background: url("https://assets.digitalocean.com/labs/icons/hand-thumbs-up.svg") no-repeat 95% 50% lightgreen;
+}
+
+input:focus:invalid {
+    border: 2px;
+    border-style: inherit;
+    background: url("https://assets.digitalocean.com/labs/icons/exclamation-triangle-fill.svg") no-repeat 95% 50% rgb(255, 122, 122);
+}
+
 .payment {
     display: flex;
     background-color: royalblue;
     border-radius: 10px;
     padding: 5px 20px;
+    max-width: fit-content;
 }
 
 .count {
@@ -205,10 +236,6 @@
     transform: scale(0.95, 0.95);
     /* box-shadow: 0 1px 1px 0 rgb(21, 56, 160); */
     box-shadow: inset 0px 0px 2px 1px rgba(0, 0, 0, 0.6);
-}
-
-.button:first-child {
-    /* margin-bottom: 2px; */
 }
 
 .payment button {

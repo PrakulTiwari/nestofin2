@@ -1,8 +1,13 @@
 const User = require('../models/auth.model');
 const Payment = require('../models/payment.model');
+const Bene = require('../models/beneficiary.model')
 const shortid = require('shortid');
 const request = require('request');
 const crypto = require('crypto');
+const cfSdk = require('cashfree-sdk')
+const { Payouts } = cfSdk;
+const { Beneficiary, Transfers } = Payouts;
+
 require('dotenv').config({
     path: './config/config.env'
 })
@@ -10,9 +15,49 @@ require('dotenv').config({
 const _ = require('lodash');
 const { errorHandler } = require('../helpers/dbErrorHandling');
 const sgMail = require('@sendgrid/mail');
+const jwt = require('jsonwebtoken');
 sgMail.setApiKey(process.env.MAIL_KEY);
 
+exports.isAuth = (req, res, next) => {
+    if (req.headers.authorization) {
+        const token = req.headers.authorization.replace('Bxyz ', '')
+        jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+            if (err) {
+                console.log(err.message)
+                return res.status(401).json({
+                    status: 'Signup again'
+                });
+            } else {
+                if (req.body.id) {
+                    if (parseInt(req.body.id) === parseInt(decoded._id)) {
+                        next()
+                    } else {
+                        return res.status(401).json({
+                            status: 'Not Allowed'
+                        });
+                    }
+                } else if (req.params.id) {
 
+                    if (parseInt(req.params.id) === parseInt(decoded._id)) {
+                        next()
+                    } else {
+                        return res.status(401).json({
+                            status: 'Not Allowed'
+                        });
+                    }
+                } else {
+                    return res.status(401).json({
+                        status: 'No Id'
+                    });
+                }
+            }
+        });
+    } else {
+        return res.status(401).json({
+            status: 'Need Sign'
+        });
+    }
+}
 exports.readController = (req, res) => {
     const userId = req.params.id;
     User.findById(userId).exec((err, user) => {
@@ -217,176 +262,63 @@ exports.successController = (req, res) => {
     })
 };
 
-exports.refundController = (req, res) => {
-    let orderId = '';
-    const referenceId = req.body.id;
+exports.withdrawController = (req, res) => {
     const count = req.body.count;
     const email = req.body.email;
-    const errors = {};
-    const refundAmount = count * parseInt(process.env.YOLK_PRICE);
+    const Amount = count * parseInt(process.env.YOLK_PRICE);
+
+    Payouts.Init({
+        "ENV": process.env.CASHMODE,
+        "ClientID": process.env.PAYOUTCLIENTID,
+        "ClientSecret": process.env.PAYOUTCLIENTSECRET,
+        "PathToPublicKey": "./accountId_40166_public_key.pem"
+        // "PathToPublicKey": "./accountId_4512_public_key.pem"
+    })
+
+
     User.findOne({ email }, (err, user) => {
         if (!err && user) {
             if (user.yolk_count - count >= 0) {
-
-                Payment.findOne({ referenceId }, (err, payment) => {
-                    if (!err && payment) {
-                        console.log('Refund Started')
-                        console.log(payment)
-                        if (payment.amount < refundAmount) {
-                            errors.error = `Can't refund more than you paid`;
-                            return res.status(400).json(errors);
-                        }
-                        if (payment.txStatus !== 'Paid' && payment.txStatus !== 'Partially Refunded') {
-                            errors.error = `Amount Not Available for Refund`;
-                            return res.status(400).json(errors);
-                        }
-                        orderId = payment.orderId;
-                        payment.amount -= refundAmount;
-                        user.yolk_count -= count;
-                        user.save();
-                        payment.txStatus = 'Refund Processing...';
-                        payment.save();
-                        const options = {
-                            method: 'POST',
-                            url: '',
-                            headers: {},
-                            formData: {
-                                'appId': process.env.CASHAPPID,
-                                'secretKey': process.env.CASHSECRETKEY,
-                                'referenceId': referenceId.toString(),
-                                'refundAmount': refundAmount,
-                                'refundNote': `${refundAmount}%20refunded%20out%20of${payment.amount}`
-                            }
-                        };
-                        if (process.env.CASHMODE == "PROD") {
-                            options.url = "https://api.cashfree.com/api/v1/order/refund";
-                        } else {
-                            options.url = "https://test.cashfree.com/api/v1/order/refund";
-                        }
-                        const emailData = {
-                            from: process.env.EMAIL_FROM,
-                            pass: process.env.EMAIL_PASS,
-                            to: payment.email,
-                            subject: 'Refund Initiated',
-                            html: `   
-                                <h1>We will try to Serve you BETTER</h1>
-                                <br />
-                                <h3>Refund process for your Refrence ID ${referenceId} will be initiated shortly</h3>
-                                <hr />
-                                <p>This email may containe sensitive information</p>
-                                <p>${process.env.CLIENT_URL}</p>
-                            `
-                        };
-                        sgMail
-                            .send(emailData)
-                            .then()
-                            .catch(err => {
-                                console.log(`Email Not send : ${err}`);
-                            });
-                        request(options, (err, response, body) => {
-                            if (typeof (body) == 'string') {
-                                body = JSON.parse(body)
-                            }
-                            if (err) {
-                                console.log(err)
-                                errors.error = 'server error';
-                                errors.message = 'server error';
-                                payment.amount += refundAmount;
-                                payment.txStatus = 'Paid'
-                                payment.save();
-                                user.yolk_count += count;
-                                user.save();
-                                const emailData = {
-                                    from: process.env.EMAIL_FROM,
-                                    pass: process.env.EMAIL_PASS,
-                                    to: payment.email,
-                                    subject: 'Refund Can not be Processed',
-                                    html: `   
-                                        <h1>We will try to Serve you BETTER</h1>
-                                        <br />
-                                        <h3>Refund not processed for your Payment ID ${referenceId}</h3>
-                                        <hr />
-                                        <p>This email may containe sensitive information</p>
-                                        <p>${process.env.CLIENT_URL}</p>
-                                    `
-                                };
-                                sgMail
-                                    .send(emailData)
-                                    .then()
-                                    .catch(err => {
-                                        console.log(`Email Not send : ${err}`);
-                                    });
-                                return res.status(400).json(errors)
-                            } else if (body.status == "OK") {
-                                console.log('Refund Done')
-                                const emailData = {
-                                    from: process.env.EMAIL_FROM,
-                                    pass: process.env.EMAIL_PASS,
-                                    to: payment.email,
-                                    subject: 'Refund Processed',
-                                    html: `   
-                                        <h1>We will try to Serve you BETTER</h1>
-                                        <br />
-                                        <h3>Refund processed for your Payment ID ${referenceId}</h3>
-                                        <hr />
-                                        <p>This email may containe sensitive information</p>
-                                        <p>${process.env.CLIENT_URL}</p>
-                                    `
-                                };
-                                sgMail
-                                    .send(emailData)
-                                    .then()
-                                    .catch(err => {
-                                        console.log(`Email Not send : ${err}`);
-                                    });
-                                if (payment.amount === 0) {
-                                    Payment.deleteOne({ referenceId: payment.referenceId }, err => {
-                                        if (err) console.log('Deleting Payment Error');
-                                    })
-                                } else {
-                                    payment.txStatus = 'Partially Refunded'
-                                    payment.save();
-                                }
-                                return res.status(200).json({
-                                    message: body.message
+                Bene.findOne({ beneId: user._id })
+                    .then(beneficiary => {
+                        if (beneficiary) {
+                            Transfers.RequestTransfer({
+                                "beneId": user._id,
+                                "transferId": shortid.generate(),
+                                "amount": Amount,
+                            })
+                                .then(response => {
+                                    if (response.status === 'SUCCESS') {
+                                        user.yolk_count -= count
+                                        user.save()
+                                        return res.status(parseInt(response.subCode)).json({
+                                            status: response.message,
+                                            referenceId: response.data.referenceId
+                                        })
+                                    } else {
+                                        console.log(response.status, response.message)
+                                        return res.status(409).json({
+                                            status: "Can't withdraw"
+                                        })
+                                    }
                                 })
-
-                            } else {
-                                errors.error = body.status;
-                                errors.message = body.reason;
-                                payment.amount += refundAmount;
-                                payment.txStatus = 'Paid'
-                                payment.save();
-                                user.yolk_count += count;
-                                user.save();
-                                const emailData = {
-                                    from: process.env.EMAIL_FROM,
-                                    pass: process.env.EMAIL_PASS,
-                                    to: payment.email,
-                                    subject: 'Refund Can not be Processed',
-                                    html: `   
-                                        <h1>We will try to Serve you BETTER</h1>
-                                        <br />
-                                        <h3>Refund not processed for your Payment ID ${referenceId}</h3>
-                                        <hr />
-                                        <p>This email may containe sensitive information</p>
-                                        <p>${process.env.CLIENT_URL}</p>
-                                    `
-                                };
-                                sgMail
-                                    .send(emailData)
-                                    .then()
-                                    .catch(err => {
-                                        console.log(`Email Not send : ${err}`);
-                                    });
-                                return res.status(400).json(errors)
-                            }
-                        });
-                    } else {
-                        errors.error = `Payment Not Found`;
-                        return res.status(400).json(errors);
-                    }
-                });
+                                .catch(err => {
+                                    return res.status(500).json({
+                                        status: 'Internal Server Error'
+                                    })
+                                })
+                        } else {
+                            return res.status(404).json({
+                                status: 'First Add Bank Details'
+                            })
+                        }
+                    })
+                    .catch(err => {
+                        console.log(err)
+                        return res.status(500).json({
+                            status: 'Network Down'
+                        })
+                    })
             } else {
                 errors.error = `Can't Refund More than you Have`;
                 return res.status(400).json(errors);
@@ -397,3 +329,133 @@ exports.refundController = (req, res) => {
         }
     })
 };
+exports.addbeneficiaryController = (req, res) => {
+    const email = req.body.email;
+
+    Payouts.Init({
+        "ENV": process.env.CASHMODE,
+        "ClientID": process.env.PAYOUTCLIENTID,
+        "ClientSecret": process.env.PAYOUTCLIENTSECRET,
+        "PathToPublicKey": "./accountId_40166_public_key.pem"
+        // "PathToPublicKey": "./accountId_4512_public_key.pem"
+    });
+
+    User.findOne({ email })
+        .then(user => {
+            if (user) {
+                const id = user._id
+                Bene.findOne({ beneId: id })
+                    .then(beneficiary => {
+                        if (beneficiary) {
+                            return res.status(202).json({
+                                status: 'Already Exist'
+                            })
+
+                        } else {
+                            Beneficiary.Add({
+                                "beneId": user._id,
+                                "name": user.name,
+                                "email": user.email,
+                                "phone": user.phonenumber.slice(3),
+                                "bankAccount": req.body.bankAccount,
+                                "ifsc": req.body.ifsc,
+                                "address1": req.body.address1,
+                                "city": req.body.city,
+                                "state": req.body.state,
+                                "pincode": req.body.pincode
+                            })
+                                .then(response => {
+                                    if (response.subCode === '200') {
+                                        const bene = new Bene({
+                                            beneId: user._id,
+                                            name: user.name,
+                                            email: user.email,
+                                            phone: user.phonenumber.slice(3),
+                                            bankAccount: req.body.bankAccount,
+                                            ifsc: req.body.ifsc,
+                                            address1: req.body.address1,
+                                            city: req.body.city,
+                                            state: req.body.state,
+                                            pincode: req.body.pincode
+                                        })
+
+                                        bene.save()
+                                            .then(success => {
+                                                return res.status(201).json({
+                                                    status: 'Saved'
+                                                })
+                                            })
+                                            .catch(err => {
+                                                console.log(err)
+                                                Beneficiary.Remove({
+                                                    beneId: user._id,
+                                                })
+                                                return res.status(501).json({
+                                                    status: 'Internal Server Error'
+                                                })
+                                            })
+                                    } else {
+                                        return res.status(parseInt(response.subCode)).json({
+                                            status: response.message
+                                        })
+                                    }
+                                })
+                                .catch(err => {
+                                    console.log(`Error: ${err}`)
+                                    return res.status(500).json({
+                                        status: 'Internal Server Error'
+                                    })
+                                })
+                        }
+                    })
+            } else {
+                return res.status(500).json({
+                    status: 'DataBase Error'
+                })
+            }
+
+        })
+        .catch(err => {
+
+            console.log(err)
+            return res.status(500).json({
+                status: 'DataBase Error'
+            })
+        })
+};
+
+exports.getbeneficiary = (req, res) => {
+    const id = req.params.id
+
+    User.findById(id, '_id')
+        .then(user => {
+            if (user) {
+                Bene.findOne({ beneId: user._id }, 'bankAccount ifsc pincode state city address1')
+                    .then(beneficiary => {
+                        if (beneficiary) {
+                            return res.status(200).json({
+                                beneficiary
+                            })
+                        } else {
+                            return res.status(404).json({
+                                status: 'User had not shared bank Details'
+                            })
+                        }
+                    })
+                    .catch(err => {
+                        return res.status(500).json({
+                            status: 'Some Internal Databse Error'
+                        })
+                    })
+            } else {
+                return res.status(404).json({
+                    status: 'User Not Found'
+                })
+            }
+        })
+        .catch(err => {
+            return res.status(500).json({
+                status: 'Internal Server Error'
+            })
+        })
+}

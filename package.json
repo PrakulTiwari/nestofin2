@@ -21,6 +21,7 @@
   "dependencies": {
     "@sendgrid/mail": "^6.5.5",
     "body-parser": "^1.19.0",
+    "cashfree-sdk": "^0.1.1",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "dotenv": "^8.2.0",

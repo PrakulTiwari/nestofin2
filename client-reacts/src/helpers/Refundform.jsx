@@ -1,95 +1,63 @@
-import React, { useState } from 'react';
+import React,{useState} from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { isAuth } from '../helpers/auth';
+import { getCookie } from '../helpers/auth';
 import '../assests/talwind.min.css';
 import '../assests/investing.css';
-import { useLocation } from 'react-router-dom';
+import { isAuth } from '../helpers/auth';
 
 function Refundform(props) {
-  let location = useLocation()
-  let [count, setCount] = useState(1);
-  const [refundtext, setRefundtext] = useState('Refund')
-  const [formvalue, setformvalue] = useState("");
-  const [Refundstate, setRefundstate] = useState("");
-  const handleClick = () => {
-
-    setRefundtext('Refunding...')
-    if (formvalue) {
+  let [count,setCount] = useState(1);
+  const [refundtext, setRefundtext] = useState('WithDraw')
+  const handleClick = () =>{
+    const token = getCookie('token')
+    setRefundtext('Withdrawing...')
       axios
-        .post(`${process.env.REACT_APP_API_URL}/user/refund`, {
-          id: formvalue,
+        .post(`${process.env.REACT_APP_API_URL}/user/withdraw`,{
           count,
-          email: isAuth().email
+          email:isAuth().email,
+          id:isAuth()._id
+        },{
+          headers: {
+            Authorization: `Bxyz ${token}`
+          }
         })
         .then((res) => {
-          console.log(res)
           setRefundtext('Refund')
-          if (res.data.error) {
-            setformvalue('')
-            toast.error(res.data.error.error.description)
-          }
-          else {
-            setformvalue('')
-            toast.success(res.data.message)
-            setRefundstate(res.data.message)
-            setTimeout(() => {
-              setRefundstate('')
-              props.update()
-            }, 2000);
-          }
+          toast.success(res.data.status)
+          props.update()
         }).catch((errors) => {
-          setformvalue('')
-          setRefundtext('Refund')
-          toast.error(errors.response.data.error)
-          console.log(`Refund Error: ${errors.response.data.error}`)
+          setRefundtext('Withdraw')
+          toast.error(errors.response.data.status)
+          console.log(`Refund Error: ${errors.response.data.status}`)
         });
-    }
-    else {
-      setformvalue('')
-      setRefundtext('Refund')
-      setRefundstate('Please enter valid payment id');
-      setTimeout(() => {
-        setRefundstate('')
-      }, 1000);
-    }
   }
 
   const up = () => {
-    const temp = count + 1;
+    const temp = count+1;
     setCount(temp);
   }
   const down = () => {
-    if (count > 1) {
-      const temp = count - 1;
+    if(count>1){
+      const temp = count-1;
       setCount(temp);
     }
   }
   return (
-    <div>
-      <div style={{ display: 'flex', backgroundColor: 'royalblue' }}>
-        <div className="count">
-          {count}
-          <div className="control">
-            <div className="button" onClick={up}>&#8593;</div>
-            <div className="button" onClick={down}>&#8595;</div>
-          </div>
+    <div className='payment mx-auto my-4'>
+      <div className="count">
+        {count}
+        <div className="control">
+          <div className="button" onClick={up}>&#8593;</div>
+          <div className="button" onClick={down}>&#8595;</div>
         </div>
-        <input
-          className='w-full px-8 py-4 font-medium bg-gray-100 border border-gray-500 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white'
-          type="text"
-          value={formvalue}
-          onChange={e => setformvalue(e.target.value)}
-        />
       </div>
       <button
-        className='mt-5 tracking-wide font-semibold bg-indigo-500 text-gray-100 w-full py-4 rounded-lg hover:bg-indigo-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none'
-        type="submit"
         onClick={handleClick}
-      >
+        className='tracking-wide font-semibold text-gray-100 w-100 py-4 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none'
+        >
         {refundtext}
       </button>
-      {Refundstate}
     </div>
   );
 }
