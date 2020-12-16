@@ -265,7 +265,6 @@ Payouts.Init({
     "ENV": process.env.CASHMODE,
     "ClientID": process.env.PAYOUTCLIENTID,
     "ClientSecret": process.env.PAYOUTCLIENTSECRET,
-    // "PathToPublicKey": "./accountId_40166_public_key.pem"
     "PathToPublicKey": "./accountId_4512_public_key.pem"
 });
 exports.withdrawController = (req, res) => {

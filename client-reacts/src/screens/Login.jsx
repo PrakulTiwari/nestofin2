@@ -16,9 +16,9 @@ const Login = ({ history }) => {
   const handleChange = text => e => {
     setFormData({ ...formData, [text]: e.target.value });
   };
-  useEffect(() => {
-    window.scrollTo(0, 0)
-  });
+  // useEffect(() => {
+  //   window.scrollTo(0, 0)
+  // });
 
   const handleSubmit = e => {
     e.preventDefault();
