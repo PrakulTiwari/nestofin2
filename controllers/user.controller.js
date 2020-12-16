@@ -261,12 +261,14 @@ exports.successController = (req, res) => {
         status: "success",
     })
 };
+
 Payouts.Init({
     "ENV": process.env.CASHMODE,
     "ClientID": process.env.PAYOUTCLIENTID,
     "ClientSecret": process.env.PAYOUTCLIENTSECRET,
     "PathToPublicKey": "./accountId_4512_public_key.pem"
 });
+
 exports.withdrawController = (req, res) => {
     const count = req.body.count;
     const email = req.body.email;
