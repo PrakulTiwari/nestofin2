@@ -263,7 +263,7 @@ exports.successController = (req, res) => {
 };
 
 Payouts.Init({
-    "ENV": process.env.CASHMODE,
+    "ENV": process.env.PAYOUTENV,
     "ClientID": process.env.PAYOUTCLIENTID,
     "ClientSecret": process.env.PAYOUTCLIENTSECRET,
     "PathToPublicKey": "./accountId_4512_public_key.pem"
