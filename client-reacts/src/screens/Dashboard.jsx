@@ -189,17 +189,18 @@ function Dashboard({ history }) {
                   </div>
 
                 </div>
+                
                 <div className="graphcontent">
-                  <div className="title">
+                  {/* <div className="title">
                     PROFIT ANALYSIS
-                  </div>
+                  </div> */}
                   <div className="profitlossdetail">
-                      <div className="graph">
+                      {/* <div className="graph">
                         <Graph />
                       </div>
                       <div className="durationleft">
                         <i className="fa fa-clock-o" aria-hidden="true"></i> 3 MONTHS
-                      </div>
+                      </div> */}
                       <div className='userdetail'>
                         <div className="customer_details mx-auto">
                           {details?<div className='userdetail'>

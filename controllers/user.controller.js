@@ -284,7 +284,7 @@ exports.withdrawController = (req, res) => {
                             Transfers.RequestTransfer({
                                 "beneId": user._id,
                                 "transferId": shortid.generate(),
-                                "amount": Amount,
+                                "amount": Amount
                             })
                                 .then(response => {
                                     if (response.status === 'SUCCESS') {
