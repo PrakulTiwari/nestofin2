@@ -23,7 +23,7 @@ function Investing({ history }) {
           <div className="text-part">
             {/* <h1>COMING SOON...</h1> */}
             <h1>Buy Nest Egg Alpha</h1>
-            <h3>1 Alpha Yolk = Rs102</h3>
+            <h3>1 Alpha Yolk = Rs106</h3>
             <h3>The price of Alpha Yolk will be </h3>
             <h3>updated on 15th of every month.</h3>
             <p className="main-win-sub-win-para1">After purchasing,your yolk will be deposited in your nest wallet.
