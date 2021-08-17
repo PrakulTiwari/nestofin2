@@ -7,7 +7,6 @@ import './assests/styles.css'
 
 function App({ history }) {
   // console.log(`History : ${history}`);
-  //fiwjcfnmsrnvjrjkvsnhuvvdsn
   return (
     <div>
         <Navbar />

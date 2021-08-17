@@ -7,9 +7,12 @@ const connectDB = async () => {
         useFindAndModify: false,
         useUnifiedTopology: true
     })
-    .catch(err => console.log(`${err}`));
+        .catch(err => console.log(`${err}`));
 
     console.log(`MongoDB Connected: ${connection.connection.host}`);
-}; 
+};
 
 module.exports = connectDB;
+
+
+//process.env.MONGO_URI

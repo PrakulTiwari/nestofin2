@@ -13,8 +13,7 @@
     "heroku-postbuild": "npm run install-client && npm run build",
     "start": "node server.js",
     "backend": "nodemon server.js",
-    "client": "cd client-reacts && npm start",
-    "dev": "concurrently \"npm run backend\" \"npm run start\" \"cd client-reacts\" \"npm start\""
+    "client": "cd client-reacts && npm start"
   },
   "keywords": [],
   "author": "",
@@ -22,18 +21,27 @@
   "dependencies": {
     "@sendgrid/mail": "^6.5.5",
     "body-parser": "^1.19.0",
-    "concurrently": "^5.3.0",
+    "cashfree-sdk": "^0.1.1",
     "cors": "^2.8.5",
+    "crypto": "^1.0.1",
     "dotenv": "^8.2.0",
+    "ejs": "^3.1.5",
     "express": "^4.17.1",
     "express-jwt": "^5.3.1",
     "express-validator": "^6.4.0",
+    "firebase": "^7.20.0",
     "google-auth-library": "^6.0.0",
+    "heroku": "^7.46.0",
+    "heroku-ssl-redirect": "^0.1.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.6",
     "morgan": "^1.10.0",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.1",
     "nodemailer": "^6.4.11",
-    "sib-api-v3-sdk": "^7.2.4"
+    "razorpay": "^2.0.6",
+    "request": "^2.88.2",
+    "shortid": "^2.2.15",
+    "sib-api-v3-sdk": "^7.2.4",
+    "socket.io": "^2.3.0"
   }
 }

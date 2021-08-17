@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import authSvg from '../assests/forget.svg';
 import { ToastContainer, toast } from 'react-toastify';
 import axios from 'axios';
+import { Link, Redirect } from 'react-router-dom';
 import '../assests/talwind.min.css';
 
-const ForgetPassword = ({history}) => {
+const ForgetPassword = ({ history }) => {
   const [formData, setFormData] = useState({
     email: '',
     textChange: 'Submit'
@@ -22,16 +23,16 @@ const ForgetPassword = ({history}) => {
           email
         })
         .then(res => {
-          
-            setFormData({
-              ...formData,
-              email: '',
-            });
-            toast.success(`Please check your email`);
-          
+
+          setFormData({
+            ...formData,
+            email: '',
+          });
+          toast.success(`Please check your email`);
+
         })
         .catch(err => {
-        console.log(err.response)
+          console.log(err.response)
           toast.error(err.response.data.error);
         });
     } else {
@@ -48,7 +49,7 @@ const ForgetPassword = ({history}) => {
               Forget Password
             </h1>
             <div className='w-full flex-1 mt-8 text-indigo-500'>
-              
+
               <form
                 className='mx-auto max-w-xs relative '
                 onSubmit={handleSubmit}
@@ -67,6 +68,12 @@ const ForgetPassword = ({history}) => {
                   <i className='fas fa-sign-in-alt  w-6  -ml-2' />
                   <span className='ml-3'>Submit</span>
                 </button>
+                <Link
+                  to='/users/password/reset'
+                  className='no-underline hover:underline text-indigo-500 text-md text-right absolute right-0  mt-2'
+                >
+                  Verify Otp and change your password
+                </Link>
               </form>
             </div>
           </div>

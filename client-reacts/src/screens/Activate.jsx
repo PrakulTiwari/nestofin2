@@ -7,31 +7,30 @@ import { authenticate, isAuth } from '../helpers/auth';
 import { Link, Redirect } from 'react-router-dom';
 import '../assests/talwind.min.css';
 
-const Activate = ({ match }) => { 
+const Activate = () => { 
   const [formData, setFormData] = useState({
-    name: '',
-    token: '',
+  //   name: '',
+    otp: '',
     show: true
   });
 
-  useEffect(() => {
-    let token = match.params.token;
-    let { name } = jwt.decode(token);
+  // useEffect(() => {
+    // let token = match.params.token;
+    // let { name } = jwt.decode(token);
 
-    if (token) {
-      setFormData({ ...formData, name, token });
-    }
+    // if (token) {
+    //   setFormData({ ...formData, name, token });
+    // }
 
-    console.log(token, name);
-  }, [match.params]);
-  const { name, token, show } = formData;
-
+    // console.log(token, name);
+  // }, [match.params]);
+  const { otp, show } = formData;
   const handleSubmit = e => {
     e.preventDefault();
 
     axios
       .post(`${process.env.REACT_APP_API_URL}/activation`, {
-        token
+        otp
       })
       .then(res => {
         setFormData({
@@ -55,13 +54,23 @@ const Activate = ({ match }) => {
         <div className='lg:w-1/2 xl:w-5/12 p-6 sm:p-12'>
           <div className='mt-12 flex flex-col items-center'>
             <h1 className='text-2xl xl:text-3xl font-extrabold'>
-              Welcome {name}
+              Welcome
             </h1>
 
             <form
               className='w-full flex-1 mt-8 text-indigo-500'
               onSubmit={handleSubmit}
             >
+              <input
+                  className='w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white'
+                  type='text'
+                  placeholder='OTP'
+                  onChange={(e)=>{setFormData({
+                    ...formData,
+                    otp:e.target.value
+                  })}}
+                  value={otp}
+                />
               <div className='mx-auto max-w-xs relative '>
                 <button
                   type='submit'
@@ -77,15 +86,15 @@ const Activate = ({ match }) => {
                 </div>
               </div>
               <div className='flex flex-col items-center'>
-                <a
+                <Link
                   className='w-full max-w-xs font-bold shadow-sm rounded-lg py-3
            bg-indigo-100 text-gray-800 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline mt-5'
-                  href='/register'
+                  to='/register'
                   target='_self'
                 >
                   <i className='fas fa-sign-in-alt fa 1x w-6  -ml-2 text-indigo-500' />
                   <span className='ml-4'>Sign Up</span>
-                </a>
+                </Link>
               </div>
             </form>
           </div>

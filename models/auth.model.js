@@ -24,6 +24,9 @@ const userScheama = new mongoose.Schema({
         default: 0,
         multipleOf: 1
     },
+    phonenumber: {
+        type: String
+    },
     salt: String,
     role: {
         type: String,

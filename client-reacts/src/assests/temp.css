@@ -1,0 +1,90 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins');
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins';
+}
+
+.planning {
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.planning .n {
+    border: none;
+    background: none;
+    border: 2px solid blue;
+    border-radius: 25px;
+    padding: 15px;
+    width: 25vw;
+    text-align: center;
+    outline: none;
+    color: black;
+    transition: 0.25s;
+    margin: 1.5vh 0;
+}
+
+.planning #textInput {
+    background: white;
+    border: none;
+    font-size: 18px;
+    outline: none;
+    color: black;
+    text-align: center;
+}
+
+.planning .n:focus {
+    border: 2px solid greenyellow;
+    width: 27vw;
+    transition: 0.25s;
+}
+
+.planning .submit {
+    background: none;
+    outline: none;
+    border: none;
+    color: black;
+    border: 2px solid greenyellow;
+    padding: 15px;
+    border-radius: 25px;
+    width: 20vw;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.planning .submit:hover {
+    background: greenyellow;
+    transition: 0.25s;
+}
+
+.planning .name {
+    margin-top: 2vh;
+    display: block;
+    min-height: 30vh;
+}
+
+.planning .name h2 {
+    font-size: 18px;
+    color: black;
+    transition: 0.25s;
+}
+
+.planning .name h3 {
+    font-size: 18px;
+    color: black;
+}
+
+.planning .monthly-savings {
+    display: flex;
+    width: 100vw;
+    align-items: center;
+    justify-content: space-around;
+    flex-direction: row;
+    color: black;
+}
